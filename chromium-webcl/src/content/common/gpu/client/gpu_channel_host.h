@@ -248,6 +248,53 @@ class GpuChannelHost : public IPC::Sender,
  public:
   // Calling OpenCL API by IPC message, and run it in another process.
   cl_int CallclGetPlatformIDs(cl_uint, cl_platform_id*, cl_uint*);
+
+  cl_int CallclGetDeviceIDs(
+      cl_platform_id,
+      cl_device_type,
+      cl_uint,
+      cl_device_id*,
+      cl_uint*);
+
+  cl_int CallclCreateSubDevices(
+      cl_device_id,
+      const cl_device_partition_property*,
+      cl_uint,
+      cl_device_id*,
+      cl_uint*);
+
+  cl_int CallclRetainDevice (cl_device_id);
+
+  cl_int CallclReleaseDevice (cl_device_id);
+
+  cl_context CallclCreateContext(
+      const cl_context_properties*,
+      cl_uint,
+      const cl_device_id*,
+      void (CL_CALLBACK*)(const char*, const void*, size_t, void*),
+      void*,
+      cl_int*);
+
+  cl_context CallclCreateContextFromType(
+      const cl_context_properties*,
+      cl_device_type,
+      void (CL_CALLBACK*)(const char*, const void*, size_t, void*),
+      void*,
+      cl_int*);
+
+  cl_int CallclRetainContext(cl_context);
+
+  cl_int CallclReleaseContext(cl_context);
+
+  cl_command_queue CallclCreateCommandQueue(
+      cl_context,
+      cl_device_id,
+      cl_command_queue_properties,
+      cl_int*);
+
+  cl_int CallclRetainCommandQueue(cl_command_queue);
+
+  cl_int CallclReleaseCommandQueue(cl_command_queue);
 };
 
 }  // namespace content

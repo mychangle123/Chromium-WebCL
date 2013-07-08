@@ -436,4 +436,310 @@ cl_int GpuChannelHost::CallclGetPlatformIDs(
   return errcode_ret;
 }
 
+cl_int GpuChannelHost::CallclGetDeviceIDs(
+    cl_platform_id platform,
+    cl_device_type device_type,
+    cl_uint num_entries,
+    cl_device_id* devices,
+    cl_uint* num_devices) {
+  // Sending a Sync IPC Message, to call a clGetDeviceIDs API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_uint num_devices_inter = (cl_uint) -1;
+  cl_point point_platform = (cl_point) platform;
+  std::vector<cl_point> point_device_list;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == num_devices)
+    num_devices = &num_devices_inter;
+  else if ((cl_uint) -1 == *num_devices)
+    *num_devices = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_GetDeviceIDs(
+           point_platform,
+           device_type,
+           num_entries,
+           &point_device_list,
+           num_devices,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  // Dump the results of the Sync IPC Message calling.
+  if (CL_SUCCESS == errcode_ret)
+    for (cl_uint index = 0; index < num_entries; ++index)
+      devices[index] = (cl_device_id) point_device_list[index];
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclCreateSubDevices(
+    cl_device_id in_device,
+    const cl_device_partition_property* properties,
+    cl_uint num_devices,
+    cl_device_id* out_devices,
+    cl_uint* num_devices_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_uint num_devices_ret_inter = (cl_uint) -1;
+  cl_point point_in_device = (cl_point) in_device;
+  std::vector<cl_point> point_out_device_list;
+  std::vector<cl_device_partition_property> property_list;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == num_devices_ret)
+    num_devices_ret = &num_devices_ret_inter;
+  else if ((cl_uint) -1 == *num_devices_ret)
+    *num_devices_ret = 0;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  property_list.clear();
+  if (NULL != properties) {
+    while (0 != *properties)
+      property_list.push_back(*properties++);
+    property_list.push_back(0);
+  }
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_CreateSubDevices(
+           point_in_device,
+           property_list,
+           num_devices,
+           &point_out_device_list,
+           num_devices_ret,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  // Dump the results of the Sync IPC Message calling.
+  if (CL_SUCCESS == errcode_ret)
+    for (cl_uint index = 0; index < num_devices; ++index)
+      out_devices[index] = (cl_device_id)(point_out_device_list[index]);
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclRetainDevice(cl_device_id device) {
+  // Sending a Sync IPC Message, to call a clRetainDevice API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_device = (cl_point) device;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_RetainDevice(
+           point_device,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclReleaseDevice(cl_device_id device) {
+  // Sending a Sync IPC Message, to call a clReleaseDevice API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_device = (cl_point) device;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_ReleaseDevice(
+           point_device,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_context GpuChannelHost::CallclCreateContext(
+    const cl_context_properties* properties,
+    cl_uint num_devices,
+    const cl_device_id* devices,
+    void (CL_CALLBACK* pfn_notify)(const char*, const void*, size_t, void*),
+    void* user_data,
+    cl_int* errcode_ret) {
+  // Sending a Sync IPC Message, to call a CallclCreateContext API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_point point_context_ret;
+  std::vector<cl_device_partition_property> property_list;
+  std::vector<cl_point> point_device_list;
+  cl_point point_pfn_notify = (cl_point) pfn_notify;
+  cl_point point_user_data = (cl_point) user_data;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == errcode_ret)
+    errcode_ret = &errcode_ret_inter;
+  else if (0xFFFFFFF == *errcode_ret)
+    *errcode_ret = 0;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  property_list.clear();
+  if (NULL != properties) {
+    while (0 != *properties)
+      property_list.push_back(*properties++);
+    property_list.push_back(0);
+  }
+
+  point_device_list.clear();
+  for (cl_uint index = 0; index < num_devices; ++index)
+    point_device_list.push_back((cl_point) devices[index]);
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_CreateContext(
+            property_list,
+            num_devices,
+            point_device_list,
+            point_pfn_notify,
+            point_user_data,
+            errcode_ret,
+            &point_context_ret))) {
+    return NULL;
+  }
+  return (cl_context) point_context_ret;
+}
+
+cl_context GpuChannelHost::CallclCreateContextFromType(
+    const cl_context_properties *properties,
+    cl_device_type device_type,
+    void (CL_CALLBACK *pfn_notify)(const char *, const void *,size_t, void *),
+    void *user_data,
+    cl_int *errcode_ret) {
+  // Sending a Sync IPC Message, to call a clCreateContextFromType API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_point point_context_ret;
+  std::vector<cl_device_partition_property> property_list;
+  cl_point point_pfn_notify = (cl_point) pfn_notify;
+  cl_point point_user_data = (cl_point) user_data;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == errcode_ret)
+    errcode_ret = &errcode_ret_inter;
+  else if (0xFFFFFFF == *errcode_ret)
+    *errcode_ret = 0;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  property_list.clear();
+  if (NULL != properties) {
+    while (0 != *properties)
+      property_list.push_back(*properties++);
+    property_list.push_back(0);
+  }
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_CreateContextFromType(
+           property_list,
+           device_type,
+           point_pfn_notify,
+           point_user_data,
+           errcode_ret,
+           &point_context_ret))) {
+    return NULL;
+  }
+  return (cl_context) point_context_ret;
+}
+
+cl_int GpuChannelHost::CallclRetainContext(cl_context context) {
+  // Sending a Sync IPC Message, to call a clRetainContext API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_context = (cl_point) context;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_RetainContext(
+           point_context,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclReleaseContext(cl_context context) {
+  // Sending a Sync IPC Message, to call a clReleaseContext API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_context = (cl_point) context;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_ReleaseContext(
+           point_context,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_command_queue GpuChannelHost::CallclCreateCommandQueue(
+    cl_context context,
+    cl_device_id device,
+    cl_command_queue_properties properties,
+    cl_int *errcode_ret) {
+  // Sending a Sync IPC Message, to call a clCreateCommandQueue API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_point point_context = (cl_point) context;
+  cl_point point_device = (cl_point) device;
+  cl_point point_command_queue_ret;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == errcode_ret)
+    errcode_ret = &errcode_ret_inter;
+  else if (0xFFFFFFF == *errcode_ret)
+    *errcode_ret = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_CreateCommandQueue(
+           point_context,
+           point_device,
+           properties,
+           errcode_ret,
+           &point_command_queue_ret))) {
+    return NULL;
+  }
+  return (cl_command_queue) point_command_queue_ret;
+}
+
+cl_int GpuChannelHost::CallclRetainCommandQueue(
+    cl_command_queue command_queue) {
+  // Sending a Sync IPC Message, to call a clRetainCommandQueue API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_command_queue = (cl_point) command_queue;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_RetainCommandQueue(
+           point_command_queue,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclReleaseCommandQueue(
+    cl_command_queue command_queue) {
+  // Sending a Sync IPC Message, to call a clReleaseCommandQueue API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_command_queue = (cl_point) command_queue;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_ReleaseCommandQueue(
+           point_command_queue,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
 }  // namespace content

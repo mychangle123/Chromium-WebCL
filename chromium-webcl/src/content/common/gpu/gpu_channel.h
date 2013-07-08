@@ -266,6 +266,69 @@ class GpuChannel : public IPC::Listener,
       std::vector<cl_point>*,
       cl_uint*,
       cl_int*);
+
+  void OnCallclGetDeviceIDs(
+      const cl_point&,
+      const cl_device_type&,
+      const cl_uint&,
+      std::vector<cl_point>*,
+      cl_uint*,
+      cl_int*);
+
+  void OnCallclCreateSubDevices(
+      const cl_point&,
+      const std::vector<cl_device_partition_property>&,
+      const cl_uint&,
+      std::vector<cl_point>*,
+      cl_uint*,
+      cl_int*);
+
+  void OnCallclRetainDevice(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclReleaseDevice(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclCreateContext(
+      const std::vector<cl_context_properties>&,
+      const cl_uint&,
+      const std::vector<cl_point>&,
+      const cl_point&,
+      const cl_point&,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclCreateContextFromType(
+      const std::vector<cl_context_properties>&,
+      const cl_device_type&,
+      const cl_point&,
+      const cl_point&,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclRetainContext(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclReleaseContext(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclCreateCommandQueue(
+      const cl_point&,
+      const cl_point&,
+      const cl_command_queue_properties&,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclRetainCommandQueue(
+      const cl_point&,
+      cl_int*);
+  void OnCallclReleaseCommandQueue(
+      const cl_point&,
+      cl_int*);
 };
 
 }  // namespace content
