@@ -1,0 +1,9 @@
+syntax: regexp
+^chromium-webcl/src/.+\.\b(sln|vcxproj|vcxproj\.filters|vcxproj\.user)\b$
+^chromium-webcl/src/.+\.\b(props|targets|xml)\b$
+^chromium-webcl/src/.+\.\b(gypcmd|pyc|mk)\b$
+^chromium-webcl/src/.+\.\b(sdf|opensdf|tmp)\b$
+^chromium-webcl/src/build/\b(Debug|Release|Debug_x64|Release_x64)\b/.+$
+^chromium-webcl/src/native_client/toolchain/.+$
+^chromium-webcl/src/third_party/python_26/Lib/.+$
+^chromium-webcl/src/build/.+$
