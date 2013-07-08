@@ -392,7 +392,7 @@ ResultCode BrokerServicesBase::SpawnTarget(const wchar_t* exe_path,
   // Brokerservices does not own the target object. It is owned by the Policy.
   base::win::ScopedProcessInformation process_info;
   TargetProcess* target = new TargetProcess(initial_token.Take(),
-                                            lockdown_token.Take(),
+                                            initial_token.Take(),
                                             job,
                                             thread_pool_);
 

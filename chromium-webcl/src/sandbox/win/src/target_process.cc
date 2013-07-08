@@ -133,7 +133,7 @@ DWORD TargetProcess::Create(const wchar_t* exe_path,
 
   base::win::ScopedProcessInformation process_info;
 
-  if (!::CreateProcessAsUserW(lockdown_token_,
+  if (!::CreateProcessAsUserW(initial_token_,
                               exe_path,
                               cmd_line.get(),
                               NULL,   // No security attribute.
