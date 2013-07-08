@@ -247,6 +247,7 @@ class GpuChannelHost : public IPC::Sender,
 
  public:
   // Calling OpenCL API by IPC message, and run it in another process.
+  cl_int CallclGetPlatformIDs(cl_uint, cl_platform_id*, cl_uint*);
 };
 
 }  // namespace content

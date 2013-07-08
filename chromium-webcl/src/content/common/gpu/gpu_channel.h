@@ -261,6 +261,11 @@ class GpuChannel : public IPC::Listener,
 
  public:
   // Handle the OpenCL API calling.
+  void OnCallclGetPlatformIDs(
+      const cl_uint&,
+      std::vector<cl_point>*,
+      cl_uint*,
+      cl_int*);
 };
 
 }  // namespace content

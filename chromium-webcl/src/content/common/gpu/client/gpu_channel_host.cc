@@ -399,4 +399,41 @@ void GpuChannelHost::MessageFilter::OnChannelError() {
   listeners_.clear();
 }
 
+// Adding the implement of OpenCL API calling.
+
+cl_int GpuChannelHost::CallclGetPlatformIDs(
+    cl_uint num_entries,
+    cl_platform_id* platforms,
+    cl_uint* num_platforms) {
+  // Sending a Sync IPC Message, to call a clGetPlatformIDs API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_uint num_platforms_inter = (cl_uint) -1;
+  std::vector<cl_point> point_platform_list;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == num_platforms)
+    num_platforms = &num_platforms_inter;
+  else if ((cl_uint) -1 == *num_platforms)
+    *num_platforms = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_GetPlatformIDs(
+           num_entries,
+           &point_platform_list,
+           num_platforms,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  // Dump the results of the Sync IPC Message calling.
+  if (CL_SUCCESS == errcode_ret)
+    for (cl_uint index = 0; index < num_entries; ++index)
+      platforms[index] = (cl_platform_id) point_platform_list[index];
+
+  return errcode_ret;
+}
+
 }  // namespace content

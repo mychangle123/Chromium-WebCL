@@ -759,6 +759,8 @@ bool GpuChannel::OnControlMessageReceived(const IPC::Message& msg) {
     IPC_MESSAGE_HANDLER(GpuChannelMsg_DestroyCommandBuffer,
                                     OnDestroyCommandBuffer)
     // Adding OpenCL API calling handle.
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetPlatformIDs,
+                                    OnCallclGetPlatformIDs)
     // Adding OK.
 #if defined(OS_ANDROID)
     IPC_MESSAGE_HANDLER(GpuChannelMsg_RegisterStreamTextureProxy,
@@ -958,5 +960,38 @@ void GpuChannel::CacheShader(const std::string& key,
 }
 
 // Adding the implement of OpenCL API calling handle.
+
+void GpuChannel::OnCallclGetPlatformIDs(
+    const cl_uint& num_entries,
+    std::vector<cl_point>* point_platform_list,
+    cl_uint* num_platforms,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clGetPlatformIDs OpenCL API calling.
+  cl_platform_id* platforms = NULL;
+  cl_uint* num_platforms_inter = num_platforms;
+
+  // If the caller wishes to pass a NULL.
+  if ((cl_uint) -1 == *num_platforms)
+    num_platforms_inter = NULL;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (num_entries > 0)
+    platforms = new cl_platform_id[num_entries];
+
+  // Call the OpenCL API.
+  *errcode_ret = clGetPlatformIDs(
+                     num_entries,
+                     platforms,
+                     num_platforms_inter);
+
+  // Dump the results of OpenCL API calling.
+  if (num_entries > 0) {
+    (*point_platform_list).clear();
+    for (cl_uint index = 0; index < num_entries; ++index)
+      (*point_platform_list).push_back((cl_point) platforms[index]);
+    delete[] platforms;
+  }
+}
 
 }  // namespace content
