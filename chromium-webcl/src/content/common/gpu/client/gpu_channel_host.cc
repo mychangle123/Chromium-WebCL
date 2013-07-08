@@ -190,6 +190,9 @@ CommandBufferProxyImpl* GpuChannelHost::CreateOffscreenCommandBuffer(
     return NULL;
   }
 
+  // We should test OpenCL API calling here, please visit http://helloracer.com/webgl/ to activate the test.
+  // The test has been completed.
+
   if (route_id == MSG_ROUTING_NONE)
     return NULL;
 

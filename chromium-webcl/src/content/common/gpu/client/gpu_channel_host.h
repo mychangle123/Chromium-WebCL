@@ -28,6 +28,10 @@
 #include "ui/gfx/size.h"
 #include "ui/gl/gpu_preference.h"
 
+#if defined(OS_WIN)
+#include <CL/OpenCL.h>
+#endif
+
 class GURL;
 class TransportTextureService;
 struct GPUCreateCommandBufferConfig;
@@ -240,6 +244,9 @@ class GpuChannelHost : public IPC::Sender,
   base::AtomicSequenceNumber next_transfer_buffer_id_;
 
   DISALLOW_COPY_AND_ASSIGN(GpuChannelHost);
+
+ public:
+  // Calling OpenCL API by IPC message, and run it in another process.
 };
 
 }  // namespace content

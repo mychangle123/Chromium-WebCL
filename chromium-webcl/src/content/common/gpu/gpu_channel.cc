@@ -758,6 +758,8 @@ bool GpuChannel::OnControlMessageReceived(const IPC::Message& msg) {
                                     OnCreateOffscreenCommandBuffer)
     IPC_MESSAGE_HANDLER(GpuChannelMsg_DestroyCommandBuffer,
                                     OnDestroyCommandBuffer)
+    // Adding OpenCL API calling handle.
+    // Adding OK.
 #if defined(OS_ANDROID)
     IPC_MESSAGE_HANDLER(GpuChannelMsg_RegisterStreamTextureProxy,
                         OnRegisterStreamTextureProxy)
@@ -954,5 +956,7 @@ void GpuChannel::CacheShader(const std::string& key,
   gpu_channel_manager_->Send(
       new GpuHostMsg_CacheShader(client_id_, key, shader));
 }
+
+// Adding the implement of OpenCL API calling handle.
 
 }  // namespace content

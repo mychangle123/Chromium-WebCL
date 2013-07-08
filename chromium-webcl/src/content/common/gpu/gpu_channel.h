@@ -27,6 +27,12 @@
 #include "content/common/android/surface_texture_peer.h"
 #endif
 
+#if defined(OS_WIN)
+#include <CL/OpenCL.h>
+#endif
+
+#define cl_point uint32
+
 struct GPUCreateCommandBufferConfig;
 
 namespace base {
@@ -252,6 +258,9 @@ class GpuChannel : public IPC::Listener,
   size_t num_stubs_descheduled_;
 
   DISALLOW_COPY_AND_ASSIGN(GpuChannel);
+
+ public:
+  // Handle the OpenCL API calling.
 };
 
 }  // namespace content
