@@ -334,6 +334,96 @@ class GpuChannelHost : public IPC::Sender,
       cl_mem,
       void (CL_CALLBACK*)(cl_mem,void*),
       void*);
+
+  cl_sampler CallclCreateSampler(
+      cl_context,
+      cl_bool,
+      cl_addressing_mode,
+      cl_filter_mode,
+      cl_int*);
+
+  cl_int CallclRetainSampler(cl_sampler);
+
+  cl_int CallclReleaseSampler(cl_sampler);
+
+  cl_program CallclCreateProgramWithSource(
+      cl_context,
+      cl_uint,
+      const char**,
+      const size_t*,
+      cl_int*);
+
+  cl_program CallclCreateProgramWithBinary(
+      cl_context,
+      cl_uint,
+      const cl_device_id*,
+      const size_t*,
+      const unsigned char**,
+      cl_int*,
+      cl_int*);
+
+  cl_program CallclCreateProgramWithBuiltInKernels(
+      cl_context,
+      cl_uint,
+      const cl_device_id*,
+      const char*,
+      cl_int*);
+
+  cl_int CallclRetainProgram(cl_program);
+
+  cl_int CallclReleaseProgram(cl_program);
+
+  cl_int CallclBuildProgram(
+      cl_program,
+      cl_uint,
+      const cl_device_id*,
+      const char*,
+      void (CL_CALLBACK*)(cl_program, void*),
+      void*);
+
+  cl_int CallclCompileProgram(
+      cl_program,
+      cl_uint,
+      const cl_device_id*,
+      const char*,
+      cl_uint,
+      const cl_program*,
+      const char**,
+      void (CL_CALLBACK*)(cl_program, void*),
+      void*);
+
+  cl_program CallclLinkProgram(
+      cl_context,
+      cl_uint,
+      const cl_device_id*,
+      const char*,
+      cl_uint,
+      const cl_program*,
+      void (CL_CALLBACK*)(cl_program, void*),
+      void*, cl_int*);
+
+  cl_int CallclUnloadPlatformCompiler(cl_platform_id);
+
+  cl_kernel CallclCreateKernel(
+      cl_program,
+      const char*,
+      cl_int*);
+
+  cl_int CallclCreateKernelsInProgram(
+      cl_program,
+      cl_uint,
+      cl_kernel*,
+      cl_uint*);
+
+  cl_int CallclRetainKernel(cl_kernel);
+
+  cl_int CallclReleaseKernel(cl_kernel);
+
+  cl_int CallclSetKernelArg(
+      cl_kernel,
+      cl_uint,
+      size_t,
+      const void*);
 };
 
 }  // namespace content

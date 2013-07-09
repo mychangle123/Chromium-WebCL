@@ -332,26 +332,26 @@ class GpuChannel : public IPC::Listener,
       cl_int*);
 
   void OnCallclCreateBuffer(
-      cl_point,
-      cl_mem_flags,
-      size_t,
-      cl_point,
+      const cl_point&,
+      const cl_mem_flags&,
+      const size_t&,
+      const cl_point&,
       cl_int*,
       cl_point*);
 
   void OnCallclCreateSubBuffer(
-      cl_point,
-      cl_mem_flags,
-      cl_buffer_create_type,
-      cl_point,
+      const cl_point&,
+      const cl_mem_flags&,
+      const cl_buffer_create_type&,
+      const cl_point&,
       cl_int*,
       cl_point*);
 
   void OnCallclCreateImage(
-      cl_point,
-      cl_mem_flags,
-      std::vector<cl_uint>,
-      cl_point,
+      const cl_point&,
+      const cl_mem_flags&,
+      const std::vector<cl_uint>&,
+      const cl_point&,
       cl_int*,
       cl_point*);
 
@@ -375,6 +375,111 @@ class GpuChannel : public IPC::Listener,
   void OnCallclSetMemObjectDestructorCallback(
       const cl_point&,
       const cl_point&,
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclCreateSampler(
+      const cl_point&,
+      const cl_bool&,
+      const cl_addressing_mode&,
+      const cl_filter_mode&,
+      cl_int*, cl_point*);
+
+  void OnCallclRetainSampler(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclReleaseSampler(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclCreateProgramWithSource(
+      const cl_point&,
+      const cl_uint&,
+      const std::vector<std::string>&,
+      const std::vector<size_t>&,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclCreateProgramWithBinary(
+      const cl_point&,
+      const cl_uint&,
+      const std::vector<cl_point>&,
+      const std::vector<size_t>&,
+      const std::vector<std::vector<unsigned char>>&,
+      std::vector<cl_int>*,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclCreateProgramWithBuiltInKernels(
+      const cl_point&,
+      const cl_uint&,
+      const std::vector<cl_point>&,
+      const std::string&,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclRetainProgram(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclReleaseProgram(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclBuildProgram(
+      const cl_point&,
+      const cl_uint&,
+      const std::vector<cl_point>&,
+      const std::string&,
+      const std::vector<cl_point>&,
+      cl_int*);
+
+  void OnCallclCompileProgram(
+      const std::vector<cl_point>&,
+      const std::vector<cl_uint>&,
+      const std::vector<cl_point>&,
+      const std::vector<std::string>&,
+      const std::vector<cl_point>&,
+      cl_int*);
+
+  void OnCallclLinkProgram(
+      const std::vector<cl_point>&,
+      const std::vector<cl_uint>&,
+      const std::vector<cl_point>&,
+      const std::vector<cl_point>&,
+      const std::string&,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclUnloadPlatformCompiler(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclCreateKernel(
+      const cl_point&,
+      const std::string&,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclCreateKernelsInProgram(
+      const cl_point&,
+      const cl_uint&,
+      const std::vector<cl_point>&,
+      cl_uint*, cl_int*);
+
+  void OnCallclRetainKernel(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclReleaseKernel(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclSetKernelArg(
+      const cl_point&,
+      const cl_uint&,
+      const size_t&,
       const cl_point&,
       cl_int*);
 };

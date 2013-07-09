@@ -797,6 +797,40 @@ bool GpuChannel::OnControlMessageReceived(const IPC::Message& msg) {
                                     OnCallclGetSupportedImageFormats)
     IPC_MESSAGE_HANDLER(OpenCLChannelMsg_SetMemObjectDestructorCallback,
                                     OnCallclSetMemObjectDestructorCallback)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CreateSampler,
+                                    OnCallclCreateSampler)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_RetainSampler,
+                                    OnCallclRetainSampler)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_ReleaseSampler,
+                                    OnCallclReleaseSampler)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CreateProgramWithSource,
+                                    OnCallclCreateProgramWithSource)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CreateProgramWithBinary,
+                                    OnCallclCreateProgramWithBinary)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CreateProgramWithBuiltInKernels,
+                                    OnCallclCreateProgramWithBuiltInKernels)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_RetainProgram,
+                                    OnCallclRetainProgram)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_ReleaseProgram,
+                                    OnCallclReleaseProgram)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_BuildProgram,
+                                    OnCallclBuildProgram)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CompileProgram,
+                                    OnCallclCompileProgram)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_LinkProgram,
+                                    OnCallclLinkProgram)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_UnloadPlatformCompiler,
+                                    OnCallclUnloadPlatformCompiler)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CreateKernel,
+                                    OnCallclCreateKernel)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CreateKernelsInProgram,
+                                    OnCallclCreateKernelsInProgram)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_RetainKernel,
+                                    OnCallclRetainKernel)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_ReleaseKernel,
+                                    OnCallclReleaseKernel)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_SetKernelArg,
+                                    OnCallclSetKernelArg)
     // Adding OK.
 #if defined(OS_ANDROID)
     IPC_MESSAGE_HANDLER(GpuChannelMsg_RegisterStreamTextureProxy,
@@ -1311,10 +1345,10 @@ void GpuChannel::OnCallclReleaseCommandQueue(
 }
 
 void GpuChannel::OnCallclCreateBuffer(
-    cl_point point_context,
-    cl_mem_flags flags,
-    size_t size,
-    cl_point point_host_ptr,
+    const cl_point& point_context,
+    const cl_mem_flags& flags,
+    const size_t& size,
+    const cl_point& point_host_ptr,
     cl_int* errcode_ret,
     cl_point* point_memobj_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -1341,10 +1375,10 @@ void GpuChannel::OnCallclCreateBuffer(
 }
 
 void GpuChannel::OnCallclCreateSubBuffer(
-    cl_point point_buffer,
-    cl_mem_flags flags,
-    cl_buffer_create_type buffer_create_type,
-    cl_point point_buffer_create_info,
+    const cl_point& point_buffer,
+    const cl_mem_flags& flags,
+    const cl_buffer_create_type& buffer_create_type,
+    const cl_point& point_buffer_create_info,
     cl_int* errcode_ret,
     cl_point* point_memobj_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -1371,10 +1405,10 @@ void GpuChannel::OnCallclCreateSubBuffer(
 }
 
 void GpuChannel::OnCallclCreateImage(
-    cl_point point_context,
-    cl_mem_flags flags,
-    std::vector<cl_uint> image_format_list,
-    cl_point point_host_ptr,
+    const cl_point& point_context,
+    const cl_mem_flags& flags,
+    const std::vector<cl_uint>& image_format_list,
+    const cl_point& point_host_ptr,
     cl_int* errcode_ret,
     cl_point* point_memobj_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -1492,5 +1526,474 @@ void GpuChannel::OnCallclSetMemObjectDestructorCallback(
                      memobj,
                      pfn_notify,
                      user_data);
+}
+
+void GpuChannel::OnCallclCreateSampler (
+    const cl_point& point_context,
+    const cl_bool& normalized_coords,
+    const cl_addressing_mode& addressing_mode,
+    const cl_filter_mode& filter_mode,
+    cl_int* errcode_ret,
+    cl_point* point_sampler_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clCreateSampler OpenCL API calling.
+  cl_context context = (cl_context) point_context;
+  cl_sampler sampler_ret;
+  cl_int* errcode_ret_inter = errcode_ret;
+
+  // If the caller wishes to pass a NULL.
+  if (0xFFFFFFF == *errcode_ret)
+    errcode_ret_inter = NULL;
+
+  // Call the OpenCL API.
+  sampler_ret = clCreateSampler(
+                    context,
+                    normalized_coords,
+                    addressing_mode,
+                    filter_mode,
+                    errcode_ret_inter);
+
+  // Dump the results of OpenCL API calling.
+  *point_sampler_ret = (cl_point) sampler_ret;
+}
+
+void GpuChannel::OnCallclRetainSampler(
+    const cl_point& point_sampler,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clRetainSampler OpenCL API calling.
+  cl_sampler sampler = (cl_sampler) point_sampler;
+
+  // Call the OpenCL API.
+  *errcode_ret = clRetainSampler(sampler);
+}
+
+void GpuChannel::OnCallclReleaseSampler(
+    const cl_point& point_sampler,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clReleaseSampler OpenCL API calling.
+  cl_sampler sampler = (cl_sampler) point_sampler;
+
+  // Call the OpenCL API.
+  *errcode_ret = clReleaseSampler(sampler);
+}
+
+void GpuChannel::OnCallclCreateProgramWithSource(
+    const cl_point& point_context,
+    const cl_uint& count,
+    const std::vector<std::string>& string_list,
+    const std::vector<size_t>& length_list,
+    cl_int* errcode_ret,
+    cl_point* point_program_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clCreateProgramWithSource OpenCL API calling.
+  cl_context context = (cl_context) point_context;
+  const char **strings = NULL;
+  size_t *lengths = NULL;
+  cl_program program_ret;
+  cl_int* errcode_ret_inter = errcode_ret;
+
+  // If the caller wishes to pass a NULL.
+  if (0xFFFFFFF == *errcode_ret)
+    errcode_ret_inter = NULL;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (count > 0) {
+    strings = new const char*[count];
+    lengths = new size_t[count];
+    for(cl_uint index = 0; index < count; ++index) {
+      strings[index] = string_list[index].c_str();
+      lengths[index] = length_list[index];
+    }
+  }
+
+  // Call the OpenCL API.
+  program_ret = clCreateProgramWithSource(
+                    context,
+                    count,
+                    strings,
+                    lengths,
+                    errcode_ret);
+
+  if (count > 0) {
+    delete[] strings;
+    delete[] lengths;
+  }
+
+  // Dump the results of OpenCL API calling.
+  *point_program_ret = (cl_point) program_ret;
+}
+
+void GpuChannel::OnCallclCreateProgramWithBinary(
+    const cl_point& point_context,
+    const cl_uint& num_devices,
+    const std::vector<cl_point>& point_device_list,
+    const std::vector<size_t>& length_list,
+    const std::vector<std::vector<unsigned char>>& binary_list,
+    std::vector<cl_int>* binary_status_list,
+    cl_int* errcode_ret,
+    cl_point* point_out_val) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clCreateProgramWithBinary OpenCL API calling.
+  cl_context context = (cl_context) point_context;
+  cl_device_id* device_list = NULL;
+  size_t* lengths = NULL;
+  const unsigned char** binaries = NULL;
+  cl_int* binary_status = NULL;
+  cl_program program_ret = NULL;
+  cl_int* errcode_ret_inter = errcode_ret;
+
+  // If the caller wishes to pass a NULL.
+  if (0xFFFFFFF == *errcode_ret)
+    errcode_ret_inter = NULL;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (num_devices > 0) {
+    device_list = new cl_device_id[num_devices];
+    lengths = new size_t[num_devices];
+    binary_status = new cl_int[num_devices];
+    for(cl_uint index = 0; index < num_devices; ++index) {
+      device_list[index] = (cl_device_id) point_device_list[index];
+      lengths[index] = length_list[index];
+      // We need to add some better ways to improve
+      // the performance of transfer kernel.
+      // So this API is not fully supported.
+    }
+  }
+
+  // Call the OpenCL API.
+  program_ret = clCreateProgramWithBinary(
+                    context,
+                    num_devices,
+                    device_list,
+                    lengths,
+                    binaries,
+                    binary_status,
+                    errcode_ret);
+
+  // Dump the results of OpenCL API calling.
+  if (num_devices > 0) {
+    (*binary_status_list).clear();
+    for(cl_uint index = 0; index < num_devices; ++index)
+      (*binary_status_list).push_back(binary_status[index]);
+
+    delete[] device_list;
+    delete[] lengths;
+    delete[] binary_status;
+  }
+  *point_out_val = (cl_point) program_ret;
+}
+
+void GpuChannel::OnCallclCreateProgramWithBuiltInKernels(
+    const cl_point& point_context,
+    const cl_uint& num_devices,
+    const std::vector<cl_point>& point_device_list,
+    const std::string& string_kernel_names,
+    cl_int* errcode_ret,
+    cl_point* point_progrem_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clCreateProgramWithBuiltInKernels
+  // OpenCL API calling.
+  cl_context context = (cl_context) point_context;
+  size_t *lengths = NULL;
+  cl_device_id* device_list = NULL;
+  cl_program program_ret;
+  cl_int* errcode_ret_inter = errcode_ret;
+
+  // If the caller wishes to pass a NULL.
+  if (0xFFFFFFF == *errcode_ret)
+    errcode_ret_inter = NULL;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (num_devices > 0) {
+    device_list = new cl_device_id[num_devices];
+    for(cl_uint index = 0; index < num_devices; ++index)
+      device_list[index] = (cl_device_id) point_device_list[index];
+  }
+
+  // Call the OpenCL API.
+  program_ret = clCreateProgramWithBuiltInKernels(
+                    context,
+                    num_devices,
+                    device_list,
+                    string_kernel_names.c_str(),
+                    errcode_ret_inter);
+
+  if (num_devices > 0)
+    delete[] device_list;
+
+  // Dump the results of OpenCL API calling.
+  *point_progrem_ret = (cl_point) program_ret;
+}
+
+void GpuChannel::OnCallclRetainProgram(
+    const cl_point& point_program,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clRetainProgram OpenCL API calling.
+  cl_program program = (cl_program) point_program;
+
+  // Call the OpenCL API.
+  *errcode_ret = clRetainProgram(program);
+}
+
+void GpuChannel::OnCallclReleaseProgram(
+    const cl_point& point_program,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clReleaseProgram OpenCL API calling.
+  cl_program program = (cl_program) point_program;
+
+  // Call the OpenCL API.
+  *errcode_ret = clReleaseProgram(program);
+}
+
+void GpuChannel::OnCallclBuildProgram(
+    const cl_point& point_program,
+    const cl_uint& num_devices,
+    const std::vector<cl_point>& point_device_list,
+    const std::string& str_options,
+    const std::vector<cl_point>& point_pfn_list,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clBuildProgram OpenCL API calling.
+  cl_program program = (cl_program) point_program;
+  cl_device_id* device_list = NULL;
+  void (CL_CALLBACK* pfn_notify)(cl_program, void*) =
+      (void (CL_CALLBACK*)(cl_program, void*)) point_pfn_list[0];
+  void* user_data = (void*) point_pfn_list[1];
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (num_devices) {
+    device_list = new cl_device_id[num_devices];
+    for (cl_uint index = 0; index < num_devices; ++index)
+      device_list[index] = (cl_device_id) point_device_list[index];
+  }
+
+  // Call the OpenCL API.
+  *errcode_ret = clBuildProgram(
+                     program,
+                     num_devices,
+                     device_list,
+                     str_options.c_str(),
+                     pfn_notify,
+                     user_data);
+
+  if (num_devices)
+    delete[] device_list;
+}
+
+void GpuChannel::OnCallclCompileProgram(
+    const std::vector<cl_point>& point_parameter_list,
+    const std::vector<cl_uint>& num_list,
+    const std::vector<cl_point>& point_device_list,
+    const std::vector<std::string>& options_header_include_name_list,
+    const std::vector<cl_point>& point_input_header_list,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clCompileProgram OpenCL API calling.
+  cl_program program = (cl_program) point_parameter_list[0];
+  void (CL_CALLBACK* pfn_notify)(cl_program, void*) =
+      (void (CL_CALLBACK*)(cl_program, void*)) point_parameter_list[1];
+  void* user_data = (void*) point_parameter_list[2];
+  cl_uint num_devices = num_list[0];
+  cl_uint num_input_headers = num_list[1];
+  cl_device_id* device_list = NULL;
+  cl_program* input_headers = NULL;
+  const char** header_include_names = NULL;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (num_devices > 0) {
+    device_list = new cl_device_id[num_devices];
+    for (cl_uint index = 0; index < num_devices; ++index)
+      device_list[index] = (cl_device_id) point_device_list[index];
+  }
+
+  if (num_input_headers > 0) {
+    input_headers = new cl_program[num_input_headers];
+    for (cl_uint index = 0; index < num_input_headers; ++index) {
+      input_headers[index] = (cl_program) point_input_header_list[index];
+      header_include_names[index] =
+          options_header_include_name_list[index + 1].c_str();
+    }
+  }
+
+  // Call the OpenCL API.
+  *errcode_ret = clCompileProgram(
+                     program,
+                     num_devices,
+                     device_list,
+                     options_header_include_name_list[0].c_str(),
+                     num_input_headers,
+                     input_headers,
+                     header_include_names,
+                     pfn_notify, user_data);
+}
+
+void GpuChannel::OnCallclLinkProgram(
+    const std::vector<cl_point>& point_parameter_list,
+    const std::vector<cl_uint>& num_list,
+    const std::vector<cl_point>& point_device_list,
+    const std::vector<cl_point>& point_input_program_list,
+    const std::string& str_options,
+    cl_int* errcode_ret,
+    cl_point* point_program_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clLinkProgram OpenCL API calling.
+  cl_context context = (cl_context) point_parameter_list[0];
+  void (CL_CALLBACK* pfn_notify)(cl_program, void*) =
+    (void (CL_CALLBACK*)(cl_program, void*)) point_parameter_list[1];
+  void* user_data = (void*) point_parameter_list[2];
+  cl_uint num_devices = num_list[0];
+  cl_uint num_input_programs = num_list[1];
+  cl_device_id* device_list = NULL;
+  cl_program* input_programs = NULL;
+  cl_program program_ret;
+  cl_int* errcode_ret_inter = errcode_ret;
+
+  // If the caller wishes to pass a NULL.
+  if (0xFFFFFFF == *errcode_ret)
+    errcode_ret_inter = NULL;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (num_devices > 0) {
+    device_list = new cl_device_id[num_devices];
+    for (cl_uint index = 0; index < num_devices; ++index)
+      device_list[index] = (cl_device_id) point_device_list[index];
+  }
+
+  if (num_input_programs > 0) {
+    input_programs = new cl_program[num_input_programs];
+    for (cl_uint index = 0; index < num_input_programs; ++index)
+      input_programs[index] = (cl_program) point_input_program_list[index];
+  }
+
+  // Call the OpenCL API.
+  program_ret = clLinkProgram(
+                    context,
+                    num_devices,
+                    device_list,
+                    str_options.c_str(),
+                    num_input_programs,
+                    input_programs,
+                    pfn_notify,
+                    user_data,
+                    errcode_ret_inter);
+
+  // Dump the results of OpenCL API calling.
+  *point_program_ret = (cl_point) program_ret;
+}
+
+void GpuChannel::OnCallclUnloadPlatformCompiler(
+    const cl_point& point_platform,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clUnloadPlatformCompiler OpenCL API calling.
+  cl_platform_id platform = (cl_platform_id) point_platform;
+
+  // Call the OpenCL API.
+  *errcode_ret = clUnloadPlatformCompiler(platform);
+}
+
+void GpuChannel::OnCallclCreateKernel(
+    const cl_point& point_program,
+    const std::string& string_kernel_name,
+    cl_int* errcode_ret,
+    cl_point* point_kernel_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clCreateKernel OpenCL API calling.
+  cl_program program = (cl_program) point_program;
+  cl_kernel kernel_ret;
+  cl_int* errcode_ret_inter = errcode_ret;
+
+  // If the caller wishes to pass a NULL.
+  if (0xFFFFFFF == *errcode_ret)
+    errcode_ret_inter = NULL;
+
+  // Call the OpenCL API.
+  kernel_ret = clCreateKernel(
+                   program,
+                   string_kernel_name.c_str(),
+                   errcode_ret_inter);
+
+  // Dump the inputs of the Sync IPC Message calling.
+  *point_kernel_ret = (cl_point) kernel_ret;
+}
+
+void GpuChannel::OnCallclCreateKernelsInProgram(
+    const cl_point& point_program,
+    const cl_uint& num_kernels,
+    const std::vector<cl_point>& point_kernel_list,
+    cl_uint* num_kernels_ret,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clCreateKernelsInProgram OpenCL API calling.
+  cl_program program = (cl_program) point_program;
+  cl_kernel* kernels = NULL;
+  cl_uint *num_kernels_ret_inter = num_kernels_ret;
+
+  // If the caller wishes to pass a NULL.
+  if ((cl_uint) -1 == *num_kernels_ret)
+    num_kernels_ret_inter = NULL;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (num_kernels > 0) {
+    cl_kernel* kernels = new cl_kernel[num_kernels];
+    for (cl_uint index = 0; index < num_kernels; ++index)
+      kernels[index] = (cl_kernel) point_kernel_list[index];
+  }
+
+  // Call the OpenCL API.
+  *errcode_ret = clCreateKernelsInProgram(
+                     program,
+                     num_kernels,
+                     kernels,
+                     num_kernels_ret_inter);
+
+  if (num_kernels > 0)
+    delete[] kernels;
+}
+
+void GpuChannel::OnCallclRetainKernel(
+    const cl_point& point_kernel,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clRetainKernel OpenCL API calling.
+  cl_kernel kernel = (cl_kernel) point_kernel;
+
+  // Call the OpenCL API.
+  *errcode_ret = clRetainKernel(kernel);
+}
+
+void GpuChannel::OnCallclReleaseKernel(
+    const cl_point& point_kernel,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clReleaseKernel OpenCL API calling.
+  cl_kernel kernel = (cl_kernel) point_kernel;
+
+  // Call the OpenCL API.
+  *errcode_ret = clReleaseKernel(kernel);
+}
+
+void GpuChannel::OnCallclSetKernelArg(
+    const cl_point& point_kernel,
+    const cl_uint& arg_index,
+    const size_t& arg_size,
+    const cl_point& point_arg_value,
+    cl_int* errcode_ret)
+{
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clSetKernelArg OpenCL API calling.
+  cl_kernel kernel = (cl_kernel) point_kernel;
+  const void* arg_value = (void*) point_arg_value;
+ 
+  // Call the OpenCL API.
+  *errcode_ret = clSetKernelArg(
+                     kernel,
+                     arg_index,
+                     arg_size,
+                     arg_value);
 }
 }  // namespace content

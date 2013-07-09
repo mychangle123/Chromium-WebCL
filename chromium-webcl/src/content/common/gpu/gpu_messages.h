@@ -933,7 +933,7 @@ IPC_SYNC_MESSAGE_CONTROL3_2(OpenCLChannelMsg_CreateKernelsInProgram,
                             cl_uint,
                             std::vector<cl_point>,
                             cl_uint,
-                            cl_int);
+                            cl_int)
 
 // Call and respond OpenCL API clRetainKernel using Sync IPC Message
 IPC_SYNC_MESSAGE_CONTROL1_1(OpenCLChannelMsg_RetainKernel,
@@ -951,7 +951,7 @@ IPC_SYNC_MESSAGE_CONTROL4_1(OpenCLChannelMsg_SetKernelArg,
                             cl_uint,
                             size_t,
                             cl_point,
-                            cl_int);
+                            cl_int)
 
 // Call and respond OpenCL API clWaitForEvents using Sync IPC Message
 IPC_SYNC_MESSAGE_CONTROL2_1(OpenCLChannelMsg_WaitForEvents,
@@ -986,7 +986,7 @@ IPC_SYNC_MESSAGE_CONTROL4_1(OpenCLChannelMsg_SetEventCallback,
                             cl_int,
                             cl_point,
                             cl_point,
-                            cl_int);
+                            cl_int)
 
 // Call and respond OpenCL API clFlush using Sync IPC Message
 IPC_SYNC_MESSAGE_CONTROL1_1(OpenCLChannelMsg_Flush,
