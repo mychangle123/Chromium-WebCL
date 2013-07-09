@@ -424,6 +424,33 @@ class GpuChannelHost : public IPC::Sender,
       cl_uint,
       size_t,
       const void*);
+
+  cl_int CallclWaitForEvents(
+      cl_uint,
+      const cl_event*);
+
+  cl_event CallclCreateUserEvent(
+      cl_context,
+      cl_int*);
+
+  cl_int CallclRetainEvent(
+      cl_event);
+
+  cl_int CallclReleaseEvent(cl_event);
+
+  cl_int CallclSetUserEventStatus(
+      cl_event,
+      cl_int);
+
+  cl_int CallclSetEventCallback(
+      cl_event,
+      cl_int,
+      void (CL_CALLBACK*)(cl_event, cl_int, void*),
+      void*);
+
+  cl_int CallclFlush(cl_command_queue);
+
+  cl_int CallclFinish (cl_command_queue);
 };
 
 }  // namespace content

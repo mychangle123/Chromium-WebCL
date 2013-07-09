@@ -831,6 +831,22 @@ bool GpuChannel::OnControlMessageReceived(const IPC::Message& msg) {
                                     OnCallclReleaseKernel)
     IPC_MESSAGE_HANDLER(OpenCLChannelMsg_SetKernelArg,
                                     OnCallclSetKernelArg)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_WaitForEvents,
+                                    OnCallclWaitForEvents)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CreateUserEvent,
+                                    OnCallclCreateUserEvent)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_RetainEvent,
+                                    OnCallclRetainEvent)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_ReleaseEvent,
+                                    OnCallclReleaseEvent)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_SetUserEventStatus,
+                                    OnCallclSetUserEventStatus)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_SetEventCallback,
+                                    OnCallclSetEventCallback)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_Flush,
+                                    OnCallclFlush)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_Finish,
+                                    OnCallclFinish)
     // Adding OK.
 #if defined(OS_ANDROID)
     IPC_MESSAGE_HANDLER(GpuChannelMsg_RegisterStreamTextureProxy,
@@ -1995,5 +2011,128 @@ void GpuChannel::OnCallclSetKernelArg(
                      arg_index,
                      arg_size,
                      arg_value);
+}
+
+void GpuChannel::OnCallclWaitForEvents(
+    const cl_uint& num_events,
+    const std::vector<cl_point>& event_list,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clWaitForEvents OpenCL API calling.
+  cl_event* events = NULL;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (num_events)
+  {
+    events = new cl_event[num_events];
+    for (cl_uint index = 0; index < num_events; ++index)
+      events[index] = (cl_event) event_list[index];
+  }
+
+  // Call the OpenCL API.
+  *errcode_ret = clWaitForEvents(
+                          num_events,
+                          events);
+
+  if (num_events)
+    delete[] events;
+}
+
+void GpuChannel::OnCallclCreateUserEvent(
+    const cl_point& point_in_context,
+    cl_int* errcode_ret,
+    cl_point* point_out_context) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clCreateUserEvent OpenCL API calling.
+  cl_context context = (cl_context) point_in_context;
+  cl_event event_context_ret;
+  cl_int* errcode_ret_inter = errcode_ret;
+
+  // If the caller wishes to pass a NULL.
+  if (0xFFFFFFF == *errcode_ret)
+    errcode_ret_inter = NULL;
+
+  // Call the OpenCL API.
+  event_context_ret = clCreateUserEvent(context, errcode_ret_inter);
+  *point_out_context = (cl_point) event_context_ret;
+}
+
+void GpuChannel::OnCallclRetainEvent(
+    const cl_point& point_event,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clRetainEvent OpenCL API calling.
+  cl_event clevent = (cl_event) point_event;
+
+  // Call the OpenCL API.
+  *errcode_ret = clRetainEvent(clevent);
+}
+
+void GpuChannel::OnCallclReleaseEvent(
+    const cl_point& point_event,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clReleaseEvent OpenCL API calling.
+  cl_event clevent = (cl_event) point_event;
+
+  // Call the OpenCL API.
+  *errcode_ret = clReleaseEvent(clevent);
+}
+
+void GpuChannel::OnCallclSetUserEventStatus(
+    const cl_point& point_event,
+    const cl_int& execution_status,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clSetUserEventStatus OpenCL API calling.
+  cl_event clevent = (cl_event) point_event;
+ 
+  // Call the OpenCL API.
+  *errcode_ret = clSetUserEventStatus(
+                          clevent,
+                          execution_status);
+}
+
+void GpuChannel::OnCallclSetEventCallback(
+    const cl_point& point_event,
+    const cl_int& command_exec_callback_type,
+    const cl_point& point_pfn_notify,
+    const cl_point& point_user_data,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clSetEventCallback OpenCL API calling.
+  cl_event clevent = (cl_event) point_event;
+  void (CL_CALLBACK *pfn_event_notify)(cl_event, cl_int,void *) =
+    (void (CL_CALLBACK *)(cl_event, cl_int,void *)) point_pfn_notify;
+  void* user_data = (void*) point_user_data;
+
+  // Call the OpenCL API.
+  *errcode_ret = clSetEventCallback(
+                          clevent,
+                          command_exec_callback_type,
+                          pfn_event_notify,
+                          user_data);
+}
+
+void GpuChannel::OnCallclFlush(
+    const cl_point& point_command_queue,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clFlush OpenCL API calling.
+  cl_command_queue command_queue = (cl_command_queue) point_command_queue;
+
+  // Call the OpenCL API.
+  *errcode_ret = clFlush(command_queue);
+}
+
+void GpuChannel::OnCallclFinish(
+    const cl_point& point_command_queue,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clFinish OpenCL API calling.
+  cl_command_queue command_queue = (cl_command_queue) point_command_queue;
+
+  // Call the OpenCL API.
+  *errcode_ret = clFinish(command_queue);
 }
 }  // namespace content

@@ -1453,4 +1453,156 @@ cl_int GpuChannelHost::CallclSetKernelArg(
   }
   return errcode_ret;
 }
+
+cl_int GpuChannelHost::CallclWaitForEvents(
+     cl_uint num_events,
+     const cl_event *event_list) {
+  // Sending a Sync IPC Message, to call a clWaitForEvents API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  std::vector<cl_point> point_event_list;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  point_event_list.clear();
+  for (cl_uint index = 0; index < num_events; ++index)
+    point_event_list.push_back((cl_point) event_list[index]);
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_WaitForEvents(
+           num_events,
+           point_event_list,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_event GpuChannelHost::CallclCreateUserEvent(
+       cl_context context,
+       cl_int *errcode_ret) {
+  // Sending a Sync IPC Message, to call a clCreateUserEvent
+  // API in other process, and getting the results of the API.
+  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_point point_out_context;
+  cl_point point_in_context = (cl_point) context;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == errcode_ret)
+    errcode_ret = &errcode_ret_inter;
+  else if (0xFFFFFFF == *errcode_ret)
+    *errcode_ret = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_CreateUserEvent(
+           point_in_context,
+           errcode_ret,
+           &point_out_context))) {
+    return NULL;
+  }
+  return (cl_event) point_out_context;
+}
+
+cl_int GpuChannelHost::CallclRetainEvent(cl_event clevent) {
+  // Sending a Sync IPC Message, to call a clRetainEvent
+  // API in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_event = (cl_point) clevent;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_RetainEvent(
+           point_event,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclReleaseEvent(cl_event clevent) {
+  // Sending a Sync IPC Message, to call a clReleaseEvent
+  // API in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_event = (cl_point) clevent;
+  
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_ReleaseEvent(
+           point_event,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclSetUserEventStatus(
+     cl_event clevent,
+     cl_int execution_status) {
+  // Sending a Sync IPC Message, to call a clSetUserEventStatus
+  // API in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_event = (cl_point) clevent;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_SetUserEventStatus(
+           point_event,
+           execution_status,
+           &errcode_ret))) {
+      return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclSetEventCallback(
+    cl_event clevent,
+    cl_int command_exec_callback_type,
+    void (CL_CALLBACK *pfn_event_notify)(cl_event, cl_int,void *),
+    void *user_data) {
+  // Sending a Sync IPC Message, to call a clSetEventCallback
+  // API in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_event = (cl_point) clevent;
+  cl_point point_pfn_notify = (cl_point) pfn_event_notify;
+  cl_point point_user_data = (cl_point) user_data;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_SetEventCallback(
+           point_event,
+           command_exec_callback_type,
+           point_pfn_notify,
+           point_user_data,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclFlush(cl_command_queue command_queue) {
+  // Sending a Sync IPC Message, to call a clFlush
+  // API in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_command_queue = (cl_point) command_queue;
+ 
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_Flush(
+           point_command_queue,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclFinish(cl_command_queue command_queue) {
+  // Sending a Sync IPC Message, to call a clFinish
+  // API in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_command_queue = (cl_point) command_queue;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_Finish(
+           point_command_queue,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
 }  // namespace content

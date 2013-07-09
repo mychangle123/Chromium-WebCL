@@ -482,6 +482,44 @@ class GpuChannel : public IPC::Listener,
       const size_t&,
       const cl_point&,
       cl_int*);
+
+  void OnCallclWaitForEvents(
+      const cl_uint&,
+      const std::vector<cl_point>&,
+      cl_int*);
+
+  void OnCallclCreateUserEvent(
+      const cl_point&,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclRetainEvent(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclReleaseEvent(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclSetUserEventStatus(
+      const cl_point&,
+      const cl_int&,
+      cl_int*);
+
+  void OnCallclSetEventCallback(
+      const cl_point&,
+      const cl_int&,
+      const cl_point&,
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclFlush(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclFinish(
+      const cl_point&,
+      cl_int*);
 };
 
 }  // namespace content
