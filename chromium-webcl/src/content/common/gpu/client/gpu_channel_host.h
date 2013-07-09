@@ -295,6 +295,45 @@ class GpuChannelHost : public IPC::Sender,
   cl_int CallclRetainCommandQueue(cl_command_queue);
 
   cl_int CallclReleaseCommandQueue(cl_command_queue);
+
+  cl_mem CallclCreateBuffer(
+      cl_context,
+      cl_mem_flags,
+      size_t,
+      void*,
+      cl_int*);
+
+  cl_mem CallclCreateSubBuffer(
+      cl_mem,
+      cl_mem_flags,
+      cl_buffer_create_type,
+      const void*,
+      cl_int*);
+
+  cl_mem CallclCreateImage(
+      cl_context,
+      cl_mem_flags,
+      const cl_image_format*,
+      const cl_image_desc*,
+      void*,
+      cl_int*);
+
+  cl_int CallclRetainMemObject(cl_mem);
+
+  cl_int CallclReleaseMemObject(cl_mem);
+
+  cl_int CallclGetSupportedImageFormats(
+      cl_context,
+      cl_mem_flags,
+      cl_mem_object_type,
+      cl_uint,
+      cl_image_format*,
+      cl_uint*);
+
+  cl_int CallclSetMemObjectDestructorCallback(
+      cl_mem,
+      void (CL_CALLBACK*)(cl_mem,void*),
+      void*);
 };
 
 }  // namespace content

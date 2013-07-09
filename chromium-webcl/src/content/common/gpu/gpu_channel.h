@@ -326,7 +326,55 @@ class GpuChannel : public IPC::Listener,
   void OnCallclRetainCommandQueue(
       const cl_point&,
       cl_int*);
+
   void OnCallclReleaseCommandQueue(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclCreateBuffer(
+      cl_point,
+      cl_mem_flags,
+      size_t,
+      cl_point,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclCreateSubBuffer(
+      cl_point,
+      cl_mem_flags,
+      cl_buffer_create_type,
+      cl_point,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclCreateImage(
+      cl_point,
+      cl_mem_flags,
+      std::vector<cl_uint>,
+      cl_point,
+      cl_int*,
+      cl_point*);
+
+  void OnCallclRetainMemObject(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclReleaseMemObject(
+      const cl_point&,
+      cl_int*);
+
+  void OnCallclGetSupportedImageFormats(
+      const cl_point&,
+      const cl_mem_flags&,
+      const cl_mem_object_type&,
+      const cl_uint&,
+      std::vector<cl_uint>*,
+      cl_uint*,
+      cl_int*);
+
+  void OnCallclSetMemObjectDestructorCallback(
+      const cl_point&,
+      const cl_point&,
       const cl_point&,
       cl_int*);
 };

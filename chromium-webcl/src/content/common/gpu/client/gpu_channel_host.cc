@@ -742,4 +742,210 @@ cl_int GpuChannelHost::CallclReleaseCommandQueue(
   return errcode_ret;
 }
 
+cl_mem GpuChannelHost::CallclCreateBuffer(
+    cl_context context,
+    cl_mem_flags flags,
+    size_t size,
+    void *host_ptr,
+    cl_int *errcode_ret) {
+  // Sending a Sync IPC Message, to call a clCreateBuffer API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_point point_context = (cl_point) context;
+  cl_point point_host_ptr = (cl_point) host_ptr;
+  cl_point point_memobj_ret;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == errcode_ret)
+    errcode_ret = &errcode_ret_inter;
+  else if (0xFFFFFFF == *errcode_ret)
+    *errcode_ret = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_CreateBuffer(
+           point_context,
+           flags,
+           size,
+           point_host_ptr,
+           errcode_ret,
+           &point_memobj_ret))) {
+    return NULL;
+  }
+  return (cl_mem) point_memobj_ret;
+}
+
+cl_mem GpuChannelHost::CallclCreateSubBuffer(
+    cl_mem buffer,
+    cl_mem_flags flags,
+    cl_buffer_create_type buffer_create_type,
+    const void *buffer_create_info,
+    cl_int *errcode_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubBuffer API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_point point_buffer = (cl_point) buffer;
+  cl_point point_buffer_create_info = (cl_point) buffer_create_info;
+  cl_point point_memobj_ret;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == errcode_ret)
+    errcode_ret = &errcode_ret_inter;
+  else if (0xFFFFFFF == *errcode_ret)
+    *errcode_ret = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_CreateSubBuffer(
+           point_buffer,
+           flags,
+           buffer_create_type,
+           point_buffer_create_info,
+           errcode_ret,
+           &point_memobj_ret))) {
+    return NULL;
+  }
+  return (cl_mem) point_memobj_ret;
+}
+
+cl_mem GpuChannelHost::CallclCreateImage(
+    cl_context context,
+    cl_mem_flags flags,
+    const cl_image_format *image_format,
+    const cl_image_desc *image_desc,
+    void *host_ptr,
+    cl_int *errcode_ret) {
+  // Sending a Sync IPC Message, to call a clCreateImage API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_point point_context = (cl_point) context;
+  cl_point point_host_ptr = (cl_point) host_ptr;
+  cl_point point_memobj_ret;
+  std::vector<cl_uint> image_format_list;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == errcode_ret)
+    errcode_ret = &errcode_ret_inter;
+  else if (0xFFFFFFF == *errcode_ret)
+    *errcode_ret = 0;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  image_format_list.clear();
+  image_format_list.push_back(image_format->image_channel_order);
+  image_format_list.push_back(image_format->image_channel_data_type);
+  // There are some bugs here, we must add some code to fully support it.
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_CreateImage(
+           point_context,
+           flags,
+           image_format_list,
+           point_host_ptr,
+           errcode_ret,
+           &point_memobj_ret))) {
+    return NULL;
+  }
+  return (cl_mem) point_memobj_ret;
+}
+
+cl_int GpuChannelHost::CallclRetainMemObject(cl_mem memobj) {
+  // Sending a Sync IPC Message, to call a clRetainMemObject API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_memobj = (cl_point) memobj;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_RetainMemObject(
+           point_memobj,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclReleaseMemObject(cl_mem memobj) {
+  // Sending a Sync IPC Message, to call a clReleaseMemObject API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_memobj = (cl_point) memobj;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_ReleaseMemObject(
+           point_memobj,
+           &errcode_ret))) {
+      return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclGetSupportedImageFormats(
+    cl_context context,
+    cl_mem_flags flags,
+    cl_mem_object_type image_type,
+    cl_uint num_entries,
+    cl_image_format *image_formats,
+    cl_uint *num_image_formats) {
+  // Sending a Sync IPC Message, to call a clGetSupportedImageFormat API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_uint num_image_formats_inter = (cl_uint) -1;
+  cl_point point_context = (cl_point) context;
+  std::vector<cl_uint> image_format_list;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == num_image_formats)
+    num_image_formats = &num_image_formats_inter;
+  else if ((cl_uint) -1 == *num_image_formats)
+    *num_image_formats = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_GetSupportedImageFormats(
+           point_context,
+           flags,
+           image_type,
+           num_entries,
+           &image_format_list,
+           num_image_formats,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  // Dump the results of the Sync IPC Message calling.
+  if (CL_SUCCESS == errcode_ret) {
+    for (cl_uint index = 0; index < num_entries; ++index) {
+      image_formats[index].image_channel_data_type = image_format_list[index * 2];
+      image_formats[index].image_channel_order = image_format_list[index * 2 + 1];
+    }
+  }
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclSetMemObjectDestructorCallback(
+    cl_mem memobj,
+    void (CL_CALLBACK *pfn_notify)(cl_mem, void*),
+    void *user_data) {
+  // Sending a Sync IPC Message, to call a clSetMemObjectDestructorCallback
+  // API in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_memobj = (cl_point) memobj;
+  cl_point point_pfn_notify = (cl_point) pfn_notify;
+  cl_point point_user_data = (cl_point) user_data;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_SetMemObjectDestructorCallback(
+           point_memobj,
+           point_pfn_notify,
+           point_user_data,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
 }  // namespace content
