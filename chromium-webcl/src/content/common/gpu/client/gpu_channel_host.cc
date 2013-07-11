@@ -1605,4 +1605,1536 @@ cl_int GpuChannelHost::CallclFinish(cl_command_queue command_queue) {
   }
   return errcode_ret;
 }
+
+cl_int GpuChannelHost::CallclGetPlatformInfo(
+    cl_platform_id platform,
+    cl_platform_info param_name,
+    size_t param_value_size,
+    void* param_value,
+    size_t* param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateCommandQueue API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_platform = (cl_point) platform;
+  std::string string_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_GetPlatformInfo_string(
+           point_platform,
+           param_name,
+           param_value_size,
+           is_param_null,
+           &string_ret,
+           param_value_size_ret,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  // Dump the results of the Sync IPC Message calling.
+  if (!is_param_null && CL_SUCCESS == errcode_ret)
+    strcpy((char*)param_value,string_ret.c_str());
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclGetDeviceInfo(
+    cl_device_id device,
+    cl_device_info param_name,
+    size_t param_value_size, 
+    void* param_value,
+    size_t* param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_point point_device = (cl_point) device;  
+  cl_uint cl_uint_ret;
+  std::vector<size_t> size_t_list_ret;
+  size_t size_t_ret;
+  cl_ulong cl_ulong_ret;
+  std::string string_ret;
+  cl_point cl_point_ret;
+  std::vector<intptr_t> intptr_t_list_ret;  
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+ 
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_DEVICE_TYPE:
+    case CL_DEVICE_VENDOR_ID:
+    case CL_DEVICE_MAX_COMPUTE_UNITS:
+    case CL_DEVICE_MAX_WORK_ITEM_DIMENSIONS:
+    case CL_DEVICE_PREFERRED_VECTOR_WIDTH_CHAR:
+    case CL_DEVICE_PREFERRED_VECTOR_WIDTH_SHORT:
+    case CL_DEVICE_PREFERRED_VECTOR_WIDTH_INT:
+    case CL_DEVICE_PREFERRED_VECTOR_WIDTH_LONG:
+    case CL_DEVICE_PREFERRED_VECTOR_WIDTH_FLOAT:
+    case CL_DEVICE_PREFERRED_VECTOR_WIDTH_DOUBLE:
+    case CL_DEVICE_PREFERRED_VECTOR_WIDTH_HALF:
+    case CL_DEVICE_NATIVE_VECTOR_WIDTH_CHAR:
+    case CL_DEVICE_NATIVE_VECTOR_WIDTH_SHORT:
+    case CL_DEVICE_NATIVE_VECTOR_WIDTH_INT:
+    case CL_DEVICE_NATIVE_VECTOR_WIDTH_LONG:
+    case CL_DEVICE_NATIVE_VECTOR_WIDTH_FLOAT:
+    case CL_DEVICE_NATIVE_VECTOR_WIDTH_DOUBLE:
+    case CL_DEVICE_NATIVE_VECTOR_WIDTH_HALF:
+    case CL_DEVICE_ADDRESS_BITS:
+    case CL_DEVICE_MAX_READ_IMAGE_ARGS:
+    case CL_DEVICE_MAX_WRITE_IMAGE_ARGS:
+    case CL_DEVICE_MAX_SAMPLERS:
+    case CL_DEVICE_MEM_BASE_ADDR_ALIGN:
+    case CL_DEVICE_GLOBAL_MEM_CACHELINE_SIZE:
+    case CL_DEVICE_MAX_CONSTANT_ARGS:
+    case CL_DEVICE_PARTITION_MAX_SUB_DEVICES:
+    case CL_DEVICE_REFERENCE_COUNT:
+    case CL_DEVICE_IMAGE_SUPPORT:
+    case CL_DEVICE_LOCAL_MEM_TYPE:
+    case CL_DEVICE_ERROR_CORRECTION_SUPPORT:
+    case CL_DEVICE_HOST_UNIFIED_MEMORY:
+    case CL_DEVICE_ENDIAN_LITTLE:
+    case CL_DEVICE_AVAILABLE:
+    case CL_DEVICE_COMPILER_AVAILABLE:
+    case CL_DEVICE_LINKER_AVAILABLE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetDeviceInfo_cl_uint(
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_uint*) param_value = cl_uint_ret;
+
+      return errcode_ret;
+    }
+    case CL_DEVICE_MAX_WORK_ITEM_SIZES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetDeviceInfo_size_t_list(
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &size_t_list_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        for (cl_uint index = 0; index < param_value_size/sizeof(size_t); ++index)
+          ((size_t*) (param_value))[index] = size_t_list_ret[index];
+
+      return errcode_ret;
+    }
+    case CL_DEVICE_MAX_WORK_GROUP_SIZE:
+    case CL_DEVICE_IMAGE2D_MAX_WIDTH:
+    case CL_DEVICE_IMAGE2D_MAX_HEIGHT:
+    case CL_DEVICE_IMAGE3D_MAX_WIDTH:
+    case CL_DEVICE_IMAGE3D_MAX_HEIGHT:
+    case CL_DEVICE_IMAGE3D_MAX_DEPTH:
+    case CL_DEVICE_IMAGE_MAX_BUFFER_SIZE:
+    case CL_DEVICE_IMAGE_MAX_ARRAY_SIZE:
+    case CL_DEVICE_MAX_PARAMETER_SIZE:
+    case CL_DEVICE_PROFILING_TIMER_RESOLUTION:
+    case CL_DEVICE_PRINTF_BUFFER_SIZE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetDeviceInfo_size_t(
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &size_t_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(size_t*) param_value = size_t_ret;
+
+      return errcode_ret;
+    }
+    case CL_DEVICE_MAX_MEM_ALLOC_SIZE:
+    case CL_DEVICE_SINGLE_FP_CONFIG:
+    case CL_DEVICE_DOUBLE_FP_CONFIG:
+    case CL_DEVICE_GLOBAL_MEM_CACHE_SIZE:
+    case CL_DEVICE_GLOBAL_MEM_SIZE:
+    case CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE:
+    case CL_DEVICE_LOCAL_MEM_SIZE:
+    case CL_DEVICE_EXECUTION_CAPABILITIES:
+    case CL_DEVICE_QUEUE_PROPERTIES:
+    case CL_DEVICE_PARTITION_AFFINITY_DOMAIN: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetDeviceInfo_cl_ulong(
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_ulong_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_ulong*) param_value = cl_ulong_ret;
+
+      return errcode_ret;
+    }
+    case CL_DEVICE_BUILT_IN_KERNELS:
+    case CL_DEVICE_NAME:
+    case CL_DEVICE_VENDOR:
+    case CL_DRIVER_VERSION:
+    case CL_DEVICE_PROFILE:
+    case CL_DEVICE_VERSION:
+    case CL_DEVICE_OPENCL_C_VERSION:
+    case CL_DEVICE_EXTENSIONS: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetDeviceInfo_string(
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &string_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        strcpy((char*)param_value,string_ret.c_str());
+
+      return errcode_ret;
+    }
+    case CL_DEVICE_PARENT_DEVICE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetDeviceInfo_cl_point(
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_device_id*) param_value = (cl_device_id) cl_point_ret;
+    
+      return errcode_ret;
+    }
+    case CL_DEVICE_PARTITION_PROPERTIES:
+    case CL_DEVICE_PARTITION_TYPE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetDeviceInfo_intptr_t_list(
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &intptr_t_list_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        for (cl_uint index = 0; index < param_value_size/sizeof(intptr_t); ++index)
+          ((intptr_t*) (param_value))[index] = intptr_t_list_ret[index];
+
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+
+cl_int GpuChannelHost::CallclGetContextInfo(
+    cl_context context, 
+    cl_context_info param_name, 
+    size_t param_value_size, 
+    void *param_value, 
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_context = (cl_point) context;  
+  cl_uint cl_uint_ret;
+  std::vector<cl_point> cl_point_list_ret;
+  std::vector<intptr_t> intptr_t_list_ret;
+  cl_bool is_param_null = CL_FALSE;  
+  size_t param_value_size_ret_inter = (size_t) -1;
+  
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+ 
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_CONTEXT_REFERENCE_COUNT:
+    case CL_CONTEXT_NUM_DEVICES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetContextInfo_cl_uint(
+               point_context,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_uint*) param_value = cl_uint_ret;
+      
+      return errcode_ret;
+    }
+    case CL_CONTEXT_DEVICES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetContextInfo_cl_point_list(
+               point_context,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_list_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        for (cl_uint index = 0; index < param_value_size/sizeof(cl_point); ++index)
+          ((cl_device_id*) (param_value))[index] = (cl_device_id)cl_point_list_ret[index];
+    
+      return errcode_ret;
+    }
+    case CL_CONTEXT_PROPERTIES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetContextInfo_intptr_t_list(
+               point_context,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &intptr_t_list_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)    
+        for (cl_uint index = 0; index < param_value_size/sizeof(intptr_t); ++index)
+          ((cl_context_properties*) (param_value))[index] = (cl_context_properties)intptr_t_list_ret[index];
+    
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+cl_int GpuChannelHost::CallclGetCommandQueueInfo(
+    cl_command_queue command_queue, 
+    cl_command_queue_info param_name, 
+    size_t param_value_size,
+    void *param_value,
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret; 
+  cl_point point_command_queue = (cl_point) command_queue;
+  cl_point cl_point_ret;
+  cl_uint cl_uint_ret;
+  cl_ulong cl_ulong_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_QUEUE_CONTEXT: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetCommandQueueInfo_cl_point(
+               point_command_queue,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_context*) param_value = (cl_context) cl_point_ret;
+     
+      return errcode_ret;
+    }
+    case CL_QUEUE_DEVICE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetCommandQueueInfo_cl_point(
+               point_command_queue,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret, 
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_device_id*) param_value = (cl_device_id) cl_point_ret;
+    
+      return errcode_ret;
+    }
+    case CL_QUEUE_REFERENCE_COUNT: {
+      if (!Send(new OpenCLChannelMsg_GetCommandQueueInfo_cl_uint(
+               point_command_queue,
+               param_name, 
+               param_value_size,
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_uint*) param_value = cl_uint_ret;
+    
+      return errcode_ret;
+    }
+    case CL_QUEUE_PROPERTIES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetCommandQueueInfo_cl_ulong(
+               point_command_queue, 
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_ulong_ret,
+               param_value_size_ret, 
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_ulong*) param_value = cl_ulong_ret;
+    
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+
+cl_int GpuChannelHost::CallclGetMemObjectInfo(
+    cl_mem memobj,
+    cl_mem_info param_name,
+    size_t param_value_size,
+    void *param_value,
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_memobj = (cl_point) memobj;
+  cl_uint cl_uint_ret;
+  cl_ulong cl_ulong_ret;
+  size_t size_t_ret;
+  cl_point cl_point_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_MEM_TYPE:
+    case CL_MEM_MAP_COUNT:
+    case CL_MEM_REFERENCE_COUNT: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetMemObjectInfo_cl_uint(
+               point_memobj,
+               param_name,
+               param_value_size, 
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_uint*) param_value = cl_uint_ret;
+    
+      return errcode_ret;
+    }
+    case CL_MEM_FLAGS: {
+      if (!Send(new OpenCLChannelMsg_GetMemObjectInfo_cl_ulong(
+               point_memobj, 
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_ulong_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_ulong*) param_value = cl_ulong_ret;
+
+      return errcode_ret;
+    }
+    case CL_MEM_SIZE:
+    case CL_MEM_OFFSET: {
+      if (!Send(new OpenCLChannelMsg_GetMemObjectInfo_size_t(
+               point_memobj,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &size_t_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(size_t*) param_value = size_t_ret;
+    
+      return errcode_ret;
+    }
+    case CL_MEM_HOST_PTR: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetMemObjectInfo_cl_point(
+               point_memobj,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+       return CL_SEND_IPC_MESSAGE_FAILURE;
+     }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_int**) param_value = (cl_int*) cl_point_ret;
+    
+      return errcode_ret;
+    }
+    case CL_MEM_CONTEXT: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetMemObjectInfo_cl_point(
+               point_memobj,
+               param_name, 
+               param_value_size,
+               is_param_null,
+               &cl_point_ret, 
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_context*) param_value = (cl_context) cl_point_ret;
+
+      return errcode_ret;
+    }
+    case CL_MEM_ASSOCIATED_MEMOBJECT: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetMemObjectInfo_cl_point(
+               point_memobj,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_mem *) param_value = (cl_mem) cl_point_ret;
+    
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+cl_int GpuChannelHost::CallclGetImageInfo(
+    cl_mem image,
+    cl_image_info param_name,
+    size_t param_value_size,
+    void *param_value,
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_image = (cl_point) image;
+  size_t size_t_ret;
+  cl_point cl_point_ret;
+  cl_uint cl_uint_ret;
+  std::vector<cl_uint> image_format_list_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr. 
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret) 
+    *param_value_size_ret = 0;
+
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_IMAGE_FORMAT: {
+      if (!Send(new OpenCLChannelMsg_GetImageInfo_cl_image_format(
+               point_image,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &image_format_list_ret,
+               param_value_size_ret, 
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret) {  
+        (*(cl_image_format*) param_value).image_channel_data_type = image_format_list_ret[0];           
+        (*(cl_image_format*) param_value).image_channel_order = image_format_list_ret[1];
+      }
+
+      return errcode_ret;
+    }
+    case CL_IMAGE_ELEMENT_SIZE:
+    case CL_IMAGE_ROW_PITCH:
+    case CL_IMAGE_SLICE_PITCH:
+    case CL_IMAGE_WIDTH:
+    case CL_IMAGE_HEIGHT:
+    case CL_IMAGE_DEPTH:
+    case CL_IMAGE_ARRAY_SIZE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetImageInfo_size_t(
+               point_image,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &size_t_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(size_t*) param_value = size_t_ret;
+
+      return errcode_ret;
+    }
+    case CL_IMAGE_BUFFER: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetImageInfo_cl_point(
+               point_image, 
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret, 
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_mem*) param_value = (cl_mem) cl_point_ret;
+
+      return errcode_ret;
+    }
+    case CL_IMAGE_NUM_MIP_LEVELS:
+    case CL_IMAGE_NUM_SAMPLES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetImageInfo_cl_uint(
+               point_image,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_uint*) param_value = cl_uint_ret;
+    
+      return errcode_ret;
+    }
+    default:return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+cl_int GpuChannelHost::CallclGetSamplerInfo(
+    cl_sampler sampler,
+    cl_sampler_info param_name,
+    size_t param_value_size,
+    void *param_value,
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_sampler = (cl_point) sampler;
+  cl_uint cl_uint_ret;
+  cl_point cl_point_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_SAMPLER_REFERENCE_COUNT:
+    case CL_SAMPLER_NORMALIZED_COORDS:
+    case CL_SAMPLER_ADDRESSING_MODE:
+    case CL_SAMPLER_FILTER_MODE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetSamplerInfo_cl_uint(
+               point_sampler,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+      return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_uint*) param_value = cl_uint_ret;
+
+      return errcode_ret;
+    }
+    case CL_SAMPLER_CONTEXT: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetSamplerInfo_cl_point(
+               point_sampler,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_context*) param_value = (cl_context) cl_point_ret;
+
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+cl_int GpuChannelHost::CallclGetProgramInfo(
+    cl_program program,
+    cl_program_info param_name,
+    size_t param_value_size,
+    void *param_value, 
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_program = (cl_point) program;
+  cl_uint cl_uint_ret;
+  cl_point cl_point_ret;
+  std::vector<cl_point> cl_point_list_ret;
+  std::string string_ret;
+  std::vector<size_t> size_t_list_ret;
+  std::vector<std::string> string_list_ret;
+  size_t size_t_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_PROGRAM_REFERENCE_COUNT:
+    case CL_PROGRAM_NUM_DEVICES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetProgramInfo_cl_uint(
+               point_program,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_uint*) param_value = cl_uint_ret;
+
+      return errcode_ret;
+    }
+    case CL_PROGRAM_CONTEXT: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetProgramInfo_cl_point(
+               point_program,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_context*) param_value = (cl_context) cl_point_ret;
+
+      return errcode_ret;
+    }
+    case CL_PROGRAM_DEVICES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetProgramInfo_cl_point_list(
+               point_program,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_list_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        for (cl_uint index = 0; index < param_value_size/sizeof(cl_point); ++index)
+          ((cl_device_id*) (param_value))[index] = (cl_device_id)cl_point_list_ret[index];
+
+      return errcode_ret;
+    }
+    case CL_PROGRAM_SOURCE:
+    case CL_PROGRAM_KERNEL_NAMES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetProgramInfo_string(
+               point_program,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &string_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        strcpy((char*)param_value,string_ret.c_str());
+
+      return errcode_ret;
+    }
+    case CL_PROGRAM_BINARY_SIZES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetProgramInfo_size_t_list(
+               point_program,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &size_t_list_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        for (cl_uint index = 0; index < param_value_size/sizeof(size_t); ++index)
+          ((size_t*) (param_value))[index] = size_t_list_ret[index];
+
+      return errcode_ret;
+    }
+    case CL_PROGRAM_BINARIES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetProgramInfo_string_list(
+               point_program,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &string_list_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+      for (cl_uint index = 0; index < param_value_size/sizeof(std::string); ++index)
+        strcpy(((char **)(param_value))[index],string_list_ret[index].c_str());
+
+      return errcode_ret;
+    }
+    case CL_PROGRAM_NUM_KERNELS: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetProgramInfo_size_t(
+               point_program,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &size_t_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(size_t*) param_value = size_t_ret;
+
+      return errcode_ret;
+    }
+    default:return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+cl_int GpuChannelHost::CallclGetProgramBuildInfo(
+    cl_program program,
+    cl_device_id device,
+    cl_program_build_info param_name,
+    size_t param_value_size,
+    void *param_value,
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_program = (cl_point) program;
+  cl_point point_device  = (cl_point) device;
+  cl_int cl_int_ret;
+  std::string string_ret;
+  cl_uint cl_uint_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_PROGRAM_BUILD_STATUS: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetProgramBuildInfo_cl_int(
+               point_program,
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_int_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_int*) param_value = cl_int_ret;
+
+      return errcode_ret;
+    }
+    case CL_PROGRAM_BUILD_OPTIONS:
+    case CL_PROGRAM_BUILD_LOG: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetProgramBuildInfo_string(
+               point_program,
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &string_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        strcpy((char*) param_value,string_ret.c_str());
+      
+      return errcode_ret;
+    }
+    case CL_PROGRAM_BINARY_TYPE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetProgramBuildInfo_cl_uint(
+               point_program,
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+     
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_program_binary_type*) param_value = (cl_program_binary_type) cl_uint_ret;
+      
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+cl_int GpuChannelHost::CallclGetKernelInfo(
+    cl_kernel kernel,
+    cl_kernel_info param_name,
+    size_t param_value_size,
+    void *param_value,
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_kernel = (cl_point) kernel;
+  std::string string_ret;
+  cl_uint cl_uint_ret;
+  cl_point cl_point_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.    if ((size_t)-1 == *param_value_size_ret)
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_KERNEL_FUNCTION_NAME:
+    case CL_KERNEL_ATTRIBUTES: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetKernelInfo_string(
+               point_kernel,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &string_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        strcpy((char*)param_value,string_ret.c_str());
+      
+      return errcode_ret;
+    }
+    case CL_KERNEL_NUM_ARGS:
+    case CL_KERNEL_REFERENCE_COUNT: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetKernelInfo_cl_uint(
+               point_kernel,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_uint*) param_value = cl_uint_ret;
+
+      return errcode_ret;
+    }
+    case CL_KERNEL_CONTEXT: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetKernelInfo_cl_point(
+               point_kernel,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+     
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_context*) param_value = (cl_context) cl_point_ret;
+
+      return errcode_ret;
+    }
+    case CL_KERNEL_PROGRAM: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetKernelInfo_cl_point(
+               point_kernel,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_program*) param_value = (cl_program) cl_point_ret;
+
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+cl_int GpuChannelHost::CallclGetKernelArgInfo(
+    cl_kernel kernel,
+    cl_uint arg_indx,
+    cl_kernel_arg_info param_name,
+    size_t param_value_size,
+    void *param_value,
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_kernel = (cl_point) kernel;
+  cl_uint cl_uint_arg_indx = arg_indx;
+  cl_uint cl_uint_ret;
+  std::string string_ret;
+  cl_ulong cl_ulong_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_KERNEL_ARG_ADDRESS_QUALIFIER:
+    case CL_KERNEL_ARG_ACCESS_QUALIFIER: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetKernelArgInfo_cl_uint(
+               point_kernel,
+               cl_uint_arg_indx,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+  
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_uint*) param_value = cl_uint_ret;
+      return errcode_ret;
+    }
+    case CL_KERNEL_ARG_TYPE_NAME:
+    case CL_KERNEL_ARG_NAME: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetKernelArgInfo_string(
+               point_kernel,
+               cl_uint_arg_indx,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &string_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+      
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        strcpy((char*)param_value,string_ret.c_str());
+      
+      return errcode_ret;
+    }
+    case CL_KERNEL_ARG_TYPE_QUALIFIER: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetKernelArgInfo_cl_ulong(
+               point_kernel,
+               cl_uint_arg_indx,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_ulong_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_ulong*) param_value = cl_ulong_ret;
+
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+cl_int GpuChannelHost::CallclGetKernelWorkGroupInfo(
+    cl_kernel kernel,
+    cl_device_id device,
+    cl_kernel_work_group_info param_name,
+    size_t param_value_size, 
+    void *param_value,
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_kernel = (cl_point) kernel;
+  cl_point point_device = (cl_point) device;
+  std::vector<size_t> size_t_list_ret;
+  size_t size_t_ret;
+  cl_ulong cl_ulong_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_KERNEL_GLOBAL_WORK_SIZE:
+    case CL_KERNEL_COMPILE_WORK_GROUP_SIZE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetKernelWorkGroupInfo_size_t_list(
+               point_kernel,
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &size_t_list_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        for (cl_uint index = 0; index < param_value_size/sizeof(size_t); ++index)
+          ((size_t*) (param_value))[index] = size_t_list_ret[index];
+
+      return errcode_ret;
+    }
+    case CL_KERNEL_WORK_GROUP_SIZE:
+    case CL_KERNEL_PREFERRED_WORK_GROUP_SIZE_MULTIPLE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetKernelWorkGroupInfo_size_t(
+               point_kernel,
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &size_t_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+    
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+    *(size_t*) param_value = size_t_ret;
+
+      return errcode_ret;
+    }
+    case CL_KERNEL_LOCAL_MEM_SIZE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetKernelWorkGroupInfo_cl_ulong(
+               point_kernel,
+               point_device,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_ulong_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+ 
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+       *(cl_ulong*) param_value = cl_ulong_ret;
+
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+cl_int GpuChannelHost::CallclGetEventInfo(
+    cl_event clevent,
+    cl_event_info param_name,
+    size_t param_value_size,
+    void *param_value,
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_event = (cl_point) clevent;  
+  cl_point cl_point_ret;
+  cl_uint cl_uint_ret;
+  cl_int cl_int_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+  
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_EVENT_COMMAND_QUEUE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetEventInfo_cl_point(
+               point_event,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+  
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_command_queue*) param_value = (cl_command_queue) cl_point_ret;
+
+      return errcode_ret;
+    }
+    case CL_EVENT_CONTEXT: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetEventInfo_cl_point(
+               point_event,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_point_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+      *(cl_context*) param_value = (cl_context) cl_point_ret;
+
+      return errcode_ret;
+    }
+    case CL_EVENT_COMMAND_TYPE: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetEventInfo_cl_uint(
+               point_event,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_uint_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_command_type*) param_value = cl_uint_ret;
+
+      return errcode_ret;
+    }
+    case CL_EVENT_COMMAND_EXECUTION_STATUS: {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetEventInfo_cl_int(
+               point_event,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_int_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_int*) param_value = cl_int_ret;
+
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+cl_int GpuChannelHost::CallclGetEventProfilingInfo(
+    cl_event clevent,
+    cl_profiling_info param_name,
+    size_t param_value_size,
+    void *param_value,
+    size_t *param_value_size_ret) {
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_event = (cl_point) clevent;
+  cl_ulong cl_ulong_ret;
+  size_t param_value_size_ret_inter = (size_t) -1;
+  cl_bool is_param_null = CL_FALSE;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (param_value_size_ret == NULL)
+    param_value_size_ret = &param_value_size_ret_inter;
+  else if ((size_t) -1 == *param_value_size_ret)
+    *param_value_size_ret = 0;
+  
+  if (NULL == param_value)
+    is_param_null = CL_TRUE;
+
+  switch(param_name) {
+    case CL_PROFILING_COMMAND_QUEUED:
+    case CL_PROFILING_COMMAND_SUBMIT:
+    case CL_PROFILING_COMMAND_START:
+    case CL_PROFILING_COMMAND_END:
+    {
+      // Send a Sync IPC Message and wait for the results.
+      if (!Send(new OpenCLChannelMsg_GetEventProfilingInfo_cl_ulong(
+               point_event,
+               param_name,
+               param_value_size,
+               is_param_null,
+               &cl_ulong_ret,
+               param_value_size_ret,
+               &errcode_ret))) {
+        return CL_SEND_IPC_MESSAGE_FAILURE;
+      }
+
+      // Dump the results of the Sync IPC Message calling.
+      if (CL_SUCCESS == errcode_ret)
+        *(cl_ulong*) param_value = cl_ulong_ret;
+
+      return errcode_ret;
+    }
+    default: return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+}
+
 }  // namespace content

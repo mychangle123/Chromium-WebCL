@@ -520,6 +520,438 @@ class GpuChannel : public IPC::Listener,
   void OnCallclFinish(
       const cl_point&,
       cl_int*);
+
+  void OnCallclGetPlatformInfo_string(
+      const cl_point&,
+      const cl_platform_info&,
+      const size_t&,
+      const cl_bool&,
+      std::string*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetDeviceInfo_cl_uint(
+      const cl_point&,
+      const cl_device_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetDeviceInfo_size_t_list(
+      const cl_point&,
+      const cl_device_info&,
+      const size_t&,
+      const cl_bool&,
+      std::vector<size_t>*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetDeviceInfo_size_t(
+      const cl_point&,
+      const cl_device_info&,
+      const size_t&,
+      const cl_bool&,
+      size_t*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetDeviceInfo_cl_ulong(
+      const cl_point&,
+      const cl_device_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_ulong*,
+      size_t*,
+      cl_int*); 
+
+  void OnCallclGetDeviceInfo_string(
+      const cl_point&,
+      const cl_device_info&,
+      const size_t&,
+      const cl_bool&,
+      std::string*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetDeviceInfo_cl_point(
+      const cl_point&,
+      const cl_device_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_point*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetDeviceInfo_intptr_t_list(
+      const cl_point&,
+      const cl_device_info&,
+      const size_t&,
+      const cl_bool&,
+      std::vector<intptr_t>*,
+      size_t*,
+      cl_int*); 
+
+  void OnCallclGetContextInfo_cl_uint(
+      const cl_point&,
+      const cl_context_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetContextInfo_cl_point_list(
+      const cl_point&,
+      const cl_context_info&,
+      const size_t&,
+      const cl_bool&,
+      std::vector<cl_point>*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetContextInfo_intptr_t_list(
+      const cl_point&,
+      const cl_context_info&,
+      const size_t&,
+      const cl_bool&,
+      std::vector<intptr_t>*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetCommandQueueInfo_cl_point(
+      const cl_point&,
+      const cl_command_queue_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_point*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetCommandQueueInfo_cl_uint(
+      const cl_point&,
+      const cl_command_queue_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetCommandQueueInfo_cl_ulong(
+      const cl_point&,
+      const cl_command_queue_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_ulong*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetMemObjectInfo_cl_uint(
+      const cl_point&,
+      const cl_mem_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetMemObjectInfo_cl_ulong(
+      const cl_point&,
+      const cl_mem_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_ulong*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetMemObjectInfo_size_t(
+      const cl_point&,
+      const cl_mem_info&,
+      const size_t&,
+      const cl_bool&,
+      size_t*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetMemObjectInfo_cl_point(
+      const cl_point&,
+      const cl_mem_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_point*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetImageInfo_cl_image_format(
+      const cl_point&,
+      const cl_image_info&,
+      const size_t&,
+      const cl_bool&,
+      std::vector<cl_uint>*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetImageInfo_size_t(
+      const cl_point&,
+      const cl_image_info&,
+      const size_t&,
+      const cl_bool&,
+      size_t*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetImageInfo_cl_point(
+      const cl_point&,
+      const cl_image_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_point*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetImageInfo_cl_uint(
+      const cl_point&,
+      const cl_image_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetSamplerInfo_cl_uint(
+      const cl_point&,
+      const cl_sampler_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetSamplerInfo_cl_point(
+      const cl_point&,
+      const cl_sampler_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_point*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetProgramInfo_cl_uint(
+      const cl_point&,
+      const cl_program_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetProgramInfo_cl_point(
+      const cl_point&,
+      const cl_program_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_point*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetProgramInfo_cl_point_list(
+      const cl_point&,
+      const cl_program_info&,
+      const size_t&,
+      const cl_bool&,
+      std::vector<cl_point>*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetProgramInfo_string(
+      const cl_point&,
+      const cl_program_info&,
+      const size_t&,
+      const cl_bool&,
+      std::string*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetProgramInfo_size_t_list(
+      const cl_point&,
+      const cl_program_info&,
+      const size_t&,
+      const cl_bool&,
+      std::vector<size_t>*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetProgramInfo_string_list(
+      const cl_point&,
+      const cl_program_info&,
+      const size_t&,
+      const cl_bool&,
+      std::vector<std::string>*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetProgramInfo_size_t(
+      const cl_point&,
+      const cl_program_info&,
+      const size_t&,
+      const cl_bool&,
+      size_t*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetProgramBuildInfo_cl_int(
+      const cl_point&,
+      const cl_point&,
+      const cl_program_build_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_int*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetProgramBuildInfo_string(
+      const cl_point&,
+      const cl_point&,
+      const cl_program_build_info&,
+      const size_t&,
+      const cl_bool&,
+      std::string*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetProgramBuildInfo_cl_uint(
+      const cl_point&,
+      const cl_point&,
+      const cl_program_build_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetKernelInfo_string(
+      const cl_point&,
+      const cl_kernel_info&,
+      const size_t&,
+      const cl_bool&,
+      std::string*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetKernelInfo_cl_uint(
+      const cl_point&,
+      const cl_kernel_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetKernelInfo_cl_point(
+      const cl_point&,
+      const cl_kernel_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_point*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetKernelArgInfo_cl_uint(
+      const cl_point&,
+      const cl_uint&,
+      const cl_kernel_arg_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetKernelArgInfo_string(
+      const cl_point&,
+      const cl_uint&,
+      const cl_kernel_arg_info&,
+      const size_t&,
+      const cl_bool&,
+      std::string*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetKernelArgInfo_cl_ulong(
+      const cl_point&,
+      const cl_uint&,
+      const cl_kernel_arg_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_ulong*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetKernelWorkGroupInfo_size_t_list(
+      const cl_point&,
+      const cl_point&,
+      const cl_kernel_work_group_info&,
+      const size_t&,
+      const cl_bool&,
+      std::vector<size_t>*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetKernelWorkGroupInfo_size_t(
+      const cl_point&,
+      const cl_point&,
+      const cl_kernel_work_group_info&,
+      const size_t&,
+      const cl_bool&,
+      size_t*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetKernelWorkGroupInfo_cl_ulong(
+      const cl_point&,
+      const cl_point&,
+      const cl_kernel_work_group_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_ulong*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetEventInfo_cl_point(
+      const cl_point&,
+      const cl_event_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_point*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetEventInfo_cl_uint(
+      const cl_point&,
+      const cl_event_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_uint*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetEventInfo_cl_int(
+      const cl_point&,
+      const cl_event_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_int*,
+      size_t*,
+      cl_int*);
+
+  void OnCallclGetEventProfilingInfo_cl_ulong(
+      const cl_point&,
+      const cl_profiling_info&,
+      const size_t&,
+      const cl_bool&,
+      cl_ulong*,
+      size_t*,
+      cl_int*);
 };
 
 }  // namespace content
