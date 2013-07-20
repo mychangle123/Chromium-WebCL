@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 #if defined(OS_WIN)
+#include <CL/opencl.h>
 #include <windows.h>
 #endif
 
@@ -65,6 +66,8 @@ bool StartSandboxWindows(const sandbox::SandboxInterfaceInfo*);
 // Main function for starting the Gpu process.
 int GpuMain(const MainFunctionParams& parameters) {
   TRACE_EVENT0("gpu", "GpuMain");
+
+  cl_int errcode_ret = clGetPlatformIDs(0, NULL, NULL);
 
   base::Time start_time = base::Time::Now();
 
