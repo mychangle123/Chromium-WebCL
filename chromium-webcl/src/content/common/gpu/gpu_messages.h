@@ -688,26 +688,29 @@ IPC_MESSAGE_ROUTED1(AcceleratedVideoDecoderHostMsg_ErrorNotification,
 // Calling OpenCL API from a renderer process, then run in OpenCL/GPU process.
 
 // Call and respond OpenCL API clGetPlatformIDs using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL1_3(OpenCLChannelMsg_GetPlatformIDs,
+IPC_SYNC_MESSAGE_CONTROL2_3(OpenCLChannelMsg_GetPlatformIDs,
                             cl_uint,
+                            std::vector<bool>,
                             std::vector<cl_point>,
                             cl_uint,
                             cl_int)
 
 // Call and respond OpenCL API clGetDeviceIDs using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL3_3(OpenCLChannelMsg_GetDeviceIDs,
+IPC_SYNC_MESSAGE_CONTROL4_3(OpenCLChannelMsg_GetDeviceIDs,
                             cl_point,
                             cl_device_type,
                             cl_uint,
+                            std::vector<bool>,
                             std::vector<cl_point>,
                             cl_uint,
                             cl_int)
 
 // Call and respond OpenCL API clCreateSubDevices using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL3_3(OpenCLChannelMsg_CreateSubDevices,
+IPC_SYNC_MESSAGE_CONTROL4_3(OpenCLChannelMsg_CreateSubDevices,
                             cl_point,
                             std::vector<cl_device_partition_property>,
                             cl_uint,
+                            std::vector<bool>,
                             std::vector<cl_point>,
                             cl_uint,
                             cl_int)
@@ -727,17 +730,18 @@ IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_CreateContext,
                             std::vector<cl_context_properties>,
                             cl_uint,
                             std::vector<cl_point>,
-                            cl_point,
-                            cl_point,
+                            std::vector<cl_point>,
+                            std::vector<bool>,
                             cl_int,
                             cl_point)
 
 // Call and respond OpenCL API clCreateContextFromType using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL4_2(OpenCLChannelMsg_CreateContextFromType,
+IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_CreateContextFromType,
                             std::vector<cl_context_properties>,
                             cl_device_type,
                             cl_point,
                             cl_point,
+                            std::vector<bool>,
                             cl_int,
                             cl_point)
 
@@ -752,10 +756,11 @@ IPC_SYNC_MESSAGE_CONTROL1_1(OpenCLChannelMsg_ReleaseContext,
                             cl_int)
 
 // Call and respond OpenCL API clCreateCommandQueue using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL3_2(OpenCLChannelMsg_CreateCommandQueue,
+IPC_SYNC_MESSAGE_CONTROL4_2(OpenCLChannelMsg_CreateCommandQueue,
                             cl_point,
                             cl_point,
                             cl_command_queue_properties,
+                            std::vector<bool>,
                             cl_int,
                             cl_point)
 

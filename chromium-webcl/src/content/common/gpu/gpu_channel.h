@@ -263,6 +263,7 @@ class GpuChannel : public IPC::Listener,
   // Handle the OpenCL API calling.
   void OnCallclGetPlatformIDs(
       const cl_uint&,
+      const std::vector<bool>&,
       std::vector<cl_point>*,
       cl_uint*,
       cl_int*);
@@ -271,6 +272,7 @@ class GpuChannel : public IPC::Listener,
       const cl_point&,
       const cl_device_type&,
       const cl_uint&,
+      const std::vector<bool>&,
       std::vector<cl_point>*,
       cl_uint*,
       cl_int*);
@@ -279,6 +281,7 @@ class GpuChannel : public IPC::Listener,
       const cl_point&,
       const std::vector<cl_device_partition_property>&,
       const cl_uint&,
+      const std::vector<bool>&,
       std::vector<cl_point>*,
       cl_uint*,
       cl_int*);
@@ -295,8 +298,8 @@ class GpuChannel : public IPC::Listener,
       const std::vector<cl_context_properties>&,
       const cl_uint&,
       const std::vector<cl_point>&,
-      const cl_point&,
-      const cl_point&,
+      const std::vector<cl_point>&,
+      const std::vector<bool>&,
       cl_int*,
       cl_point*);
 
@@ -305,6 +308,7 @@ class GpuChannel : public IPC::Listener,
       const cl_device_type&,
       const cl_point&,
       const cl_point&,
+      const std::vector<bool>&,
       cl_int*,
       cl_point*);
 
@@ -320,6 +324,7 @@ class GpuChannel : public IPC::Listener,
       const cl_point&,
       const cl_point&,
       const cl_command_queue_properties&,
+      const std::vector<bool>&,
       cl_int*,
       cl_point*);
 

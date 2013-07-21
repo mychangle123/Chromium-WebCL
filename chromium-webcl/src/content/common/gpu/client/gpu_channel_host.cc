@@ -191,6 +191,47 @@ CommandBufferProxyImpl* GpuChannelHost::CreateOffscreenCommandBuffer(
   }
 
   // We should test OpenCL API calling here, please visit http://helloracer.com/webgl/ to activate the test.
+  cl_int errcode_ret;
+  cl_uint num_platforms, num_devices;
+  cl_platform_id* platform_ids = 0;
+  cl_device_id * device_ids = 0;
+  cl_context context = NULL;
+//  char temp[1000];
+  platform_ids = new cl_platform_id[1];
+  errcode_ret = CallclGetPlatformIDs(0,NULL,NULL);
+  errcode_ret = CallclGetPlatformIDs(2,NULL,NULL);
+  errcode_ret = CallclGetPlatformIDs(0,platform_ids,NULL);
+  errcode_ret = CallclGetPlatformIDs(2,platform_ids,NULL);
+  errcode_ret = CallclGetPlatformIDs(0,NULL,&num_platforms);
+//  errcode_ret = CallclGetPlatformIDs(2,NULL,&num_platforms);
+  errcode_ret = CallclGetPlatformIDs(0,platform_ids,&num_platforms);
+  errcode_ret = CallclGetPlatformIDs(2,platform_ids,&num_platforms);
+
+  errcode_ret = CallclGetPlatformIDs(0,NULL,&num_platforms);
+  if (errcode_ret == 0 && num_platforms > 0)
+  {
+    platform_ids = new cl_platform_id[num_platforms];
+    errcode_ret = CallclGetPlatformIDs(num_platforms, platform_ids, &num_platforms);
+  }
+
+  if (errcode_ret == 0)
+  {
+    errcode_ret = CallclGetDeviceIDs(platform_ids[0], CL_DEVICE_TYPE_GPU, 0, NULL, &num_devices);
+  }
+
+  if (errcode_ret == 0 && num_devices > 0)
+  {
+    device_ids = new cl_device_id[num_devices];
+    errcode_ret = CallclGetDeviceIDs(platform_ids[0], CL_DEVICE_TYPE_GPU, num_devices, device_ids, &num_devices);
+  }
+
+  if (errcode_ret == 0)
+  {
+    context = CallclCreateContext(NULL, 1, device_ids, NULL, NULL, &errcode_ret);
+  }
+  
+  errcode_ret = CallclGetPlatformIDs(0,NULL,&num_platforms);
+  errcode_ret = CallclGetPlatformIDs(0,NULL,&num_platforms);
   // The test has been completed.
 
   if (route_id == MSG_ROUTING_NONE)
@@ -408,20 +449,27 @@ cl_int GpuChannelHost::CallclGetPlatformIDs(
   // Sending a Sync IPC Message, to call a clGetPlatformIDs API
   // in other process, and getting the results of the API.
   cl_int errcode_ret;
-  cl_uint num_platforms_inter = (cl_uint) -1;
+  cl_uint num_platforms_inter;
   std::vector<cl_point> point_platform_list;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == num_platforms)
+  if (NULL == num_platforms) {
     num_platforms = &num_platforms_inter;
-  else if ((cl_uint) -1 == *num_platforms)
-    *num_platforms = 0;
+    return_variable_null_status[0] = true;
+  }
+  if (NULL == platforms)
+    return_variable_null_status[1] = true;
 
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_GetPlatformIDs(
            num_entries,
+           return_variable_null_status,
            &point_platform_list,
            num_platforms,
            &errcode_ret))) {
@@ -445,23 +493,30 @@ cl_int GpuChannelHost::CallclGetDeviceIDs(
   // Sending a Sync IPC Message, to call a clGetDeviceIDs API
   // in other process, and getting the results of the API.
   cl_int errcode_ret;
-  cl_uint num_devices_inter = (cl_uint) -1;
+  cl_uint num_devices_inter;
   cl_point point_platform = (cl_point) platform;
   std::vector<cl_point> point_device_list;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == num_devices)
+  if (NULL == num_devices) {
     num_devices = &num_devices_inter;
-  else if ((cl_uint) -1 == *num_devices)
-    *num_devices = 0;
+    return_variable_null_status[0] = true;
+  }
+  if (NULL == devices)
+    return_variable_null_status[1] = true;
 
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_GetDeviceIDs(
            point_platform,
            device_type,
            num_entries,
+           return_variable_null_status,
            &point_device_list,
            num_devices,
            &errcode_ret))) {
@@ -485,18 +540,24 @@ cl_int GpuChannelHost::CallclCreateSubDevices(
   // Sending a Sync IPC Message, to call a clCreateSubDevices API
   // in other process, and getting the results of the API.
   cl_int errcode_ret;
-  cl_uint num_devices_ret_inter = (cl_uint) -1;
+  cl_uint num_devices_ret_inter;
   cl_point point_in_device = (cl_point) in_device;
   std::vector<cl_point> point_out_device_list;
   std::vector<cl_device_partition_property> property_list;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == num_devices_ret)
+  if (NULL == num_devices_ret) {
     num_devices_ret = &num_devices_ret_inter;
-  else if ((cl_uint) -1 == *num_devices_ret)
-    *num_devices_ret = 0;
+    return_variable_null_status[0] = true;
+  }
+  if (out_devices)
+    return_variable_null_status[1] = true;
 
   // Dump the inputs of the Sync IPC Message calling.
   property_list.clear();
@@ -511,6 +572,7 @@ cl_int GpuChannelHost::CallclCreateSubDevices(
            point_in_device,
            property_list,
            num_devices,
+           return_variable_null_status,
            &point_out_device_list,
            num_devices_ret,
            &errcode_ret))) {
@@ -564,22 +626,28 @@ cl_context GpuChannelHost::CallclCreateContext(
     cl_int* errcode_ret) {
   // Sending a Sync IPC Message, to call a CallclCreateContext API
   // in other process, and getting the results of the API.
-  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_int errcode_ret_inter;
   cl_point point_context_ret;
   std::vector<cl_device_partition_property> property_list;
   std::vector<cl_point> point_device_list;
-  cl_point point_pfn_notify = (cl_point) pfn_notify;
-  cl_point point_user_data = (cl_point) user_data;
+  std::vector<cl_point> point_pfn_list;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == errcode_ret)
+  if (NULL == errcode_ret) {
     errcode_ret = &errcode_ret_inter;
-  else if (0xFFFFFFF == *errcode_ret)
-    *errcode_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   // Dump the inputs of the Sync IPC Message calling.
+  point_pfn_list.push_back((cl_point) pfn_notify);
+  point_pfn_list.push_back((cl_point) user_data);
+
   property_list.clear();
   if (NULL != properties) {
     while (0 != *properties)
@@ -596,8 +664,8 @@ cl_context GpuChannelHost::CallclCreateContext(
             property_list,
             num_devices,
             point_device_list,
-            point_pfn_notify,
-            point_user_data,
+            point_pfn_list,
+            return_variable_null_status,
             errcode_ret,
             &point_context_ret))) {
     return NULL;
@@ -613,19 +681,23 @@ cl_context GpuChannelHost::CallclCreateContextFromType(
     cl_int *errcode_ret) {
   // Sending a Sync IPC Message, to call a clCreateContextFromType API
   // in other process, and getting the results of the API.
-  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_int errcode_ret_inter;
   cl_point point_context_ret;
   std::vector<cl_device_partition_property> property_list;
   cl_point point_pfn_notify = (cl_point) pfn_notify;
   cl_point point_user_data = (cl_point) user_data;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == errcode_ret)
+  if (NULL == errcode_ret) {
     errcode_ret = &errcode_ret_inter;
-  else if (0xFFFFFFF == *errcode_ret)
-    *errcode_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   // Dump the inputs of the Sync IPC Message calling.
   property_list.clear();
@@ -641,6 +713,7 @@ cl_context GpuChannelHost::CallclCreateContextFromType(
            device_type,
            point_pfn_notify,
            point_user_data,
+           return_variable_null_status,
            errcode_ret,
            &point_context_ret))) {
     return NULL;
@@ -685,24 +758,29 @@ cl_command_queue GpuChannelHost::CallclCreateCommandQueue(
     cl_int *errcode_ret) {
   // Sending a Sync IPC Message, to call a clCreateCommandQueue API
   // in other process, and getting the results of the API.
-  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_int errcode_ret_inter;
   cl_point point_context = (cl_point) context;
   cl_point point_device = (cl_point) device;
   cl_point point_command_queue_ret;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == errcode_ret)
+  if (NULL == errcode_ret) {
     errcode_ret = &errcode_ret_inter;
-  else if (0xFFFFFFF == *errcode_ret)
-    *errcode_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_CreateCommandQueue(
            point_context,
            point_device,
            properties,
+           return_variable_null_status,
            errcode_ret,
            &point_command_queue_ret))) {
     return NULL;
