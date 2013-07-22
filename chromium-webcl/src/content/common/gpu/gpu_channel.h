@@ -341,6 +341,7 @@ class GpuChannel : public IPC::Listener,
       const cl_mem_flags&,
       const size_t&,
       const cl_point&,
+      const std::vector<bool>&,
       cl_int*,
       cl_point*);
 
@@ -349,6 +350,7 @@ class GpuChannel : public IPC::Listener,
       const cl_mem_flags&,
       const cl_buffer_create_type&,
       const cl_point&,
+      const std::vector<bool>&,
       cl_int*,
       cl_point*);
 
@@ -357,6 +359,7 @@ class GpuChannel : public IPC::Listener,
       const cl_mem_flags&,
       const std::vector<cl_uint>&,
       const cl_point&,
+      const std::vector<bool>&,
       cl_int*,
       cl_point*);
 
@@ -373,6 +376,7 @@ class GpuChannel : public IPC::Listener,
       const cl_mem_flags&,
       const cl_mem_object_type&,
       const cl_uint&,
+      const std::vector<bool>&,
       std::vector<cl_uint>*,
       cl_uint*,
       cl_int*);
@@ -388,7 +392,9 @@ class GpuChannel : public IPC::Listener,
       const cl_bool&,
       const cl_addressing_mode&,
       const cl_filter_mode&,
-      cl_int*, cl_point*);
+      const std::vector<bool>&,
+      cl_int*,
+      cl_point*);
 
   void OnCallclRetainSampler(
       const cl_point&,

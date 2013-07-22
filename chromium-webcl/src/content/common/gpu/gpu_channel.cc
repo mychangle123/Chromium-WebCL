@@ -1224,7 +1224,7 @@ void GpuChannel::OnCallclCreateContext(
       properties[index] = property_list[index];
   }
 
-  if (num_devices > 0)
+  if (num_devices > 0 && devices)
   {
     devices = new cl_device_id[num_devices];
     for (cl_uint index = 0; index < num_devices; ++index)
@@ -1254,7 +1254,7 @@ void GpuChannel::OnCallclCreateContextFromType(
     const cl_device_type& device_type,
     const cl_point& point_pfn_notify,
     const cl_point& point_user_data,
-	const std::vector<bool>& return_variable_null_status,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* errcode_ret,
     cl_point* point_context_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -1321,7 +1321,7 @@ void GpuChannel::OnCallclCreateCommandQueue(
     const cl_point& point_context,
     const cl_point& point_device,
     const cl_command_queue_properties& properties,
-	const std::vector<bool>& return_variable_null_status,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* errcode_ret,
     cl_point* point_command_queue_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -1373,6 +1373,7 @@ void GpuChannel::OnCallclCreateBuffer(
     const cl_mem_flags& flags,
     const size_t& size,
     const cl_point& point_host_ptr,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* errcode_ret,
     cl_point* point_memobj_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -1383,7 +1384,7 @@ void GpuChannel::OnCallclCreateBuffer(
   void* host_ptr = (void*) point_host_ptr;
 
   // If the caller wishes to pass a NULL.
-  if (0xFFFFFFF == *errcode_ret)
+  if (return_variable_null_status[0])
     errcode_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -1403,6 +1404,7 @@ void GpuChannel::OnCallclCreateSubBuffer(
     const cl_mem_flags& flags,
     const cl_buffer_create_type& buffer_create_type,
     const cl_point& point_buffer_create_info,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* errcode_ret,
     cl_point* point_memobj_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -1413,7 +1415,7 @@ void GpuChannel::OnCallclCreateSubBuffer(
   void* buffer_create_info = (void*) point_buffer_create_info;
 
   // If the caller wishes to pass a NULL.
-  if (0xFFFFFFF == *errcode_ret)
+  if (return_variable_null_status[0])
     errcode_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -1433,6 +1435,7 @@ void GpuChannel::OnCallclCreateImage(
     const cl_mem_flags& flags,
     const std::vector<cl_uint>& image_format_list,
     const cl_point& point_host_ptr,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* errcode_ret,
     cl_point* point_memobj_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -1445,7 +1448,7 @@ void GpuChannel::OnCallclCreateImage(
   cl_image_desc image_desc;
 
   // If the caller wishes to pass a NULL.
-  if (0xFFFFFFF == *errcode_ret)
+  if (return_variable_null_status[0])
     errcode_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
@@ -1493,6 +1496,7 @@ void GpuChannel::OnCallclGetSupportedImageFormats(
     const cl_mem_flags& flags,
     const cl_mem_object_type& image_type,
     const cl_uint& num_entries,
+    const std::vector<bool>& return_variable_null_status,
     std::vector<cl_uint>* image_format_list,
     cl_uint* num_image_formats,
     cl_int* errcode_ret) {
@@ -1503,11 +1507,11 @@ void GpuChannel::OnCallclGetSupportedImageFormats(
   cl_image_format* image_formats = NULL;
 
   // If the caller wishes to pass a NULL.
-  if((cl_uint)-1 == *num_image_formats)
+  if(return_variable_null_status[0])
     num_image_formats_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (num_entries > 0)
+  if (num_entries > 0 && !return_variable_null_status[1])
     image_formats = new cl_image_format[num_entries];
 
   // Call the OpenCL API.
@@ -1520,7 +1524,7 @@ void GpuChannel::OnCallclGetSupportedImageFormats(
                      num_image_formats_inter);
 
   // Dump the results of OpenCL API calling.
-  if (num_entries > 0) {
+  if (num_entries > 0 && !return_variable_null_status[1]) {
     (*image_format_list).clear();
     for (cl_uint index = 0; index < num_entries; ++index) {
       (*image_format_list).push_back(
@@ -1557,6 +1561,7 @@ void GpuChannel::OnCallclCreateSampler (
     const cl_bool& normalized_coords,
     const cl_addressing_mode& addressing_mode,
     const cl_filter_mode& filter_mode,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* errcode_ret,
     cl_point* point_sampler_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -1566,7 +1571,7 @@ void GpuChannel::OnCallclCreateSampler (
   cl_int* errcode_ret_inter = errcode_ret;
 
   // If the caller wishes to pass a NULL.
-  if (0xFFFFFFF == *errcode_ret)
+  if (return_variable_null_status[0])
     errcode_ret_inter = NULL;
 
   // Call the OpenCL API.

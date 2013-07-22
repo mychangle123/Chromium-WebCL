@@ -656,7 +656,7 @@ cl_context GpuChannelHost::CallclCreateContext(
   }
 
   point_device_list.clear();
-  for (cl_uint index = 0; index < num_devices; ++index)
+  for (cl_uint index = 0; devices && index < num_devices; ++index)
     point_device_list.push_back((cl_point) devices[index]);
 
   // Send a Sync IPC Message and wait for the results.
@@ -828,18 +828,22 @@ cl_mem GpuChannelHost::CallclCreateBuffer(
     cl_int *errcode_ret) {
   // Sending a Sync IPC Message, to call a clCreateBuffer API
   // in other process, and getting the results of the API.
-  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_int errcode_ret_inter;
   cl_point point_context = (cl_point) context;
   cl_point point_host_ptr = (cl_point) host_ptr;
   cl_point point_memobj_ret;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == errcode_ret)
+  if (NULL == errcode_ret) {
     errcode_ret = &errcode_ret_inter;
-  else if (0xFFFFFFF == *errcode_ret)
-    *errcode_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_CreateBuffer(
@@ -847,6 +851,7 @@ cl_mem GpuChannelHost::CallclCreateBuffer(
            flags,
            size,
            point_host_ptr,
+		   return_variable_null_status,
            errcode_ret,
            &point_memobj_ret))) {
     return NULL;
@@ -862,18 +867,22 @@ cl_mem GpuChannelHost::CallclCreateSubBuffer(
     cl_int *errcode_ret) {
   // Sending a Sync IPC Message, to call a clCreateSubBuffer API
   // in other process, and getting the results of the API.
-  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_int errcode_ret_inter;
   cl_point point_buffer = (cl_point) buffer;
   cl_point point_buffer_create_info = (cl_point) buffer_create_info;
   cl_point point_memobj_ret;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == errcode_ret)
+  if (NULL == errcode_ret) {
     errcode_ret = &errcode_ret_inter;
-  else if (0xFFFFFFF == *errcode_ret)
-    *errcode_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_CreateSubBuffer(
@@ -881,6 +890,7 @@ cl_mem GpuChannelHost::CallclCreateSubBuffer(
            flags,
            buffer_create_type,
            point_buffer_create_info,
+		   return_variable_null_status,
            errcode_ret,
            &point_memobj_ret))) {
     return NULL;
@@ -897,19 +907,23 @@ cl_mem GpuChannelHost::CallclCreateImage(
     cl_int *errcode_ret) {
   // Sending a Sync IPC Message, to call a clCreateImage API
   // in other process, and getting the results of the API.
-  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_int errcode_ret_inter;
   cl_point point_context = (cl_point) context;
   cl_point point_host_ptr = (cl_point) host_ptr;
   cl_point point_memobj_ret;
   std::vector<cl_uint> image_format_list;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == errcode_ret)
+  if (NULL == errcode_ret) {
     errcode_ret = &errcode_ret_inter;
-  else if (0xFFFFFFF == *errcode_ret)
-    *errcode_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   // Dump the inputs of the Sync IPC Message calling.
   image_format_list.clear();
@@ -923,6 +937,7 @@ cl_mem GpuChannelHost::CallclCreateImage(
            flags,
            image_format_list,
            point_host_ptr,
+		   return_variable_null_status,
            errcode_ret,
            &point_memobj_ret))) {
     return NULL;
@@ -973,14 +988,20 @@ cl_int GpuChannelHost::CallclGetSupportedImageFormats(
   cl_uint num_image_formats_inter = (cl_uint) -1;
   cl_point point_context = (cl_point) context;
   std::vector<cl_uint> image_format_list;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == num_image_formats)
+  if (NULL == num_image_formats) {
     num_image_formats = &num_image_formats_inter;
-  else if ((cl_uint) -1 == *num_image_formats)
-    *num_image_formats = 0;
+	return_variable_null_status[0] = true;
+  }
+  if (NULL == image_formats)
+    return_variable_null_status[1] = true;
 
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_GetSupportedImageFormats(
@@ -988,6 +1009,7 @@ cl_int GpuChannelHost::CallclGetSupportedImageFormats(
            flags,
            image_type,
            num_entries,
+		   return_variable_null_status,
            &image_format_list,
            num_image_formats,
            &errcode_ret))) {
@@ -995,7 +1017,7 @@ cl_int GpuChannelHost::CallclGetSupportedImageFormats(
   }
 
   // Dump the results of the Sync IPC Message calling.
-  if (CL_SUCCESS == errcode_ret) {
+  if (CL_SUCCESS == errcode_ret && image_formats) {
     for (cl_uint index = 0; index < num_entries; ++index) {
       image_formats[index].image_channel_data_type = image_format_list[index * 2];
       image_formats[index].image_channel_order = image_format_list[index * 2 + 1];
@@ -1035,17 +1057,21 @@ cl_sampler GpuChannelHost::CallclCreateSampler(
     cl_int *errcode_ret) {
   // Sending a Sync IPC Message, to call a clCreateSampler API
   // in other process, and getting the results of the API.
-  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_int errcode_ret_inter;
   cl_point point_context = (cl_point) context;
   cl_point point_sampler_ret;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == errcode_ret)
+  if (NULL == errcode_ret) {
     errcode_ret = &errcode_ret_inter;
-  else if (0xFFFFFFF == *errcode_ret)
-    *errcode_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_CreateSampler(
@@ -1053,6 +1079,7 @@ cl_sampler GpuChannelHost::CallclCreateSampler(
            normalized_coords,
            addressing_mode,
            filter_mode,
+		   return_variable_null_status,
            errcode_ret,
            &point_sampler_ret))) {
     return NULL;

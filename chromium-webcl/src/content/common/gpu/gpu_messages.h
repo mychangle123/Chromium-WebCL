@@ -775,30 +775,32 @@ IPC_SYNC_MESSAGE_CONTROL1_1(OpenCLChannelMsg_ReleaseCommandQueue,
                             cl_int)
 
 // Call and respond OpenCL API clCreateBuffer using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL4_2(OpenCLChannelMsg_CreateBuffer,
+IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_CreateBuffer,
                             cl_point,
                             cl_mem_flags,
                             size_t,
                             cl_point,
+                            std::vector<bool>,
                             cl_int,
                             cl_point)
 
 // Call and respond OpenCL API clCreateSubBuffer using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL4_2(OpenCLChannelMsg_CreateSubBuffer,
+IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_CreateSubBuffer,
                             cl_point,
                             cl_mem_flags,
                             cl_buffer_create_type,
-                            cl_point,
+                            cl_point,std::vector<bool>,
                             cl_int,
                             cl_point)
 
 // Call and respond OpenCL API clChannelMsg_CreateImage
 // using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL4_2(OpenCLChannelMsg_CreateImage,
+IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_CreateImage,
                             cl_point,
                             cl_mem_flags,
                             std::vector<cl_uint>,
                             cl_point,
+                            std::vector<bool>,
                             cl_int,
                             cl_point)
 
@@ -814,11 +816,12 @@ IPC_SYNC_MESSAGE_CONTROL1_1(OpenCLChannelMsg_ReleaseMemObject,
 
 // Call and respond OpenCL API clGetSupportedImageFormats
 // using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL4_3(OpenCLChannelMsg_GetSupportedImageFormats,
+IPC_SYNC_MESSAGE_CONTROL5_3(OpenCLChannelMsg_GetSupportedImageFormats,
                             cl_point,
                             cl_mem_flags,
                             cl_mem_object_type,
                             cl_uint,
+                            std::vector<bool>,
                             std::vector<cl_uint>,
                             cl_uint,
                             cl_int)
@@ -832,11 +835,12 @@ IPC_SYNC_MESSAGE_CONTROL3_1(OpenCLChannelMsg_SetMemObjectDestructorCallback,
                             cl_int)
 
 // Call and respond OpenCL API clCreateSampler using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL4_2(OpenCLChannelMsg_CreateSampler,
+IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_CreateSampler,
                             cl_point,
                             cl_bool,
                             cl_addressing_mode,
                             cl_filter_mode,
+                            std::vector<bool>,
                             cl_int,
                             cl_point)
 
