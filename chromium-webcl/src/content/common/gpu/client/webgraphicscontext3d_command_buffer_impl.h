@@ -47,6 +47,8 @@ using WebKit::WGC3Dintptr;
 using WebKit::WGC3Dsizeiptr;
 using WebKit::WebGraphicsManagedMemoryStats;
 using WebKit::WebGraphicsMemoryAllocation;
+using WebKit::PlatformGraphicsContext3D;
+using WebKit::PlatformDisplay3D;
 
 namespace content {
 class GpuChannelHost;
@@ -120,6 +122,8 @@ class WebGraphicsContext3DCommandBufferImpl
   virtual int height();
 
   virtual bool isGLES2Compliant();
+  virtual PlatformGraphicsContext3D getPlatformGraphicsContext();
+  virtual PlatformDisplay3D getPlatformDisplay();
 
   virtual bool setParentContext(WebGraphicsContext3D* parent_context);
 

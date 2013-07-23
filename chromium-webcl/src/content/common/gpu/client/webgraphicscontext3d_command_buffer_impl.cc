@@ -405,6 +405,17 @@ bool WebGraphicsContext3DCommandBufferImpl::isGLES2Compliant() {
   return true;
 }
 
+// TODO:Implement for command buffer graphics context, currently always return 0.
+PlatformGraphicsContext3D WebGraphicsContext3DCommandBufferImpl::getPlatformGraphicsContext() {
+  //PlatformGraphicsContext3D
+  return gles2::GetGLContext();
+}
+
+// TODO:Implement for command buffer graphics context, currently always return 0.
+PlatformDisplay3D WebGraphicsContext3DCommandBufferImpl::getPlatformDisplay() {
+  return gles2::GetGLCtxKey();
+}
+
 bool WebGraphicsContext3DCommandBufferImpl::setParentContext(
     WebGraphicsContext3D* parent_context) {
   WebGraphicsContext3DCommandBufferImpl* parent_context_impl =

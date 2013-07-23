@@ -48,6 +48,7 @@
 #include <wtf/PassOwnArrayPtr.h>
 #include <wtf/text/CString.h>
 #include <wtf/text/WTFString.h>
+#include <gl/GL.h>
 
 namespace WebCore {
 
@@ -386,6 +387,20 @@ rt GraphicsContext3D::name(t1 a1, t2 a2, t3 a3, t4 a4, t5 a5, t6 a6, t7 a7, t8 a
 }
 
 GraphicsContext3D::GraphicsContext3D(GraphicsContext3D::Attributes, HostWindow*, GraphicsContext3D::RenderStyle)
+  : m_currentWidth(0)
+  , m_currentHeight(0)
+  , m_attrs(attrs)
+  , m_texture(0)
+  , m_compositorTexture(0)
+  , m_fbo(0)
+  , m_depthStencilBuffer(0)
+  , m_layerComposited(false)
+  , m_internalColorFormat(0)
+  , m_multisampleFBO(0)
+  , m_multisampleDepthStencilBuffer(0)
+  , m_multisampleColorBuffer(0)
+  , hRC(0)
+  , hDC(0)
 {
 }
 
@@ -429,7 +444,13 @@ PassRefPtr<GraphicsContext3D> GraphicsContext3D::create(GraphicsContext3D::Attri
 
 PlatformGraphicsContext3D GraphicsContext3D::platformGraphicsContext3D() const
 {
-    return m_private->webContext();
+    return m_private->platformGraphicsContext3D();
+}
+
+ PlatformDisplay3D GraphicsContext3D::platformDisplay3D() const
+{
+    return m_private->platformDisplay3D();
+
 }
 
 Platform3DObject GraphicsContext3D::platformTexture() const

@@ -1862,5 +1862,13 @@ bool WebGraphicsContext3DInProcessImpl::AngleValidateShaderSource(
   return true;
 }
 
+PlatformGraphicsContext3D WebGraphicsContext3DInProcessImpl::getPlatformGraphicsContext() {
+  return 0;
+}
+
+PlatformDisplay3D WebGraphicsContext3DInProcessImpl::getPlatformDisplay() {
+  return 0;
+}
+
 }  // namespace gpu
 }  // namespace webkit
