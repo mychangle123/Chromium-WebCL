@@ -2288,7 +2288,7 @@ void GpuChannel::OnCallclGetDeviceInfo_cl_uint(
     const cl_point& point_device,
     const cl_device_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2299,11 +2299,11 @@ void GpuChannel::OnCallclGetDeviceInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2319,7 +2319,7 @@ void GpuChannel::OnCallclGetDeviceInfo_size_t_list(
     const cl_point& point_device,
     const cl_device_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::vector<size_t>* size_t_list_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2331,13 +2331,13 @@ void GpuChannel::OnCallclGetDeviceInfo_size_t_list(
   size_t c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(size_t))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(size_t))
     param_value = new size_t[param_value_size/sizeof(size_t)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -2349,7 +2349,7 @@ void GpuChannel::OnCallclGetDeviceInfo_size_t_list(
                      param_value_size_ret_inter);
 
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(size_t)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(size_t)) {
     for (cl_uint index = 0; index < param_value_size/sizeof(size_t); ++index)
       (*size_t_list_ret).push_back(param_value[index]);
     delete[] param_value;
@@ -2360,7 +2360,7 @@ void GpuChannel::OnCallclGetDeviceInfo_size_t(
     const cl_point& point_device,
     const cl_device_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     size_t* size_t_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2371,11 +2371,11 @@ void GpuChannel::OnCallclGetDeviceInfo_size_t(
   size_t* size_t_ret_inter = size_t_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
   param_value_size_ret_inter = NULL;
   
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     size_t_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2390,7 +2390,7 @@ void GpuChannel::OnCallclGetDeviceInfo_cl_ulong(
     const cl_point& point_device,
     const cl_device_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_ulong* cl_ulong_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2401,11 +2401,11 @@ void GpuChannel::OnCallclGetDeviceInfo_cl_ulong(
   cl_ulong* cl_ulong_ret_inter = cl_ulong_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_ulong_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2421,7 +2421,7 @@ void GpuChannel::OnCallclGetDeviceInfo_string(
     const cl_point& point_device,
     const cl_device_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::string* string_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2433,13 +2433,13 @@ void GpuChannel::OnCallclGetDeviceInfo_string(
   char c;
     
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
   param_value_size_ret_inter = NULL;
   
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(char))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char))
     param_value = new char[param_value_size/sizeof(char)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -2451,7 +2451,7 @@ void GpuChannel::OnCallclGetDeviceInfo_string(
                      param_value_size_ret_inter);
 
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(char)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char)) {
     (*string_ret) = std::string(param_value);
     delete[] param_value;
   }
@@ -2461,7 +2461,7 @@ void GpuChannel::OnCallclGetDeviceInfo_cl_point(
     const cl_point& point_device,
     const cl_device_info& param_name, 
     const size_t& param_value_size, 
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_point* cl_point_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2472,11 +2472,11 @@ void GpuChannel::OnCallclGetDeviceInfo_cl_point(
   cl_point* cl_point_ret_inter = cl_point_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
     
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_point_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2492,7 +2492,7 @@ void GpuChannel::OnCallclGetDeviceInfo_intptr_t_list(
     const cl_point& point_device,
     const cl_device_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::vector<intptr_t>* intptr_t_list_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2504,13 +2504,13 @@ void GpuChannel::OnCallclGetDeviceInfo_intptr_t_list(
   intptr_t c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(intptr_t))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(intptr_t))
     param_value = new intptr_t[param_value_size/sizeof(intptr_t)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -2522,7 +2522,7 @@ void GpuChannel::OnCallclGetDeviceInfo_intptr_t_list(
                      param_value_size_ret_inter);
 
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(intptr_t)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(intptr_t)) {
     for (cl_uint index = 0; index < param_value_size/sizeof(intptr_t); ++index)
       (*intptr_t_list_ret).push_back(param_value[index]);
     delete[] param_value;
@@ -2533,7 +2533,7 @@ void GpuChannel::OnCallclGetContextInfo_cl_uint(
     const cl_point& point_context,
     const cl_context_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2544,11 +2544,11 @@ void GpuChannel::OnCallclGetContextInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.  
@@ -2564,7 +2564,7 @@ void GpuChannel::OnCallclGetContextInfo_cl_point_list(
     const cl_point& point_context,
     const cl_context_info& param_name, 
     const size_t& param_value_size, 
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::vector<cl_point>* cl_point_list_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2576,13 +2576,13 @@ void GpuChannel::OnCallclGetContextInfo_cl_point_list(
   cl_point c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(cl_point))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(cl_point))
     param_value = new cl_point[param_value_size/sizeof(cl_point)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -2594,7 +2594,7 @@ void GpuChannel::OnCallclGetContextInfo_cl_point_list(
                      param_value_size_ret_inter);
  
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(cl_point)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(cl_point)) {
     for (cl_uint index = 0; index < param_value_size/sizeof(cl_point); ++index)
       (*cl_point_list_ret).push_back(param_value[index]);
     delete[] param_value;
@@ -2605,7 +2605,7 @@ void GpuChannel::OnCallclGetContextInfo_intptr_t_list(
     const cl_point& point_context,
     const cl_context_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null, 
+    const std::vector<bool>& return_variable_null_status, 
     std::vector<intptr_t>* intptr_t_list_ret,
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -2617,13 +2617,13 @@ void GpuChannel::OnCallclGetContextInfo_intptr_t_list(
   intptr_t c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(intptr_t))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(intptr_t))
     param_value = new intptr_t[param_value_size/sizeof(intptr_t)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -2634,7 +2634,7 @@ void GpuChannel::OnCallclGetContextInfo_intptr_t_list(
                      param_value,
                      param_value_size_ret_inter);
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(intptr_t)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(intptr_t)) {
     for (cl_uint index = 0; index < param_value_size/sizeof(intptr_t); ++index)
       (*intptr_t_list_ret).push_back(param_value[index]);
     delete[] param_value;
@@ -2645,7 +2645,7 @@ void GpuChannel::OnCallclGetCommandQueueInfo_cl_point(
     const cl_point& point_command_queue,
     const cl_command_queue_info& param_name,
     const size_t& param_value_size, 
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_point* cl_point_ret, 
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -2656,11 +2656,11 @@ void GpuChannel::OnCallclGetCommandQueueInfo_cl_point(
   cl_point* cl_point_ret_inter = cl_point_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
  
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_point_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2676,7 +2676,7 @@ void GpuChannel::OnCallclGetCommandQueueInfo_cl_uint(
     const cl_point& point_command_queue,
     const cl_command_queue_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2687,11 +2687,11 @@ void GpuChannel::OnCallclGetCommandQueueInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2707,7 +2707,7 @@ void GpuChannel::OnCallclGetCommandQueueInfo_cl_ulong(
     const cl_point& point_command_queue, 
     const cl_command_queue_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_ulong* cl_ulong_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2718,11 +2718,11 @@ void GpuChannel::OnCallclGetCommandQueueInfo_cl_ulong(
   cl_ulong* cl_ulong_ret_inter = cl_ulong_ret;
  
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_ulong_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2738,7 +2738,7 @@ void GpuChannel::OnCallclGetMemObjectInfo_cl_uint(
     const cl_point& point_memobj, 
     const cl_mem_info& param_name,
     const size_t& param_value_size, 
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2749,11 +2749,11 @@ void GpuChannel::OnCallclGetMemObjectInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
   
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2769,7 +2769,7 @@ void GpuChannel::OnCallclGetMemObjectInfo_cl_ulong(
     const cl_point& point_memobj, 
     const cl_mem_info& param_name,
     const size_t& param_value_size, 
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_ulong* cl_ulong_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2780,11 +2780,11 @@ void GpuChannel::OnCallclGetMemObjectInfo_cl_ulong(
   cl_ulong* cl_ulong_ret_inter = cl_ulong_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_ulong_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2800,7 +2800,7 @@ void GpuChannel::OnCallclGetMemObjectInfo_size_t(
     const cl_point& point_memobj,
     const cl_mem_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     size_t* size_t_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2811,11 +2811,11 @@ void GpuChannel::OnCallclGetMemObjectInfo_size_t(
   size_t* size_t_ret_inter = size_t_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     size_t_ret_inter = NULL;
  
   // Call the OpenCL API.
@@ -2831,7 +2831,7 @@ void GpuChannel::OnCallclGetMemObjectInfo_cl_point(
     const cl_point& point_memobj,
     const cl_mem_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_point* cl_point_ret,
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -2842,11 +2842,11 @@ void GpuChannel::OnCallclGetMemObjectInfo_cl_point(
   cl_point* cl_point_ret_inter = cl_point_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
  
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_point_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2862,7 +2862,7 @@ void GpuChannel::OnCallclGetImageInfo_cl_image_format(
     const cl_point& point_image,
     const cl_image_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::vector<cl_uint>* image_format_list_ret,
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -2874,11 +2874,11 @@ void GpuChannel::OnCallclGetImageInfo_cl_image_format(
   cl_image_format *image_format_ret_inter = &image_format_ret;
   
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     image_format_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2890,7 +2890,7 @@ void GpuChannel::OnCallclGetImageInfo_cl_image_format(
                      param_value_size_ret_inter);
  
   // Dump the results of OpenCL API calling.
-  if (is_param_null) {
+  if (return_variable_null_status[1]) {
     (*image_format_list_ret).push_back(image_format_ret.image_channel_data_type); 
     (*image_format_list_ret).push_back(image_format_ret.image_channel_order);
   }
@@ -2900,7 +2900,7 @@ void GpuChannel::OnCallclGetImageInfo_size_t(
     const cl_point& point_image, 
     const cl_image_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     size_t* size_t_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2911,11 +2911,11 @@ void GpuChannel::OnCallclGetImageInfo_size_t(
   size_t* size_t_ret_inter = size_t_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     size_t_ret_inter = NULL; 
 
   // Call the OpenCL API.
@@ -2931,7 +2931,7 @@ void GpuChannel::OnCallclGetImageInfo_cl_point(
     const cl_point& point_image,
     const cl_image_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_point* cl_point_ret,
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -2942,11 +2942,11 @@ void GpuChannel::OnCallclGetImageInfo_cl_point(
   cl_point* cl_point_ret_inter = cl_point_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
  
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_point_ret_inter = NULL;
   
   // Call the OpenCL API.
@@ -2962,7 +2962,7 @@ void GpuChannel::OnCallclGetImageInfo_cl_uint(
     const cl_point& point_image,
     const cl_image_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -2973,11 +2973,11 @@ void GpuChannel::OnCallclGetImageInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2993,7 +2993,7 @@ void GpuChannel::OnCallclGetSamplerInfo_cl_uint(
     const cl_point& point_sampler,
     const cl_sampler_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3004,11 +3004,11 @@ void GpuChannel::OnCallclGetSamplerInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3024,7 +3024,7 @@ void GpuChannel::OnCallclGetSamplerInfo_cl_point(
     const cl_point& point_sampler, 
     const cl_sampler_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_point* cl_point_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3035,11 +3035,11 @@ void GpuChannel::OnCallclGetSamplerInfo_cl_point(
   cl_point* cl_point_ret_inter = cl_point_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_point_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3055,7 +3055,7 @@ void GpuChannel::OnCallclGetProgramInfo_cl_uint(
     const cl_point& point_program,
     const cl_program_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3066,11 +3066,11 @@ void GpuChannel::OnCallclGetProgramInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3086,7 +3086,7 @@ void GpuChannel::OnCallclGetProgramInfo_cl_point(
     const cl_point& point_program,
     const cl_program_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_point* cl_point_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3097,11 +3097,11 @@ void GpuChannel::OnCallclGetProgramInfo_cl_point(
   cl_point* cl_point_ret_inter = cl_point_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
  
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_point_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3117,7 +3117,7 @@ void GpuChannel::OnCallclGetProgramInfo_cl_point_list(
     const cl_point& point_program, 
     const cl_program_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::vector<cl_point>* cl_point_list_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3129,13 +3129,13 @@ void GpuChannel::OnCallclGetProgramInfo_cl_point_list(
   cl_point c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(cl_point))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(cl_point))
     param_value = new cl_point[param_value_size/sizeof(cl_point)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
   
   // Call the OpenCL API.
@@ -3147,7 +3147,7 @@ void GpuChannel::OnCallclGetProgramInfo_cl_point_list(
                      param_value_size_ret_inter);
 
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(cl_point)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(cl_point)) {
     for (cl_uint index = 0; index < param_value_size/sizeof(cl_point); ++index)
       (*cl_point_list_ret).push_back(param_value[index]);
     delete[] param_value;
@@ -3158,7 +3158,7 @@ void GpuChannel::OnCallclGetProgramInfo_string(
     const cl_point& point_program,
     const cl_program_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::string* string_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3170,13 +3170,13 @@ void GpuChannel::OnCallclGetProgramInfo_string(
   char c;
  
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
  
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(char))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char))
     param_value = new char[param_value_size/sizeof(char)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -3188,7 +3188,7 @@ void GpuChannel::OnCallclGetProgramInfo_string(
                      param_value_size_ret_inter);
   
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(char)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char)) {
     (*string_ret) = std::string(param_value);
     delete[] param_value;
   }
@@ -3198,7 +3198,7 @@ void GpuChannel::OnCallclGetProgramInfo_size_t_list(
     const cl_point& point_program, 
     const cl_program_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::vector<size_t>* size_t_list_ret,
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -3210,13 +3210,13 @@ void GpuChannel::OnCallclGetProgramInfo_size_t_list(
   size_t c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(size_t))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(size_t))
     param_value = new size_t[param_value_size/sizeof(size_t)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -3228,7 +3228,7 @@ void GpuChannel::OnCallclGetProgramInfo_size_t_list(
                      param_value_size_ret_inter);
   
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(size_t)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(size_t)) {
     for (cl_uint index = 0; index < param_value_size/sizeof(size_t); ++index)
       (*size_t_list_ret).push_back(param_value[index]);
     delete[] param_value;
@@ -3239,7 +3239,7 @@ void GpuChannel::OnCallclGetProgramInfo_string_list(
     const cl_point& point_program, 
     const cl_program_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::vector<std::string>* string_list_ret,
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -3251,7 +3251,7 @@ void GpuChannel::OnCallclGetProgramInfo_string_list(
   std::string c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
@@ -3267,7 +3267,7 @@ void GpuChannel::OnCallclGetProgramInfo_string_list(
                      param_value_size_ret_inter);
 
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(std::string)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(std::string)) {
     for (cl_uint index = 0; index < param_value_size/sizeof(std::string); ++index)
       (*string_list_ret).push_back(param_value[index]);
     delete[] param_value;
@@ -3278,7 +3278,7 @@ void GpuChannel::OnCallclGetProgramInfo_size_t(
     const cl_point& point_program, 
     const cl_program_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     size_t *size_t_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3289,11 +3289,11 @@ void GpuChannel::OnCallclGetProgramInfo_size_t(
   size_t *size_t_ret_inter = size_t_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
   
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     size_t_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3310,7 +3310,7 @@ void GpuChannel::OnCallclGetProgramBuildInfo_cl_int(
     const cl_point& point_device,
     const cl_program_build_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* cl_int_ret, 
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -3322,11 +3322,11 @@ void GpuChannel::OnCallclGetProgramBuildInfo_cl_int(
   cl_int* cl_int_ret_inter = cl_int_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_int_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3344,7 +3344,7 @@ void GpuChannel::OnCallclGetProgramBuildInfo_string(
     const cl_point& point_device, 
     const cl_program_build_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::string* string_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3357,13 +3357,13 @@ void GpuChannel::OnCallclGetProgramBuildInfo_string(
   char c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(char))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char))
     param_value = new char[param_value_size/sizeof(char)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -3376,7 +3376,7 @@ void GpuChannel::OnCallclGetProgramBuildInfo_string(
                      param_value_size_ret_inter);
   
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(char)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char)) {
     (*string_ret) = std::string(param_value);
     delete[] param_value;
   }
@@ -3387,7 +3387,7 @@ void GpuChannel::OnCallclGetProgramBuildInfo_cl_uint(
     const cl_point& point_device,
     const cl_program_build_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret, 
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -3399,11 +3399,11 @@ void GpuChannel::OnCallclGetProgramBuildInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
   
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3420,7 +3420,7 @@ void GpuChannel::OnCallclGetKernelInfo_string(
     const cl_point& point_kernel, 
     const cl_kernel_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::string* string_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3432,13 +3432,13 @@ void GpuChannel::OnCallclGetKernelInfo_string(
   char c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
   
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(char))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char))
     param_value = new char[param_value_size/sizeof(char)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -3450,7 +3450,7 @@ void GpuChannel::OnCallclGetKernelInfo_string(
                      param_value_size_ret_inter);
 
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(char)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char)) {
     (*string_ret) = std::string(param_value);
     delete[] param_value;
   }
@@ -3460,7 +3460,7 @@ void GpuChannel::OnCallclGetKernelInfo_cl_uint(
     const cl_point& point_kernel, 
     const cl_kernel_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret, 
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -3471,11 +3471,11 @@ void GpuChannel::OnCallclGetKernelInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3491,7 +3491,7 @@ void GpuChannel::OnCallclGetKernelInfo_cl_point(
     const cl_point& point_kernel, 
     const cl_kernel_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_point* cl_point_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3502,11 +3502,11 @@ void GpuChannel::OnCallclGetKernelInfo_cl_point(
   cl_point* cl_point_ret_inter = cl_point_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_point_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3523,7 +3523,7 @@ void GpuChannel::OnCallclGetKernelArgInfo_cl_uint(
     const cl_uint& cl_uint_arg_indx,
     const cl_kernel_arg_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3535,11 +3535,11 @@ void GpuChannel::OnCallclGetKernelArgInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3557,7 +3557,7 @@ void GpuChannel::OnCallclGetKernelArgInfo_string(
     const cl_uint& cl_uint_arg_indx, 
     const cl_kernel_arg_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::string* string_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3570,13 +3570,13 @@ void GpuChannel::OnCallclGetKernelArgInfo_string(
   char c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(char))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char))
     param_value = new char[param_value_size/sizeof(char)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -3589,7 +3589,7 @@ void GpuChannel::OnCallclGetKernelArgInfo_string(
                      param_value_size_ret_inter);
 
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(char)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char)) {
     (*string_ret) = std::string(param_value);
     delete[] param_value;
   }
@@ -3600,7 +3600,7 @@ void GpuChannel::OnCallclGetKernelArgInfo_cl_ulong(
     const cl_uint& cl_uint_arg_indx,
     const cl_kernel_arg_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_ulong* cl_ulong_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3612,11 +3612,11 @@ void GpuChannel::OnCallclGetKernelArgInfo_cl_ulong(
   cl_ulong* cl_ulong_ret_inter = cl_ulong_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_ulong_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3634,7 +3634,7 @@ void GpuChannel::OnCallclGetKernelWorkGroupInfo_size_t_list(
     const cl_point& point_device,
     const cl_kernel_work_group_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::vector<size_t>* size_t_list_ret,
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -3647,13 +3647,13 @@ void GpuChannel::OnCallclGetKernelWorkGroupInfo_size_t_list(
   size_t c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
    
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(size_t))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(size_t))
     param_value = new size_t[param_value_size/sizeof(size_t)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -3666,7 +3666,7 @@ void GpuChannel::OnCallclGetKernelWorkGroupInfo_size_t_list(
                      param_value_size_ret_inter);
 
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(size_t)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(size_t)) {
     for (cl_uint index = 0; index < param_value_size/sizeof(size_t); ++index)
       (*size_t_list_ret).push_back(param_value[index]);
     delete[] param_value;
@@ -3678,7 +3678,7 @@ void GpuChannel::OnCallclGetKernelWorkGroupInfo_size_t(
     const cl_point& point_device,
     const cl_kernel_work_group_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     size_t* size_t_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3690,11 +3690,11 @@ void GpuChannel::OnCallclGetKernelWorkGroupInfo_size_t(
   size_t* size_t_ret_inter = size_t_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     size_t_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3712,7 +3712,7 @@ void GpuChannel::OnCallclGetKernelWorkGroupInfo_cl_ulong(
     const cl_point& point_device,
     const cl_kernel_work_group_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_ulong* cl_ulong_ret,
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3724,11 +3724,11 @@ void GpuChannel::OnCallclGetKernelWorkGroupInfo_cl_ulong(
   cl_ulong* cl_ulong_ret_inter = cl_ulong_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_ulong_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3745,7 +3745,7 @@ void GpuChannel::OnCallclGetEventInfo_cl_point(
     const cl_point& point_event, 
     const cl_event_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_point* cl_point_ret, 
     size_t* param_value_size_ret,
     cl_int* errcode_ret) {
@@ -3756,11 +3756,11 @@ void GpuChannel::OnCallclGetEventInfo_cl_point(
   cl_point* cl_point_ret_inter = cl_point_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_point_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3776,7 +3776,7 @@ void GpuChannel::OnCallclGetEventInfo_cl_uint(
     const cl_point& point_event,
     const cl_event_info& param_name, 
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* cl_uint_ret,
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -3787,11 +3787,11 @@ void GpuChannel::OnCallclGetEventInfo_cl_uint(
   cl_uint* cl_uint_ret_inter = cl_uint_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_uint_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3807,7 +3807,7 @@ void GpuChannel::OnCallclGetEventInfo_cl_int(
     const cl_point& point_event,
     const cl_event_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* cl_int_ret,
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -3818,11 +3818,11 @@ void GpuChannel::OnCallclGetEventInfo_cl_int(
   cl_int* cl_int_ret_inter = cl_int_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_int_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -3838,7 +3838,7 @@ void GpuChannel::OnCallclGetEventProfilingInfo_cl_ulong(
     const cl_point& point_event, 
     const cl_profiling_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     cl_ulong* cl_ulong_ret,
     size_t* param_value_size_ret, 
     cl_int* errcode_ret) {
@@ -3849,11 +3849,11 @@ void GpuChannel::OnCallclGetEventProfilingInfo_cl_ulong(
   cl_ulong* cl_ulong_ret_inter = cl_ulong_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *param_value_size_ret)
+  if (return_variable_null_status[0])
     param_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (is_param_null)
+  if (return_variable_null_status[1])
     cl_ulong_ret_inter = NULL;
 
   // Call the OpenCL API.

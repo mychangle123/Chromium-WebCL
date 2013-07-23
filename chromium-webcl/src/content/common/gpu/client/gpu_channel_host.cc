@@ -1792,18 +1792,21 @@ cl_int GpuChannelHost::CallclGetDeviceInfo(
   std::string string_ret;
   cl_point cl_point_ret;
   std::vector<intptr_t> intptr_t_list_ret;  
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
  
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_DEVICE_TYPE:
@@ -1846,7 +1849,7 @@ cl_int GpuChannelHost::CallclGetDeviceInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -1865,7 +1868,7 @@ cl_int GpuChannelHost::CallclGetDeviceInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &size_t_list_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -1895,7 +1898,7 @@ cl_int GpuChannelHost::CallclGetDeviceInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &size_t_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -1923,7 +1926,7 @@ cl_int GpuChannelHost::CallclGetDeviceInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_ulong_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -1948,7 +1951,7 @@ cl_int GpuChannelHost::CallclGetDeviceInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &string_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -1967,7 +1970,7 @@ cl_int GpuChannelHost::CallclGetDeviceInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -1987,7 +1990,7 @@ cl_int GpuChannelHost::CallclGetDeviceInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &intptr_t_list_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2018,19 +2021,22 @@ cl_int GpuChannelHost::CallclGetContextInfo(
   cl_uint cl_uint_ret;
   std::vector<cl_point> cl_point_list_ret;
   std::vector<intptr_t> intptr_t_list_ret;
-  cl_bool is_param_null = CL_FALSE;  
   size_t param_value_size_ret_inter = (size_t) -1;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
   
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
  
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_CONTEXT_REFERENCE_COUNT:
@@ -2040,7 +2046,7 @@ cl_int GpuChannelHost::CallclGetContextInfo(
                point_context,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2059,7 +2065,7 @@ cl_int GpuChannelHost::CallclGetContextInfo(
                point_context,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_list_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2079,7 +2085,7 @@ cl_int GpuChannelHost::CallclGetContextInfo(
                point_context,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &intptr_t_list_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2110,18 +2116,21 @@ cl_int GpuChannelHost::CallclGetCommandQueueInfo(
   cl_uint cl_uint_ret;
   cl_ulong cl_ulong_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_QUEUE_CONTEXT: {
@@ -2130,7 +2139,7 @@ cl_int GpuChannelHost::CallclGetCommandQueueInfo(
                point_command_queue,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2149,7 +2158,7 @@ cl_int GpuChannelHost::CallclGetCommandQueueInfo(
                point_command_queue,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret, 
                param_value_size_ret,
                &errcode_ret))) {
@@ -2167,7 +2176,7 @@ cl_int GpuChannelHost::CallclGetCommandQueueInfo(
                point_command_queue,
                param_name, 
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2186,7 +2195,7 @@ cl_int GpuChannelHost::CallclGetCommandQueueInfo(
                point_command_queue, 
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_ulong_ret,
                param_value_size_ret, 
                &errcode_ret))) {
@@ -2217,18 +2226,21 @@ cl_int GpuChannelHost::CallclGetMemObjectInfo(
   size_t size_t_ret;
   cl_point cl_point_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_MEM_TYPE:
@@ -2239,7 +2251,7 @@ cl_int GpuChannelHost::CallclGetMemObjectInfo(
                point_memobj,
                param_name,
                param_value_size, 
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2257,7 +2269,7 @@ cl_int GpuChannelHost::CallclGetMemObjectInfo(
                point_memobj, 
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_ulong_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2276,7 +2288,7 @@ cl_int GpuChannelHost::CallclGetMemObjectInfo(
                point_memobj,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &size_t_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2295,7 +2307,7 @@ cl_int GpuChannelHost::CallclGetMemObjectInfo(
                point_memobj,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2314,7 +2326,7 @@ cl_int GpuChannelHost::CallclGetMemObjectInfo(
                point_memobj,
                param_name, 
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret, 
                param_value_size_ret,
                &errcode_ret))) {
@@ -2333,7 +2345,7 @@ cl_int GpuChannelHost::CallclGetMemObjectInfo(
                point_memobj,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2364,18 +2376,21 @@ cl_int GpuChannelHost::CallclGetImageInfo(
   cl_uint cl_uint_ret;
   std::vector<cl_uint> image_format_list_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr. 
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret) 
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_IMAGE_FORMAT: {
@@ -2383,7 +2398,7 @@ cl_int GpuChannelHost::CallclGetImageInfo(
                point_image,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &image_format_list_ret,
                param_value_size_ret, 
                &errcode_ret))) {
@@ -2410,7 +2425,7 @@ cl_int GpuChannelHost::CallclGetImageInfo(
                point_image,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &size_t_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2428,7 +2443,7 @@ cl_int GpuChannelHost::CallclGetImageInfo(
                point_image, 
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret, 
                &errcode_ret))) {
@@ -2448,7 +2463,7 @@ cl_int GpuChannelHost::CallclGetImageInfo(
                point_image,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2477,18 +2492,21 @@ cl_int GpuChannelHost::CallclGetSamplerInfo(
   cl_uint cl_uint_ret;
   cl_point cl_point_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_SAMPLER_REFERENCE_COUNT:
@@ -2500,7 +2518,7 @@ cl_int GpuChannelHost::CallclGetSamplerInfo(
                point_sampler,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2519,7 +2537,7 @@ cl_int GpuChannelHost::CallclGetSamplerInfo(
                point_sampler,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2553,18 +2571,21 @@ cl_int GpuChannelHost::CallclGetProgramInfo(
   std::vector<std::string> string_list_ret;
   size_t size_t_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_PROGRAM_REFERENCE_COUNT:
@@ -2574,7 +2595,7 @@ cl_int GpuChannelHost::CallclGetProgramInfo(
                point_program,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2593,7 +2614,7 @@ cl_int GpuChannelHost::CallclGetProgramInfo(
                point_program,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2612,7 +2633,7 @@ cl_int GpuChannelHost::CallclGetProgramInfo(
                point_program,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_list_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2633,7 +2654,7 @@ cl_int GpuChannelHost::CallclGetProgramInfo(
                point_program,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &string_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2652,7 +2673,7 @@ cl_int GpuChannelHost::CallclGetProgramInfo(
                point_program,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &size_t_list_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2672,7 +2693,7 @@ cl_int GpuChannelHost::CallclGetProgramInfo(
                point_program,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &string_list_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2692,7 +2713,7 @@ cl_int GpuChannelHost::CallclGetProgramInfo(
                point_program,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &size_t_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2724,18 +2745,21 @@ cl_int GpuChannelHost::CallclGetProgramBuildInfo(
   std::string string_ret;
   cl_uint cl_uint_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_PROGRAM_BUILD_STATUS: {
@@ -2745,7 +2769,7 @@ cl_int GpuChannelHost::CallclGetProgramBuildInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_int_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2766,7 +2790,7 @@ cl_int GpuChannelHost::CallclGetProgramBuildInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &string_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2786,7 +2810,7 @@ cl_int GpuChannelHost::CallclGetProgramBuildInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2816,18 +2840,21 @@ cl_int GpuChannelHost::CallclGetKernelInfo(
   cl_uint cl_uint_ret;
   cl_point cl_point_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.    if ((size_t)-1 == *param_value_size_ret)
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_KERNEL_FUNCTION_NAME:
@@ -2837,7 +2864,7 @@ cl_int GpuChannelHost::CallclGetKernelInfo(
                point_kernel,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &string_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2857,7 +2884,7 @@ cl_int GpuChannelHost::CallclGetKernelInfo(
                point_kernel,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2876,7 +2903,7 @@ cl_int GpuChannelHost::CallclGetKernelInfo(
                point_kernel,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2895,7 +2922,7 @@ cl_int GpuChannelHost::CallclGetKernelInfo(
                point_kernel,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2927,18 +2954,21 @@ cl_int GpuChannelHost::CallclGetKernelArgInfo(
   std::string string_ret;
   cl_ulong cl_ulong_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_KERNEL_ARG_ADDRESS_QUALIFIER:
@@ -2949,7 +2979,7 @@ cl_int GpuChannelHost::CallclGetKernelArgInfo(
                cl_uint_arg_indx,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2969,7 +2999,7 @@ cl_int GpuChannelHost::CallclGetKernelArgInfo(
                cl_uint_arg_indx,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &string_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -2989,7 +3019,7 @@ cl_int GpuChannelHost::CallclGetKernelArgInfo(
                cl_uint_arg_indx,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_ulong_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -3021,18 +3051,21 @@ cl_int GpuChannelHost::CallclGetKernelWorkGroupInfo(
   size_t size_t_ret;
   cl_ulong cl_ulong_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_KERNEL_GLOBAL_WORK_SIZE:
@@ -3043,7 +3076,7 @@ cl_int GpuChannelHost::CallclGetKernelWorkGroupInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &size_t_list_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -3065,7 +3098,7 @@ cl_int GpuChannelHost::CallclGetKernelWorkGroupInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &size_t_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -3085,7 +3118,7 @@ cl_int GpuChannelHost::CallclGetKernelWorkGroupInfo(
                point_device,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_ulong_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -3115,18 +3148,21 @@ cl_int GpuChannelHost::CallclGetEventInfo(
   cl_uint cl_uint_ret;
   cl_int cl_int_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
   
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_EVENT_COMMAND_QUEUE: {
@@ -3135,7 +3171,7 @@ cl_int GpuChannelHost::CallclGetEventInfo(
                point_event,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -3154,7 +3190,7 @@ cl_int GpuChannelHost::CallclGetEventInfo(
                point_event,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_point_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -3173,7 +3209,7 @@ cl_int GpuChannelHost::CallclGetEventInfo(
                point_event,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_uint_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -3192,7 +3228,7 @@ cl_int GpuChannelHost::CallclGetEventInfo(
                point_event,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_int_ret,
                param_value_size_ret,
                &errcode_ret))) {
@@ -3220,18 +3256,21 @@ cl_int GpuChannelHost::CallclGetEventProfilingInfo(
   cl_point point_event = (cl_point) clevent;
   cl_ulong cl_ulong_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+	return_variable_null_status[0] = true;
+  }
   
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   switch(param_name) {
     case CL_PROFILING_COMMAND_QUEUED:
@@ -3244,7 +3283,7 @@ cl_int GpuChannelHost::CallclGetEventProfilingInfo(
                point_event,
                param_name,
                param_value_size,
-               is_param_null,
+               return_variable_null_status,
                &cl_ulong_ret,
                param_value_size_ret,
                &errcode_ret))) {
