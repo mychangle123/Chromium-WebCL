@@ -229,6 +229,9 @@ CommandBufferProxyImpl* GpuChannelHost::CreateOffscreenCommandBuffer(
   {
     context = CallclCreateContext(NULL, 1, device_ids, NULL, NULL, &errcode_ret);
   }
+
+  cl_mem memobj;
+  memobj = CallclCreateBuffer(context,NULL,900,NULL, &errcode_ret);
   
   errcode_ret = CallclGetPlatformIDs(0,NULL,&num_platforms);
   errcode_ret = CallclGetPlatformIDs(0,NULL,&num_platforms);

@@ -1224,7 +1224,7 @@ void GpuChannel::OnCallclCreateContext(
       properties[index] = property_list[index];
   }
 
-  if (num_devices > 0 && devices)
+  if (num_devices > 0 && !point_device_list.empty())
   {
     devices = new cl_device_id[num_devices];
     for (cl_uint index = 0; index < num_devices; ++index)
