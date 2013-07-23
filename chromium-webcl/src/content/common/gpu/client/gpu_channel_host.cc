@@ -901,7 +901,7 @@ cl_mem GpuChannelHost::CallclCreateSubBuffer(
            flags,
            buffer_create_type,
            point_buffer_create_info,
-		   return_variable_null_status,
+           return_variable_null_status,
            errcode_ret,
            &point_memobj_ret))) {
     return NULL;
@@ -1472,11 +1472,24 @@ cl_kernel GpuChannelHost::CallclCreateKernel(
   cl_point point_kernel_ret;
   cl_point point_program = (cl_point) program;
   std::string str_kernel_name(kernel_name);
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
+
+  // The Sync Message can't get value back by NULL ptr, so if a
+  // return back ptr is NULL, we must instead it using another
+  // no-NULL ptr.
+  if (NULL == errcode_ret) {
+    errcode_ret = &errcode_ret_inter;
+    return_variable_null_status[0] = true;
+  }
 
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_CreateKernel(
            point_program,
            str_kernel_name,
+		   return_variable_null_status,
            errcode_ret,
            &point_kernel_ret))) {
     return NULL;
@@ -1495,15 +1508,18 @@ cl_int GpuChannelHost::CallclCreateKernelsInProgram(
   cl_uint num_kernels_ret_inter = (cl_uint) -1;
   cl_point point_program = (cl_point) program;
   std::vector<cl_point> point_kernel_list;
+  std::vector<bool> return_variable_null_status;
 
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == num_kernels_ret)
+  if (NULL == num_kernels_ret) {
     num_kernels_ret = &num_kernels_ret_inter;
-  else if ((cl_uint) -1 == *num_kernels_ret)
-    *num_kernels_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   // Dump the inputs of the Sync IPC Message calling.
   point_kernel_list.clear();
@@ -1515,6 +1531,7 @@ cl_int GpuChannelHost::CallclCreateKernelsInProgram(
            point_program,
            num_kernels,
            point_kernel_list,
+           return_variable_null_status,
            num_kernels_ret,
            &errcode_ret))) {
     return CL_SEND_IPC_MESSAGE_FAILURE;
@@ -1603,21 +1620,26 @@ cl_event GpuChannelHost::CallclCreateUserEvent(
        cl_int *errcode_ret) {
   // Sending a Sync IPC Message, to call a clCreateUserEvent
   // API in other process, and getting the results of the API.
-  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_int errcode_ret_inter;
   cl_point point_out_context;
   cl_point point_in_context = (cl_point) context;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == errcode_ret)
+  if (NULL == errcode_ret) {
     errcode_ret = &errcode_ret_inter;
-  else if (0xFFFFFFF == *errcode_ret)
-    *errcode_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_CreateUserEvent(
            point_in_context,
+		   return_variable_null_status,
            errcode_ret,
            &point_out_context))) {
     return NULL;

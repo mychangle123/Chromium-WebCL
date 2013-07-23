@@ -471,6 +471,7 @@ class GpuChannel : public IPC::Listener,
   void OnCallclCreateKernel(
       const cl_point&,
       const std::string&,
+      const std::vector<bool>&,
       cl_int*,
       cl_point*);
 
@@ -478,7 +479,9 @@ class GpuChannel : public IPC::Listener,
       const cl_point&,
       const cl_uint&,
       const std::vector<cl_point>&,
-      cl_uint*, cl_int*);
+      const std::vector<bool>&,
+      cl_uint*,
+      cl_int*);
 
   void OnCallclRetainKernel(
       const cl_point&,
@@ -502,6 +505,7 @@ class GpuChannel : public IPC::Listener,
 
   void OnCallclCreateUserEvent(
       const cl_point&,
+      const std::vector<bool>&,
       cl_int*,
       cl_point*);
 

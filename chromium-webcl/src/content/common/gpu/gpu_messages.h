@@ -931,18 +931,20 @@ IPC_SYNC_MESSAGE_CONTROL1_1(OpenCLChannelMsg_UnloadPlatformCompiler,
                             cl_int)
 
 // Call and respond OpenCL API clCreateKernel using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL2_2(OpenCLChannelMsg_CreateKernel,
+IPC_SYNC_MESSAGE_CONTROL3_2(OpenCLChannelMsg_CreateKernel,
                             cl_point,
                             std::string,
+                            std::vector<bool>,
                             cl_int,
                             cl_point)
 
 // Call and respond OpenCL API clCreateKernelsInProgram
 // using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL3_2(OpenCLChannelMsg_CreateKernelsInProgram,
+IPC_SYNC_MESSAGE_CONTROL4_2(OpenCLChannelMsg_CreateKernelsInProgram,
                             cl_point,
                             cl_uint,
                             std::vector<cl_point>,
+                            std::vector<bool>,
                             cl_uint,
                             cl_int)
 
@@ -971,8 +973,9 @@ IPC_SYNC_MESSAGE_CONTROL2_1(OpenCLChannelMsg_WaitForEvents,
                             cl_int)
 
 // Call and respond OpenCL API clCreateUserEvent using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL1_2(OpenCLChannelMsg_CreateUserEvent,
+IPC_SYNC_MESSAGE_CONTROL2_2(OpenCLChannelMsg_CreateUserEvent,
                             cl_point,
+                            std::vector<bool>,
                             cl_int,
                             cl_point)
 

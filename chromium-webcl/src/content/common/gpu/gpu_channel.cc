@@ -2023,6 +2023,7 @@ void GpuChannel::OnCallclUnloadPlatformCompiler(
 void GpuChannel::OnCallclCreateKernel(
     const cl_point& point_program,
     const std::string& string_kernel_name,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* errcode_ret,
     cl_point* point_kernel_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -2032,7 +2033,7 @@ void GpuChannel::OnCallclCreateKernel(
   cl_int* errcode_ret_inter = errcode_ret;
 
   // If the caller wishes to pass a NULL.
-  if (0xFFFFFFF == *errcode_ret)
+  if (return_variable_null_status[0])
     errcode_ret_inter = NULL;
 
   // Call the OpenCL API.
@@ -2049,6 +2050,7 @@ void GpuChannel::OnCallclCreateKernelsInProgram(
     const cl_point& point_program,
     const cl_uint& num_kernels,
     const std::vector<cl_point>& point_kernel_list,
+    const std::vector<bool>& return_variable_null_status,
     cl_uint* num_kernels_ret,
     cl_int* errcode_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -2058,7 +2060,7 @@ void GpuChannel::OnCallclCreateKernelsInProgram(
   cl_uint *num_kernels_ret_inter = num_kernels_ret;
 
   // If the caller wishes to pass a NULL.
-  if ((cl_uint) -1 == *num_kernels_ret)
+  if (return_variable_null_status[0])
     num_kernels_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
@@ -2148,6 +2150,7 @@ void GpuChannel::OnCallclWaitForEvents(
 
 void GpuChannel::OnCallclCreateUserEvent(
     const cl_point& point_in_context,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* errcode_ret,
     cl_point* point_out_context) {
   // Receiving and responding the Sync IPC Message from another process
@@ -2157,7 +2160,7 @@ void GpuChannel::OnCallclCreateUserEvent(
   cl_int* errcode_ret_inter = errcode_ret;
 
   // If the caller wishes to pass a NULL.
-  if (0xFFFFFFF == *errcode_ret)
+  if (return_variable_null_status[0])
     errcode_ret_inter = NULL;
 
   // Call the OpenCL API.
