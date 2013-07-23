@@ -65,6 +65,9 @@ public:
 
     WebKit::WebGraphicsContext3D* webContext() const { return m_impl; }
 
+    platformGraphicsContext3D GraphicsContext3DPrivate::platformGraphicsContext3D() const;
+    PlatformDisplay3D GraphicsContext3DPrivate::platformDisplay3D() const;
+
     GrContext* grContext();
 
     void markContextChanged();

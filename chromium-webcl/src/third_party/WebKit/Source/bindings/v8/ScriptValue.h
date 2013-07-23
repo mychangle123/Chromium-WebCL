@@ -52,6 +52,7 @@ namespace WebCore {
 class InspectorValue;
 class MessagePort;
 class SerializedScriptValue;
+class WebCLKernelTypeValue;
 typedef Vector<RefPtr<MessagePort>, 1> MessagePortArray;
 typedef Vector<RefPtr<WTF::ArrayBuffer>, 1> ArrayBufferArray;
 
@@ -146,6 +147,10 @@ public:
     String toString(ScriptState*) const;
 
     PassRefPtr<InspectorValue> toInspectorValue(ScriptState*) const;
+
+#if ENABLE(WEBCL)
+    PassRefPtr<WebCLKernelTypeValue> toWebCLKernelTypeValue(ScriptState*) const;
+#endif
 
 private:
     RefPtr<SharedPersistent<v8::Value> > m_value;

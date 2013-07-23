@@ -31,6 +31,10 @@ class COMPOSITOR_EXPORT TestWebGraphicsContext3D :
   virtual int height();
   virtual void reshape(int width, int height) {}
   virtual bool isGLES2Compliant();
+
+  virtual WebKit::PlatformGraphicsContext3D getPlatformGraphicsContext();
+  virtual WebKit::PlatformDisplay3D getPlatformDisplay();
+
   virtual bool readBackFramebuffer(unsigned char* pixels,
                                    size_t bufferSize,
                                    WebKit::WebGLId framebuffer,

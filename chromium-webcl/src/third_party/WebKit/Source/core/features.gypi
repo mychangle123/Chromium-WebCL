@@ -52,6 +52,7 @@
       'ENABLE_SVG_FONTS=<(enable_svg)',
       'ENABLE_TOUCH_ICON_LOADING=<(enable_touch_icon_loading)',
       'ENABLE_WEBGL=1',
+      'ENABLE_WEBCL=1',
       'ENABLE_XHR_TIMEOUT=0',
       'WTF_USE_BUILTIN_UTF8_CODEC=1',
       # WTF_USE_DYNAMIC_ANNOTATIONS=1 may be defined in build/common.gypi

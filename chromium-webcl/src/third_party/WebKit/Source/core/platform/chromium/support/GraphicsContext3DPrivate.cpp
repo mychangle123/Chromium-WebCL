@@ -167,6 +167,16 @@ GrContext* GraphicsContext3DPrivate::grContext()
     return m_grContext;
 }
 
+PlatformGraphicsContext3D GraphicsContext3DPrivate::platformGraphicsContext3D() const
+{
+  return m_impl->getPlatformGraphicsContext();
+}
+
+PlatformDisplay3D GraphicsContext3DPrivate::platformDisplay3D() const
+{
+  return m_impl->getPlatformDisplay();
+}
+
 void GraphicsContext3DPrivate::markContextChanged()
 {
     m_layerComposited = false;

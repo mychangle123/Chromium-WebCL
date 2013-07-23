@@ -54,6 +54,15 @@ bool TestWebGraphicsContext3D::isContextLost() {
   return false;
 }
 
+
+WebKit::PlatformGraphicsContext3D TestWebGraphicsContext3D::getPlatformGraphicsContext() {
+  return 0;
+}
+
+WebKit::PlatformDisplay3D TestWebGraphicsContext3D::getPlatformDisplay() {
+  return 0;
+}
+
 void* TestWebGraphicsContext3D::mapBufferSubDataCHROMIUM(
     WebKit::WGC3Denum target,
     WebKit::WGC3Dintptr offset,

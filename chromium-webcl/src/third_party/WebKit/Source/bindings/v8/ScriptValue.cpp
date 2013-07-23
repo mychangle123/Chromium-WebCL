@@ -38,6 +38,8 @@
 #include "core/inspector/InspectorValues.h"
 #include "wtf/ArrayBuffer.h"
 
+#include "modules/webcl/WebCLKernelTypes.h"
+
 namespace WebCore {
 
 ScriptValue::~ScriptValue()
@@ -143,5 +145,45 @@ PassRefPtr<InspectorValue> ScriptValue::toInspectorValue(ScriptState* scriptStat
     v8::Context::Scope contextScope(scriptState->context());
     return v8ToInspectorValue(v8ValueRaw(), InspectorValue::maxDepth);
 }
+
+#if ENABLE(WEBCL)
+static PassRefPtr<WebCLKernelTypeValue> v8ToWebCLKernelTypeValue(v8::Handle<v8::Value> value)
+{
+    if (value.IsEmpty()) {
+        ASSERT_NOT_REACHED();
+        return 0;
+    }
+
+    if (value->IsNull() || value->IsUndefined())
+        return WebCLKernelTypeValue::null();
+    if (value->IsNumber())
+        return WebCLKernelTypeBasicValue::create(value->NumberValue());
+    if (value->IsObject()) {
+        if (value->IsArray()) {
+            RefPtr<WebCLKernelTypeVector> webCLKernelTypeVector = WebCLKernelTypeVector::create();
+            v8::Handle<v8::Array> array = v8::Handle<v8::Array>::Cast(value);
+            uint32_t length = array->Length();
+            for (uint32_t i = 0; i < length; i++) {
+                v8::Local<v8::Value> value = array->Get(v8::Int32::New(i));
+                RefPtr<WebCLKernelTypeValue> element = v8ToWebCLKernelTypeValue(value);
+                if (!element) {
+                    ASSERT_NOT_REACHED();
+                    element = WebCLKernelTypeValue::null();
+                }
+                webCLKernelTypeVector->pushValue(element);
+            }
+            return webCLKernelTypeVector;
+        }
+    }
+
+    ASSERT_NOT_REACHED();
+    return 0;
+}
+
+PassRefPtr<WebCLKernelTypeValue> ScriptValue::toWebCLKernelTypeValue(ScriptState* state) const
+{
+    return v8ToWebCLKernelTypeValue(/*m_value.get()*/v8ValueRaw());
+}
+#endif
 
 } // namespace WebCore

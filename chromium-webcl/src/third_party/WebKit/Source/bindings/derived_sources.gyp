@@ -178,6 +178,7 @@
             '--include', '../modules/navigatorcontentutils',
             '--include', '../modules/notifications',
             '--include', '../modules/webaudio',
+            '--include', '../modules/webcl',
             '--include', '../modules/webdatabase',
             '--include', '../modules/webmidi',
             '--include', '../core/css',

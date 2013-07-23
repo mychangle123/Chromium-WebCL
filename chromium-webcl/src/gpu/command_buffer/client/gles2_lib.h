@@ -28,6 +28,9 @@ GLES2_C_LIB_EXPORT void Terminate();
 // Get the current GL context.
 GLES2_C_LIB_EXPORT gpu::gles2::GLES2Interface* GetGLContext();
 
+// Get the current GL CtxKey.
+GLES2_C_LIB_EXPORT unsigned int GetGLCtxKey();
+
 // Set the current GL context.
 GLES2_C_LIB_EXPORT void SetGLContext(gpu::gles2::GLES2Interface* impl);
 

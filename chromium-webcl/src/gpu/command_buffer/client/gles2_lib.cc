@@ -23,6 +23,13 @@ void Initialize() {
   g_gl_context_key = gpu::ThreadLocalAlloc();
 }
 
+unsigned int GetGLCtxKey()
+{
+  unsigned int key = g_gl_context_key;
+  return key;
+  //return &(gpu::ThreadLocalAlloc());
+}
+
 void Terminate() {
   gpu::ThreadLocalFree(g_gl_context_key);
   g_gl_context_key = 0;

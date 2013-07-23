@@ -41,6 +41,8 @@ using WebKit::WebGLId;
 using WebKit::WebString;
 
 using WebKit::WebGraphicsContext3D;
+using WebKit::PlatformGraphicsContext3D;
+using WebKit::PlatformDisplay3D;
 
 namespace webkit {
 namespace gpu {
@@ -503,6 +505,9 @@ class WEBKIT_GPU_EXPORT WebGraphicsContext3DInProcessImpl :
   virtual WGC3Dboolean unmapBufferCHROMIUM(WGC3Denum target);
 
   virtual void drawBuffersEXT(WGC3Dsizei n, const WGC3Denum* bufs);
+
+  PlatformGraphicsContext3D getPlatformGraphicsContext();
+  PlatformDisplay3D getPlatformDisplay();
 
  protected:
   virtual GrGLInterface* onCreateGrGLInterface();
