@@ -304,6 +304,11 @@
     attribute WebKitCSSViewportRuleConstructor WebKitCSSViewportRule;
 #endif
 
+#if defined(ENABLE_WEBCL)
+    //Check if JSCustomGetter needed
+    [CustomGetter] attribute  WebCLConstructor WebCL;
+#endif
+
     attribute CSSRuleConstructor CSSRule;
     attribute CSSCharsetRuleConstructor CSSCharsetRule;
     attribute CSSFontFaceRuleConstructor CSSFontFaceRule;
@@ -473,6 +478,27 @@
     [Conditional=WEBGL] attribute WebGLShaderPrecisionFormatConstructor WebGLShaderPrecisionFormat;
     [Conditional=WEBGL] attribute WebGLTextureConstructor WebGLTexture;
     [Conditional=WEBGL] attribute WebGLUniformLocationConstructor WebGLUniformLocation;
+
+
+    [Conditional=WEBCL] attribute  WebCLContextPropertiesConstructor WebCLContextProperties;
+    [Conditional=WEBCL] attribute  WebCLConstructor WebCL;
+    [Conditional=WEBCL] attribute  WebCLBufferConstructor WebCLBuffer;
+    [Conditional=WEBCL] attribute  WebCLCommandQueueConstructor WebCLCommandQueue;
+    [Conditional=WEBCL] attribute  WebCLDeviceConstructor WebCLDevice;
+    [Conditional=WEBCL] attribute  WebCLDeviceListConstructor WebCLDeviceList;
+    [Conditional=WEBCL] attribute   WebCLEventConstructor WebCLEvent;
+    [Conditional=WEBCL] attribute   WebCLEventListConstructor WebCLEventList;
+
+    [Conditional=WEBCL] attribute   WebCLExceptionConstructor WebCLException;
+    [Conditional=WEBCL] attribute   WebCLImageConstructor WebCLImage;
+    
+    [Conditional=WEBCL] attribute   WebCLKernelConstructor WebCLKernel;
+    [Conditional=WEBCL] attribute   WebCLKernelListConstructor WebCLKernelList;
+    [Conditional=WEBCL] attribute   WebCLMemConstructor WebCLMem;
+    [Conditional=WEBCL] attribute   WebCLProgramConstructor WebCLProgram;
+    [Conditional=WEBCL] attribute   WebCLSamplerConstructor WebCLSampler;
+    [Conditional=WEBCL] attribute   WebCLPlatformConstructor WebCLPlatform;
+    [Conditional=WEBCL] attribute   WebCLPlatformListConstructor WebCLPlatformList;
 
     attribute DOMStringMapConstructor DOMStringMap;
 

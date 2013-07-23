@@ -47,6 +47,9 @@
 typedef void* PlatformGraphicsContext3D;
 typedef void* PlatformGraphicsSurface3D;
 
+typedef void* platformGraphicsContext3D;
+typedef unsigned int PlatformDisplay3D;
+
 class GrContext;
 
 // These are currently the same among all implementations.
@@ -451,6 +454,7 @@ public:
     PlatformLayer* platformLayer() const;
     bool makeContextCurrent();
 
+    PlatformDisplay3D platformDisplay3D() const;
     // With multisampling on, blit from multisampleFBO to regular FBO.
     void prepareTexture();
 
@@ -886,6 +890,10 @@ private:
 
     friend class GraphicsContext3DPrivate;
     OwnPtr<GraphicsContext3DPrivate> m_private;
+
+    //PlatformDisplay3D *m_contextObj;
+    HGLRC hRC;
+    HDC   hDC;
 };
 
 } // namespace WebCore

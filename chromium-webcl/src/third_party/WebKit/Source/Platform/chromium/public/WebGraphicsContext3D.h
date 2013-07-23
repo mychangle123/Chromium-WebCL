@@ -61,6 +61,8 @@ typedef signed long int WGC3Dsizeiptr;
 
 // Typedef for server-side objects like OpenGL textures and program objects.
 typedef WGC3Duint WebGLId;
+typedef void* PlatformGraphicsContext3D;
+typedef unsigned int PlatformDisplay3D;
 
 // This interface abstracts the operations performed by the
 // GraphicsContext3D in order to implement WebGL. Nearly all of the
@@ -183,6 +185,18 @@ public:
 
     // Query whether it is built on top of compliant GLES2 implementation.
     virtual bool isGLES2Compliant() = 0;
+
+    // Get the platform dependent graphics context.
+    virtual PlatformGraphicsContext3D getPlatformGraphicsContext()
+    {
+      return NULL;
+    }
+
+    // Get the platform dependent display of this context created from.
+    virtual PlatformDisplay3D getPlatformDisplay()
+    {
+      return NULL;
+    }
 
     virtual bool setParentContext(WebGraphicsContext3D* parentContext) { return false; }
 

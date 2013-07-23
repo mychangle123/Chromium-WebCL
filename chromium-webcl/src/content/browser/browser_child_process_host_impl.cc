@@ -222,7 +222,17 @@ base::TerminationStatus BrowserChildProcessHostImpl::GetTerminationStatus(
     int* exit_code) {
   DCHECK(BrowserThread::CurrentlyOn(BrowserThread::IO));
   if (!child_process_)  // If the delegate doesn't use Launch() helper.
+  {
+    // If the delegate doesn't use Launch() helper.
+    if (!data_.handle &&
+         CommandLine::ForCurrentProcess()->HasSwitch(switches::kSingleProcess)) {
+      // For single-process mode, the process handle is null, just return the exit status
+      // as normal exit status.
+      exit_code = 0;
+      return base::TERMINATION_STATUS_NORMAL_TERMINATION;
+    }
     return base::GetTerminationStatus(data_.handle, exit_code);
+  }
   return child_process_->GetChildTerminationStatus(false /* known_dead */,
                                                    exit_code);
 }

@@ -5,6 +5,7 @@ core/dom/EventException
 core/fileapi/FileException
 core/dom/RangeException
 modules/webdatabase/SQLException
+modules/webcl/WebCLException conditional=WEBCL
 core/svg/SVGException conditional=SVG
 core/xml/XMLHttpRequestException
 core/xml/XPathException
