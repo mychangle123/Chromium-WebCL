@@ -409,6 +409,7 @@ class GpuChannel : public IPC::Listener,
       const cl_uint&,
       const std::vector<std::string>&,
       const std::vector<size_t>&,
+      const std::vector<bool>&,
       cl_int*,
       cl_point*);
 

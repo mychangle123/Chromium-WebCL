@@ -232,6 +232,13 @@ CommandBufferProxyImpl* GpuChannelHost::CreateOffscreenCommandBuffer(
 
   cl_mem memobj;
   memobj = CallclCreateBuffer(context,NULL,900,NULL, &errcode_ret);
+
+  const char cccc[] ={ "__kernel void abc(global uint* a){a[0] = 1;}"};
+  const char* cc[1];
+  cc[0] = cccc;
+  size_t length = strlen(cc[0]);
+  cl_program program;
+  program = CallclCreateProgramWithSource(context,1,cc,&length,&errcode_ret);
   
   errcode_ret = CallclGetPlatformIDs(0,NULL,&num_platforms);
   errcode_ret = CallclGetPlatformIDs(0,NULL,&num_platforms);
@@ -1130,19 +1137,23 @@ cl_program GpuChannelHost::CallclCreateProgramWithSource(
     cl_int *errcode_ret) {
   // Sending a Sync IPC Message, to call a clCreateProgramWithSource API
   // in other process, and getting the results of the API.
-  cl_int errcode_ret_inter = 0xFFFFFFF;
+  cl_int errcode_ret_inter;
   cl_point point_program_ret;
   cl_point point_context = (cl_point) context;
   std::vector<std::string> string_list;
   std::vector<size_t> length_list;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(1);
+  return_variable_null_status[0] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (NULL == errcode_ret)
+  if (NULL == errcode_ret) {
     errcode_ret = &errcode_ret_inter;
-  else if (0xFFFFFFF == *errcode_ret)
-    *errcode_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   // Dump the inputs of the Sync IPC Message calling.
   string_list.clear();
@@ -1158,6 +1169,7 @@ cl_program GpuChannelHost::CallclCreateProgramWithSource(
            count,
            string_list,
            length_list,
+           return_variable_null_status,
            errcode_ret,
            &point_program_ret))) {
     return NULL;

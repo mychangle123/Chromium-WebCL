@@ -1613,6 +1613,7 @@ void GpuChannel::OnCallclCreateProgramWithSource(
     const cl_uint& count,
     const std::vector<std::string>& string_list,
     const std::vector<size_t>& length_list,
+    const std::vector<bool>& return_variable_null_status,
     cl_int* errcode_ret,
     cl_point* point_program_ret) {
   // Receiving and responding the Sync IPC Message from another process
@@ -1624,11 +1625,11 @@ void GpuChannel::OnCallclCreateProgramWithSource(
   cl_int* errcode_ret_inter = errcode_ret;
 
   // If the caller wishes to pass a NULL.
-  if (0xFFFFFFF == *errcode_ret)
+  if (return_variable_null_status[0])
     errcode_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (count > 0) {
+  if (count > 0 && !string_list.empty() && !length_list.empty()) {
     strings = new const char*[count];
     lengths = new size_t[count];
     for(cl_uint index = 0; index < count; ++index) {
@@ -1645,7 +1646,7 @@ void GpuChannel::OnCallclCreateProgramWithSource(
                     lengths,
                     errcode_ret);
 
-  if (count > 0) {
+  if (count > 0 && !string_list.empty() && !length_list.empty()) {
     delete[] strings;
     delete[] lengths;
   }

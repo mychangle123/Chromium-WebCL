@@ -856,11 +856,12 @@ IPC_SYNC_MESSAGE_CONTROL1_1(OpenCLChannelMsg_ReleaseSampler,
 
 // Call and respond OpenCL API clCreateProgramWithSource
 // using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL4_2(OpenCLChannelMsg_CreateProgramWithSource,
+IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_CreateProgramWithSource,
                             cl_point,
                             cl_uint,
                             std::vector<std::string>,
                             std::vector<size_t>,
+                            std::vector<bool>,
                             cl_int,
                             cl_point)
 
