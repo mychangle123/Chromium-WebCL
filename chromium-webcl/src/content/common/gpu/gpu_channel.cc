@@ -847,6 +847,100 @@ bool GpuChannel::OnControlMessageReceived(const IPC::Message& msg) {
                                     OnCallclFlush)
     IPC_MESSAGE_HANDLER(OpenCLChannelMsg_Finish,
                                     OnCallclFinish)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetPlatformInfo_string,
+                                    OnCallclGetPlatformInfo_string)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetDeviceInfo_cl_uint,
+                                    OnCallclGetDeviceInfo_cl_uint)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetDeviceInfo_size_t_list,
+                                    OnCallclGetDeviceInfo_size_t_list)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetDeviceInfo_size_t,
+                                    OnCallclGetDeviceInfo_size_t)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetDeviceInfo_cl_ulong,
+                                    OnCallclGetDeviceInfo_cl_ulong)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetDeviceInfo_string,
+                                    OnCallclGetDeviceInfo_string)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetDeviceInfo_cl_point,
+                                    OnCallclGetDeviceInfo_cl_point)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetDeviceInfo_intptr_t_list,
+                                    OnCallclGetDeviceInfo_intptr_t_list)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetContextInfo_cl_uint,
+                                    OnCallclGetContextInfo_cl_uint)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetContextInfo_cl_point_list,
+                                    OnCallclGetContextInfo_cl_point_list)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetContextInfo_intptr_t_list,
+                                    OnCallclGetContextInfo_intptr_t_list)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetCommandQueueInfo_cl_point,
+                                    OnCallclGetCommandQueueInfo_cl_point)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetCommandQueueInfo_cl_uint,
+                                    OnCallclGetCommandQueueInfo_cl_uint)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetCommandQueueInfo_cl_ulong,
+                                    OnCallclGetCommandQueueInfo_cl_ulong)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetMemObjectInfo_cl_uint,
+                                    OnCallclGetMemObjectInfo_cl_uint)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetMemObjectInfo_cl_ulong,
+                                    OnCallclGetMemObjectInfo_cl_ulong)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetMemObjectInfo_size_t,
+                                    OnCallclGetMemObjectInfo_size_t)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetMemObjectInfo_cl_point,
+                                    OnCallclGetMemObjectInfo_cl_point)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetImageInfo_cl_image_format,
+                                    OnCallclGetImageInfo_cl_image_format)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetImageInfo_size_t,
+                                    OnCallclGetImageInfo_size_t)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetImageInfo_cl_point,
+                                    OnCallclGetImageInfo_cl_point)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetImageInfo_cl_uint,
+                                    OnCallclGetImageInfo_cl_uint)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetSamplerInfo_cl_uint,
+                                    OnCallclGetSamplerInfo_cl_uint)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetSamplerInfo_cl_point,
+                                    OnCallclGetSamplerInfo_cl_point)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetProgramInfo_cl_uint,
+                                    OnCallclGetProgramInfo_cl_uint)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetProgramInfo_cl_point,
+                                    OnCallclGetProgramInfo_cl_point)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetProgramInfo_cl_point_list,
+                                    OnCallclGetProgramInfo_cl_point_list)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetProgramInfo_string,
+                                    OnCallclGetProgramInfo_string)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetProgramInfo_size_t_list,
+                                    OnCallclGetProgramInfo_size_t_list)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetProgramInfo_string_list,
+                                    OnCallclGetProgramInfo_string_list)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetProgramInfo_size_t,
+                                    OnCallclGetProgramInfo_size_t) 
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetProgramBuildInfo_cl_int,
+                                    OnCallclGetProgramBuildInfo_cl_int) 
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetProgramBuildInfo_string,
+                                    OnCallclGetProgramBuildInfo_string) 
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetProgramBuildInfo_cl_uint,
+                                    OnCallclGetProgramBuildInfo_cl_uint)   
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetKernelInfo_string,
+                                    OnCallclGetKernelInfo_string)  
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetKernelInfo_cl_uint,
+                                    OnCallclGetKernelInfo_cl_uint) 
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetKernelInfo_cl_point,
+                                    OnCallclGetKernelInfo_cl_point) 
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetKernelArgInfo_cl_uint,
+                                    OnCallclGetKernelArgInfo_cl_uint) 
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetKernelArgInfo_string,
+                                    OnCallclGetKernelArgInfo_string)   
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetKernelArgInfo_cl_ulong,
+                                    OnCallclGetKernelArgInfo_cl_ulong)  
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetKernelWorkGroupInfo_size_t_list,
+                                    OnCallclGetKernelWorkGroupInfo_size_t_list)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetKernelWorkGroupInfo_size_t,
+                                    OnCallclGetKernelWorkGroupInfo_size_t)   
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetKernelWorkGroupInfo_cl_ulong,
+                                    OnCallclGetKernelWorkGroupInfo_cl_ulong)  
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetEventInfo_cl_point,
+                                    OnCallclGetEventInfo_cl_point) 
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetEventInfo_cl_uint,
+                                    OnCallclGetEventInfo_cl_uint)   
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetEventInfo_cl_int,
+                                    OnCallclGetEventInfo_cl_int)  
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetEventProfilingInfo_cl_ulong,
+                                    OnCallclGetEventProfilingInfo_cl_ulong)
     // Adding OK.
 #if defined(OS_ANDROID)
     IPC_MESSAGE_HANDLER(GpuChannelMsg_RegisterStreamTextureProxy,
@@ -2154,7 +2248,7 @@ void GpuChannel::OnCallclGetPlatformInfo_string(
     const cl_point& point_platform,
     const cl_platform_info& param_name,
     const size_t& param_value_size,
-    const cl_bool& is_param_null,
+    const std::vector<bool>& return_variable_null_status,
     std::string* string_ret,
     size_t* para_value_size_ret,
     cl_int* errcode_ret) {
@@ -2166,13 +2260,13 @@ void GpuChannel::OnCallclGetPlatformInfo_string(
   char c;
 
   // If the caller wishes to pass a NULL.
-  if ((size_t) -1 == *para_value_size_ret)
+  if (return_variable_null_status[0])
     para_value_size_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (!is_param_null && param_value_size >= sizeof(char))
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char))
     param_value = new char[param_value_size/sizeof(char)];
-  else if (!is_param_null)
+  else if (!return_variable_null_status[1])
     param_value = &c;
 
   // Call the OpenCL API.
@@ -2184,7 +2278,7 @@ void GpuChannel::OnCallclGetPlatformInfo_string(
                      para_value_size_ret_inter);
 
   // Dump the results of OpenCL API calling.
-  if (!is_param_null && param_value_size >= sizeof(char)) {
+  if (!return_variable_null_status[1] && param_value_size >= sizeof(char)) {
     (*string_ret) = std::string(param_value);
     delete[] param_value;
   }

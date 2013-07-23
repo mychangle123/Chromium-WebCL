@@ -1233,7 +1233,7 @@ IPC_SYNC_MESSAGE_CONTROL4_3(OpenCLChannelMsg_GetPlatformInfo_string,
                             cl_point,
                             cl_platform_info,
                             size_t,
-                            cl_bool,
+                            std::vector<bool>,
                             std::string,
                             size_t,
                             cl_int)

@@ -196,7 +196,7 @@ CommandBufferProxyImpl* GpuChannelHost::CreateOffscreenCommandBuffer(
   cl_platform_id* platform_ids = 0;
   cl_device_id * device_ids = 0;
   cl_context context = NULL;
-//  char temp[1000];
+  char temp[1000];
   platform_ids = new cl_platform_id[1];
   errcode_ret = CallclGetPlatformIDs(0,NULL,NULL);
   errcode_ret = CallclGetPlatformIDs(2,NULL,NULL);
@@ -239,6 +239,7 @@ CommandBufferProxyImpl* GpuChannelHost::CreateOffscreenCommandBuffer(
   size_t length = strlen(cc[0]);
   cl_program program;
   program = CallclCreateProgramWithSource(context,1,cc,&length,&errcode_ret);
+  errcode_ret = CallclGetPlatformInfo(platform_ids[0],CL_PLATFORM_VENDOR,100,temp,NULL);
   
   errcode_ret = CallclGetPlatformIDs(0,NULL,&num_platforms);
   errcode_ret = CallclGetPlatformIDs(0,NULL,&num_platforms);
@@ -1738,25 +1739,28 @@ cl_int GpuChannelHost::CallclGetPlatformInfo(
   cl_point point_platform = (cl_point) platform;
   std::string string_ret;
   size_t param_value_size_ret_inter = (size_t) -1;
-  cl_bool is_param_null = CL_FALSE;
+  std::vector<bool> return_variable_null_status;
+
+  return_variable_null_status.resize(2);
+  return_variable_null_status[0] = return_variable_null_status[1] = false;
 
   // The Sync Message can't get value back by NULL ptr, so if a
   // return back ptr is NULL, we must instead it using another
   // no-NULL ptr.
-  if (param_value_size_ret == NULL)
+  if (param_value_size_ret == NULL) {
     param_value_size_ret = &param_value_size_ret_inter;
-  else if ((size_t) -1 == *param_value_size_ret)
-    *param_value_size_ret = 0;
+    return_variable_null_status[0] = true;
+  }
 
   if (NULL == param_value)
-    is_param_null = CL_TRUE;
+    return_variable_null_status[1] = true;
 
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_GetPlatformInfo_string(
            point_platform,
            param_name,
            param_value_size,
-           is_param_null,
+           return_variable_null_status,
            &string_ret,
            param_value_size_ret,
            &errcode_ret))) {
@@ -1764,7 +1768,7 @@ cl_int GpuChannelHost::CallclGetPlatformInfo(
   }
 
   // Dump the results of the Sync IPC Message calling.
-  if (!is_param_null && CL_SUCCESS == errcode_ret)
+  if (param_value && CL_SUCCESS == errcode_ret)
     strcpy((char*)param_value,string_ret.c_str());
 
   return errcode_ret;
