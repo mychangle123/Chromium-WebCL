@@ -386,7 +386,7 @@ rt GraphicsContext3D::name(t1 a1, t2 a2, t3 a3, t4 a4, t5 a5, t6 a6, t7 a7, t8 a
     return m_private->webContext()->name(a1, a2, a3, a4, a5, a6, a7, a8, a9); \
 }
 
-GraphicsContext3D::GraphicsContext3D(GraphicsContext3D::Attributes, HostWindow*, GraphicsContext3D::RenderStyle)
+GraphicsContext3D::GraphicsContext3D(GraphicsContext3D::Attributes attrs, HostWindow*, GraphicsContext3D::RenderStyle)
   : m_currentWidth(0)
   , m_currentHeight(0)
   , m_attrs(attrs)
