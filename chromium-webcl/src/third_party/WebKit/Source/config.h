@@ -71,4 +71,3 @@
 #endif
 
 #define ENABLE_WEBCL 1
-#define CL_USE_DEPRECATED_OPENCL_1_1_APIS

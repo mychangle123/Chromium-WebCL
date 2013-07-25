@@ -849,7 +849,23 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 
 	void WebCL::unloadCompiler(ExceptionCode& ec)
 	{
-		cl_int err =  clUnloadCompiler();
+    cl_int err;
+
+#if defined(CL_VERSION_1_2)
+    cl_platform_id* m_cl_platforms = NULL;
+    unsigned int m_num_platforms;
+    err = clGetPlatformIDs(0, NULL, &m_num_platforms);
+
+    if(err == CL_SUCCESS) {
+      m_cl_platforms = new cl_platform_id[m_num_platforms];
+      err = clGetPlatformIDs(m_num_platforms, m_cl_platforms, NULL);
+    }
+    err = clUnloadPlatformCompiler(m_cl_platforms[0]);
+    delete[] m_cl_platforms;
+#else
+    err =  clUnloadCompiler();
+#endif
+
 		if (err != CL_SUCCESS) {
 			printf("Error: Invaild Error Type\n");
 			ec = WebCLException::FAILURE; 

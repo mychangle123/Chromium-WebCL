@@ -1222,7 +1222,12 @@ void WebCLCommandQueue::enqueueBarrier( ExceptionCode& ec)
 				ec = WebCLException::INVALID_COMMAND_QUEUE;
 				return;
 		}
+#if defined(CL_VERSION_1_2)
+		err = clEnqueueBarrierWithWaitList(m_cl_command_queue, 0 /*eventWaitListLength*/, 0 /*eventsWaitList*/, 0 /*event*/);
+#else
 		err = clEnqueueBarrier(m_cl_command_queue);
+#endif
+
 		if (err != CL_SUCCESS) {
 				switch (err) {
 						case CL_INVALID_COMMAND_QUEUE:
@@ -1268,7 +1273,12 @@ void WebCLCommandQueue::enqueueMarker(WebCLEvent* event, ExceptionCode& ec)
 				}
 		}
 
-		err = clEnqueueMarker(m_cl_command_queue, &cl_event_id);
+#if defined(CL_VERSION_1_2)
+    err = clEnqueueBarrierWithWaitList(m_cl_command_queue, 0 /*eventWaitListLength*/, 0 /*eventsWaitList*/,&cl_event_id /*event*/);
+#else
+    err = clEnqueueMarker(m_cl_command_queue, &cl_event_id);
+#endif
+		//err = clEnqueueMarker(m_cl_command_queue, &cl_event_id);
 		if (err != CL_SUCCESS) {
 				switch (err) {
 						case CL_INVALID_COMMAND_QUEUE:
@@ -1316,7 +1326,14 @@ void WebCLCommandQueue::enqueueWaitForEvents(WebCLEventList* events, ExceptionCo
 						return;
 				}
 		}
-		err = clEnqueueWaitForEvents(m_cl_command_queue, events->length(), cl_event_id);
+#if defined(CL_VERSION_1_2)
+    //err = clWaitForEvents(events->length(), cl_event_id);
+    printf("Error:opencl1.2 doesn't support clEnqueueWaitForEvents \n");
+    ec = WebCLException::INVALID_EVENT;
+    return;
+#else
+    err = clEnqueueWaitForEvents(m_cl_command_queue, events->length(), cl_event_id);
+#endif
 		if (err != CL_SUCCESS) {
 				switch (err) {
 						case CL_INVALID_COMMAND_QUEUE:

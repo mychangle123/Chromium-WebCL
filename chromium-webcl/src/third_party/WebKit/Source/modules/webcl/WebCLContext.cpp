@@ -481,12 +481,26 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags,
 
 		switch (flags) {
 				case WebCL::MEM_READ_ONLY:
+#if defined(CL_VERSION_1_2)
+				cl_image_desc clImageDescriptor;
+						clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE2D;
+						clImageDescriptor.image_width = width;
+						clImageDescriptor.image_height = height;
+						cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,
+										&image_format,&clImageDescriptor,image,&err);
+#else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR , 
 										&image_format, width, height,0, image, &err);
+#endif
 						break;
 				case WebCL::MEM_WRITE_ONLY:
+#if defined(CL_VERSION_1_2)
+					
+					    cl_mem_image = clCreateImage(m_cl_context,(CL_MEM_WRITE_ONLY | CL_MEM_USE_HOST_PTR |CL_MEM_COPY_HOST_PTR),&image_format,&clImageDescriptor,image,&err);
+#else
 						cl_mem_image = clCreateImage2D(m_cl_context, (CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR |CL_MEM_COPY_HOST_PTR), 
 										&image_format, width, height, 0, image, &err);
+#endif
 						break;
 						// TODO (siba samal) Support other mem_flags & testing 
 		}
@@ -596,12 +610,26 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags, HTMLImageElement* im
 		}
 		switch (flags) {
 				case WebCL::MEM_READ_ONLY:
+#if defined(CL_VERSION_1_2)
+						cl_image_desc clImageDescriptor;
+						clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE2D;
+						clImageDescriptor.image_width = width;
+						clImageDescriptor.image_height = height;
+						cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)image1,&err);
+#else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_READ_ONLY| CL_MEM_USE_HOST_PTR, 
 										&image_format, width, height, 0, (void*)image1, &err);
+#endif
 						break;
 				case WebCL::MEM_WRITE_ONLY:
+					
+#if defined(CL_VERSION_1_2)
+					 
+						cl_mem_image = clCreateImage(m_cl_context,CL_MEM_WRITE_ONLY ,&image_format,&clImageDescriptor,(void*)image1,&err);
+#else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_WRITE_ONLY, 
 										&image_format, width, height, 0, (void*)image1, &err);
+#endif
 						break;
 						// TODO (siba samal) Support other flags & testing
 		}
@@ -706,12 +734,25 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags, HTMLVideoElement* vi
 
 		switch (flags) {
 				case WebCL::MEM_READ_ONLY:
+#if defined(CL_VERSION_1_2)
+						cl_image_desc clImageDescriptor;
+						clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE2D;
+						clImageDescriptor.image_width = width;
+						clImageDescriptor.image_height = height;
+						cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)image_data,&err);
+#else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_READ_ONLY| CL_MEM_USE_HOST_PTR, 
 										&image_format, width, height, 0, (void *)image_data, &err);
+#endif
 						break;
 				case WebCL::MEM_WRITE_ONLY:
+#if defined(CL_VERSION_1_2)
+					  
+						cl_mem_image = clCreateImage(m_cl_context,CL_MEM_WRITE_ONLY,&image_format,&clImageDescriptor,(void*)image_data,&err);
+#else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_WRITE_ONLY, 
 										&image_format, width, height, 0, (void *)image_data, &err);
+#endif
 						break;
 						// TODO (siba samal) Support other flags & testing
 		}
@@ -803,12 +844,25 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags, ImageData* data, Exc
 
 		switch (flags) {
 				case WebCL::MEM_READ_ONLY:
+#if defined(CL_VERSION_1_2)
+					    cl_image_desc clImageDescriptor;
+                        clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE2D;
+                        clImageDescriptor.image_width = width;
+                        clImageDescriptor.image_height = height;
+					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)(pixelarray->data()),&err);
+#else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, 
 										&image_format, width, height, 0, (void*)(pixelarray->data()), &err);
+#endif
 						break;
 				case WebCL::MEM_WRITE_ONLY:
+#if defined(CL_VERSION_1_2)
+					 
+					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_WRITE_ONLY , &image_format,&clImageDescriptor,(void*)(pixelarray->data()),&err);
+#else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_WRITE_ONLY, 
 										&image_format, width, height, 0, (void*)(pixelarray->data()), &err);
+#endif
 						break;
 						// TODO (siba samal) Support other flags & testing
 		}
@@ -895,12 +949,25 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags,unsigned int width,
 
 		switch (flags) {
 				case WebCL::MEM_READ_ONLY:
+#if defined(CL_VERSION_1_2)
+					    cl_image_desc clImageDescriptor;
+                        clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE2D;
+                        clImageDescriptor.image_width = width;
+                        clImageDescriptor.image_height = height;
+					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
+#else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, 
 										&image_format, cl_width, cl_height, 0, data->data(), &err);
+#endif
 						break;
 				case WebCL::MEM_WRITE_ONLY:
+#if defined(CL_VERSION_1_2)
+					   
+					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_WRITE_ONLY ,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
+#else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_WRITE_ONLY, 
 										&image_format, cl_width, cl_height, 0, data->data(), &err);
+#endif
 						break;
 						// TODO (siba samal) Support other flags & testing
 		}
@@ -991,12 +1058,26 @@ PassRefPtr<WebCLMem> WebCLContext::createImage3D(int flags,unsigned int width,
 
 		switch (flags) {
 				case WebCL::MEM_READ_ONLY:
+#if defined(CL_VERSION_1_2)
+					    cl_image_desc clImageDescriptor;
+                        clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE3D;
+                        clImageDescriptor.image_width = width;
+                        clImageDescriptor.image_height = height;
+						clImageDescriptor.image_depth = depth;
+					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
+#else
 						cl_mem_image = clCreateImage3D(m_cl_context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, 
 										&image_format, cl_width, cl_height, cl_depth,0, 0, data->data(), &err);
+#endif
 						break;
 				case WebCL::MEM_WRITE_ONLY:
+#if defined(CL_VERSION_1_2)
+					   
+					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_WRITE_ONLY,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
+#else
 						cl_mem_image = clCreateImage3D(m_cl_context, CL_MEM_WRITE_ONLY, 
 										&image_format, cl_width, cl_height, cl_depth, 0, 0,data->data(), &err);
+#endif
 						break;
 						// TODO (siba samal) Support other flags & testing
 		}
@@ -1309,16 +1390,28 @@ PassRefPtr<WebCLMem> WebCLContext::createFromGLTexture2D(int flags,
 		switch (flags)
 		{
 				case WebCL::MEM_READ_ONLY:
+#if defined(CL_VERSION_1_2)
+                        cl_mem_id = clCreateFromGLTexture(m_cl_context, CL_MEM_READ_ONLY, texture_target, miplevel, texture, &err);
+#else
 						cl_mem_id = clCreateFromGLTexture2D(m_cl_context, CL_MEM_READ_ONLY, 
 										texture_target, miplevel, texture, &err);
+#endif
 						break;
 				case WebCL::MEM_WRITE_ONLY:
+#if defined(CL_VERSION_1_2)
+                        cl_mem_id = clCreateFromGLTexture(m_cl_context, CL_MEM_WRITE_ONLY, texture_target, miplevel, texture, &err);
+#else
 						cl_mem_id = clCreateFromGLTexture2D(m_cl_context, CL_MEM_WRITE_ONLY,
 										texture_target, miplevel, texture, &err);
+#endif
 						break;
 				case WebCL::MEM_READ_WRITE:
+#if defined(CL_VERSION_1_2)
+                        cl_mem_id = clCreateFromGLTexture(m_cl_context, CL_MEM_READ_WRITE, texture_target, miplevel, texture, &err);
+#else				
 						cl_mem_id = clCreateFromGLTexture2D(m_cl_context, CL_MEM_READ_WRITE,
 										texture_target, miplevel, texture, &err);
+#endif
 						break;
 		}
 		if (err != CL_SUCCESS) {
