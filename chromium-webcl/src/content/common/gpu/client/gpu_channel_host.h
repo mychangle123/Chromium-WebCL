@@ -28,6 +28,10 @@
 #include "ui/gfx/size.h"
 #include "ui/gl/gpu_preference.h"
 
+#if defined(OS_WIN)
+#include <CL/OpenCL.h>
+#endif
+
 class GURL;
 class TransportTextureService;
 struct GPUCreateCommandBufferConfig;
@@ -240,6 +244,561 @@ class GpuChannelHost : public IPC::Sender,
   base::AtomicSequenceNumber next_transfer_buffer_id_;
 
   DISALLOW_COPY_AND_ASSIGN(GpuChannelHost);
+
+ public:
+  // Calling OpenCL API by IPC message, and run it in another process.
+  cl_int CallclGetPlatformIDs(
+      cl_uint,
+      cl_platform_id*,
+      cl_uint*);
+
+  cl_int CallclGetPlatformInfo(
+      cl_platform_id,
+      cl_platform_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_int CallclGetDeviceIDs(
+      cl_platform_id,
+      cl_device_type,
+      cl_uint,
+      cl_device_id*,
+      cl_uint*);
+
+  cl_int CallclGetDeviceInfo(
+      cl_device_id,
+      cl_device_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_int CallclCreateSubDevices(
+      cl_device_id,
+      const cl_device_partition_property*,
+      cl_uint,
+      cl_device_id*,
+      cl_uint*);
+
+  cl_int CallclRetainDevice (cl_device_id);
+
+  cl_int CallclReleaseDevice (cl_device_id);
+
+  cl_context CallclCreateContext(
+      const cl_context_properties*,
+      cl_uint,
+      const cl_device_id*,
+      void (CL_CALLBACK*)(const char*, const void*, size_t, void*),
+      void*,
+      cl_int*);
+
+  cl_context CallclCreateContextFromType(
+      const cl_context_properties*,
+      cl_device_type,
+      void (CL_CALLBACK*)(const char*, const void*, size_t, void*),
+      void*,
+      cl_int*);
+
+  cl_int CallclRetainContext(cl_context);
+
+  cl_int CallclReleaseContext(cl_context);
+
+  cl_int CallclGetContextInfo(
+      cl_context,
+      cl_context_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_command_queue CallclCreateCommandQueue(
+      cl_context,
+      cl_device_id,
+      cl_command_queue_properties,
+      cl_int*);
+
+  cl_int CallclRetainCommandQueue(cl_command_queue);
+
+  cl_int CallclReleaseCommandQueue(cl_command_queue);
+
+  cl_int CallclGetCommandQueueInfo(
+      cl_command_queue,
+      cl_command_queue_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_mem CallclCreateBuffer(
+      cl_context,
+      cl_mem_flags,
+      size_t,
+      void*,
+      cl_int*);
+
+  cl_mem CallclCreateSubBuffer(
+      cl_mem,
+      cl_mem_flags,
+      cl_buffer_create_type,
+      const void*,
+      cl_int*);
+
+  cl_mem CallclCreateImage(
+      cl_context,
+      cl_mem_flags,
+      const cl_image_format*,
+      const cl_image_desc*,
+      void*,
+      cl_int*);
+
+  cl_int CallclRetainMemObject(cl_mem);
+
+  cl_int CallclReleaseMemObject(cl_mem);
+
+  cl_int CallclGetSupportedImageFormats(
+      cl_context,
+      cl_mem_flags,
+      cl_mem_object_type,
+      cl_uint,
+      cl_image_format*,
+      cl_uint*);
+
+  cl_int CallclGetMemObjectInfo(
+      cl_mem,
+      cl_mem_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_int CallclGetImageInfo(
+      cl_mem,
+      cl_image_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_int CallclSetMemObjectDestructorCallback(
+      cl_mem,
+      void (CL_CALLBACK*)(cl_mem,void*),
+      void*);
+
+  cl_sampler CallclCreateSampler(
+      cl_context,
+      cl_bool,
+      cl_addressing_mode,
+      cl_filter_mode,
+      cl_int*);
+
+  cl_int CallclRetainSampler(cl_sampler);
+
+  cl_int CallclReleaseSampler(cl_sampler);
+
+  cl_int CallclGetSamplerInfo(
+      cl_sampler,
+      cl_sampler_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_program CallclCreateProgramWithSource(
+      cl_context,
+      cl_uint,
+      const char**,
+      const size_t*,
+      cl_int*);
+
+  cl_program CallclCreateProgramWithBinary(
+      cl_context,
+      cl_uint,
+      const cl_device_id*,
+      const size_t*,
+      const unsigned char**,
+      cl_int*,
+      cl_int*);
+
+  cl_program CallclCreateProgramWithBuiltInKernels(
+      cl_context,
+      cl_uint,
+      const cl_device_id*,
+      const char*,
+      cl_int*);
+
+  cl_int CallclRetainProgram(cl_program);
+
+  cl_int CallclReleaseProgram(cl_program);
+
+  cl_int CallclBuildProgram(
+      cl_program,
+      cl_uint,
+      const cl_device_id*,
+      const char*,
+      void (CL_CALLBACK*)(cl_program, void*),
+      void*);
+
+  cl_int CallclCompileProgram(
+      cl_program,
+      cl_uint,
+      const cl_device_id*,
+      const char*,
+      cl_uint,
+      const cl_program*,
+      const char**,
+      void (CL_CALLBACK*)(cl_program, void*),
+      void*);
+
+  cl_program CallclLinkProgram(
+      cl_context,
+      cl_uint,
+      const cl_device_id*,
+      const char*,
+      cl_uint,
+      const cl_program*,
+      void (CL_CALLBACK*)(cl_program, void*),
+      void*, cl_int*);
+
+  cl_int CallclUnloadPlatformCompiler(cl_platform_id);
+
+  cl_int CallclGetProgramInfo(
+      cl_program,
+      cl_program_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_int CallclGetProgramBuildInfo(
+      cl_program,
+      cl_device_id,
+      cl_program_build_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_kernel CallclCreateKernel(
+      cl_program,
+      const char*,
+      cl_int*);
+
+  cl_int CallclCreateKernelsInProgram(
+      cl_program,
+      cl_uint,
+      cl_kernel*,
+      cl_uint*);
+
+  cl_int CallclRetainKernel(cl_kernel);
+
+  cl_int CallclReleaseKernel(cl_kernel);
+
+  cl_int CallclSetKernelArg(
+      cl_kernel,
+      cl_uint,
+      size_t,
+      const void*);
+
+  cl_int CallclGetKernelInfo(
+      cl_kernel,
+      cl_kernel_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_int CallclGetKernelArgInfo(
+      cl_kernel,
+      cl_uint,
+      cl_kernel_arg_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_int CallclGetKernelWorkGroupInfo(
+      cl_kernel,
+      cl_device_id,
+      cl_kernel_work_group_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_int CallclWaitForEvents(
+      cl_uint,
+      const cl_event*);
+
+  cl_int CallclGetEventInfo(
+      cl_event,
+      cl_event_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_event CallclCreateUserEvent(
+      cl_context,
+      cl_int*);
+
+  cl_int CallclRetainEvent(
+      cl_event);
+
+  cl_int CallclReleaseEvent(cl_event);
+
+  cl_int CallclSetUserEventStatus(
+      cl_event,
+      cl_int);
+
+  cl_int CallclSetEventCallback(
+      cl_event,
+      cl_int,
+      void (CL_CALLBACK*)(cl_event, cl_int, void*),
+      void*);
+
+  cl_int CallclGetEventProfilingInfo(
+      cl_event,
+      cl_profiling_info,
+      size_t,
+      void*,
+      size_t*);
+
+  cl_int CallclFlush(cl_command_queue);
+
+  cl_int CallclFinish (cl_command_queue);
+
+  cl_int CallclEnqueueReadBuffer(
+      cl_command_queue,
+      cl_mem,
+      cl_bool,
+      size_t,
+      size_t,
+      void*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueReadBufferRect(
+      cl_command_queue,
+      cl_mem,
+      cl_bool,
+      const size_t*,
+      const size_t*,
+      const size_t*,
+      size_t,
+      size_t,
+      size_t,
+      size_t,
+      void*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueWriteBuffer(
+      cl_command_queue,
+      cl_mem,
+      cl_bool,
+      size_t,
+      size_t,
+      const void*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueWriteBufferRect(
+      cl_command_queue,
+      cl_mem,
+      cl_bool,
+      const size_t*,
+      const size_t*,
+      const size_t*,
+      size_t,
+      size_t,
+      size_t,
+      size_t,
+      const void*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueFillBuffer(
+      cl_command_queue,
+      cl_mem,
+      const void*,
+      size_t,
+      size_t,
+      size_t,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueCopyBuffer(
+      cl_command_queue,
+      cl_mem,
+      cl_mem,
+      size_t,
+      size_t,
+      size_t,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueCopyBufferRect(
+      cl_command_queue,
+      cl_mem,
+      cl_mem,
+      const size_t*,
+      const size_t*,
+      const size_t*,
+      size_t,
+      size_t,
+      size_t,
+      size_t,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueReadImage(
+      cl_command_queue,
+      cl_mem,
+      cl_bool,
+      const size_t*,
+      const size_t*,
+      size_t,
+      size_t,
+      void*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueWriteImage(
+      cl_command_queue,
+      cl_mem,
+      cl_bool,
+      const size_t*,
+      const size_t*,
+      size_t,
+      size_t,
+      const void*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueFillImage(
+      cl_command_queue,
+      cl_mem,
+      const void*,
+      const size_t*,
+      const size_t*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueCopyImage(
+      cl_command_queue,
+      cl_mem,
+      cl_mem,
+      const size_t*,
+      const size_t*,
+      const size_t*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueCopyImageToBuffer(
+      cl_command_queue,
+      cl_mem,
+      cl_mem,
+      const size_t*,
+      const size_t*,
+      size_t,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueCopyBufferToImage(
+      cl_command_queue,
+      cl_mem,
+      cl_mem,
+      size_t,
+      const size_t*,
+      const size_t*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  void* CallclEnqueueMapBuffer(
+      cl_command_queue,
+      cl_mem,
+      cl_bool,
+      cl_map_flags,
+      size_t, size_t,
+      cl_uint,
+      const cl_event*,
+      cl_event*,
+      cl_int*);
+
+  void* CallclEnqueueMapImage(
+      cl_command_queue,
+      cl_mem,
+      cl_bool,
+      cl_map_flags,
+      const size_t*,
+      const size_t*,
+      size_t*,
+      size_t*,
+      cl_uint,
+      const cl_event*,
+      cl_event*,
+      cl_int*);
+
+  cl_int CallclEnqueueUnmapMemObject(
+      cl_command_queue,
+      cl_mem,
+      void*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueMigrateMemObjects(
+      cl_command_queue,
+      cl_uint,
+      const cl_mem*,
+      cl_mem_migration_flags,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueNDRangeKernel(
+      cl_command_queue,
+      cl_kernel,
+      cl_uint,
+      const size_t*,
+      const size_t*,
+      const size_t*,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueTask(
+      cl_command_queue,
+      cl_kernel,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueNativeKernel(
+      cl_command_queue,
+      void (CL_CALLBACK*)(void*),
+      void*,
+      size_t,
+      cl_uint,
+      const cl_mem*,
+      const void**,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueMarkerWithWaitList(
+      cl_command_queue,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
+
+  cl_int CallclEnqueueBarrierWithWaitList(
+      cl_command_queue,
+      cl_uint,
+      const cl_event*,
+      cl_event*);
 };
 
 }  // namespace content
