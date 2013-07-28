@@ -62,7 +62,6 @@
             'content_app',
             'content_browser',
             'content_common',
-            '<(DEPTH)/third_party/WebKit/Source/modules/modules.gyp:modules',
           ],
           'conditions': [
             ['OS != "ios"', {
@@ -234,6 +233,12 @@
                 }],
               ],
             },
+            'VCLinkerTool': {
+              'AdditionalDependencies': [
+                'opencl.lib',
+                'opengl32.lib',
+              ],
+            },            
           },
         },
         {
