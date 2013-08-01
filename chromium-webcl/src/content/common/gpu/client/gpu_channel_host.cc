@@ -1,4 +1,4 @@
-// Copyright (c) 2012 The Chromium Authors. All rights reserved.
+﻿// Copyright (c) 2012 The Chromium Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
@@ -15,6 +15,7 @@
 #include "googleurl/src/gurl.h"
 #include "gpu/command_buffer/common/mailbox.h"
 #include "ipc/ipc_sync_message_filter.h"
+#include "third_party/WebKit/Source/modules/webcl/WebCLInclude.h"
 
 #if defined(OS_WIN)
 #include "content/public/common/sandbox_init.h"
@@ -36,6 +37,7 @@ GpuChannelHost::GpuChannelHost(
       gpu_host_id_(gpu_host_id),
       state_(kUnconnected) {
   next_transfer_buffer_id_.GetNext();
+  setWebCLclGetPlatformIDs(content::CallclGetPlatformIDs);
 }
 
 void GpuChannelHost::Connect(
@@ -3320,6 +3322,647 @@ cl_int GpuChannelHost::CallclGetEventProfilingInfo(
     }
     default: return CL_SEND_IPC_MESSAGE_FAILURE;
   }
+}
+
+cl_int CallclGetPlatformIDs(
+  GpuChannelHost* channel_host_,
+  cl_uint num_entries,
+  cl_platform_id* platforms,
+  cl_uint* num_platforms) {
+    return channel_host_->CallclGetPlatformIDs(
+      num_entries,
+      platforms,
+      num_platforms);
+}
+cl_int CallclGetPlatformInfo(
+  GpuChannelHost* channel_host_,
+  cl_platform_id platform,
+  cl_platform_info param_name,
+  size_t param_value_size,
+  void* param_value,
+  size_t* param_value_size_ret){
+    return channel_host_ ->CallclGetPlatformInfo(
+      platform,
+      param_name, 
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+cl_int CallclGetDeviceIDs(
+  GpuChannelHost* channel_host_,
+  cl_platform_id platform,
+  cl_device_type device_type,
+  cl_uint num_entries,
+  cl_device_id* devices,
+  cl_uint* num_devices) {
+    return channel_host_ ->CallclGetDeviceIDs(
+      platform,
+      device_type,
+      num_entries,
+      devices, num_devices);
+}
+
+cl_int CallclGetDeviceInfo(
+  GpuChannelHost* channel_host_,
+  cl_device_id device,
+  cl_device_info param_name,
+  size_t param_value_size, 
+  void* param_value,
+  size_t* param_value_size_ret) {
+    return channel_host_->CallclGetDeviceInfo(
+      device,
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+
+cl_int CallclCreateSubDevices(
+  GpuChannelHost* channel_host_,
+  cl_device_id in_device,
+  const cl_device_partition_property* properties,
+  cl_uint num_devices,
+  cl_device_id* out_devices,
+  cl_uint* num_devices_ret) {
+    return channel_host_ ->CallclCreateSubDevices(
+      in_device,
+      properties,
+      num_devices,
+      out_devices, 
+      num_devices_ret);
+}
+
+cl_context CallclCreateContext(
+  GpuChannelHost* channel_host_,
+  const cl_context_properties* properties,
+  cl_uint num_devices,
+  const cl_device_id* devices,
+  void (CL_CALLBACK* pfn_notify)(const char*, const void*, size_t, void*),
+  void* user_data,
+  cl_int* errcode_ret) {
+    return channel_host_ ->CallclCreateContext(
+      properties,
+      num_devices,
+      devices,
+      pfn_notify,
+      user_data, 
+      errcode_ret );
+}
+
+cl_context CallclCreateContextFromType(
+  GpuChannelHost* channel_host_,
+  const cl_context_properties *properties,
+  cl_device_type device_type,
+  void (CL_CALLBACK *pfn_notify)(const char *, const void *,size_t, void *),
+  void *user_data,
+  cl_int *errcode_ret) {
+    return channel_host_ ->CallclCreateContextFromType(
+      properties,
+      device_type,
+      pfn_notify, 
+      user_data,
+      errcode_ret );
+}
+
+cl_int CallclGetContextInfo(
+  GpuChannelHost *channel_host_ ,
+  cl_context context, 
+  cl_context_info param_name, 
+  size_t param_value_size, 
+  void *param_value, 
+  size_t *param_value_size_ret) {
+    return channel_host_ ->CallclGetContextInfo(
+      context,
+      param_name, 
+      param_value_size,
+      param_value, 
+      param_value_size_ret);
+}
+
+cl_command_queue CallclCreateCommandQueue(
+  GpuChannelHost* channel_host_,
+  cl_context context,
+  cl_device_id device,
+  cl_command_queue_properties properties,
+  cl_int *errcode_ret) {
+    return channel_host_ ->CallclCreateCommandQueue(
+      context, 
+      device,
+      properties, 
+      errcode_ret);
+}
+
+cl_int CallclGetCommandQueueInfo(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue, 
+  cl_command_queue_info param_name, 
+  size_t param_value_size,
+  void *param_value,
+  size_t *param_value_size_ret) {
+    return channel_host_ ->CallclGetCommandQueueInfo(
+      command_queue,
+      param_name, 
+      param_value_size,
+      param_value, 
+      param_value_size_ret);
+}
+cl_int CallclRetainDevice( GpuChannelHost* channel_host_, cl_device_id device) {
+
+  return channel_host_ ->CallclRetainDevice(device);
+}
+cl_int CallclReleaseDevice(GpuChannelHost* channel_host_, cl_device_id device) {
+  return channel_host_ ->CallclReleaseDevice(device);
+}
+
+cl_int CallclRetainContext(GpuChannelHost* channel_host_, cl_context context) {
+  return channel_host_ ->CallclRetainContext(context);
+}
+
+cl_int CallclReleaseContext(GpuChannelHost* channel_host_, cl_context context) {
+  return channel_host_ ->CallclReleaseContext(context);
+}
+
+cl_int CallclRetainCommandQueue(GpuChannelHost* channel_host_,
+  cl_command_queue command_queue) {
+    return channel_host_ ->CallclRetainCommandQueue(command_queue);
+}
+
+cl_int CallclReleaseCommandQueue(GpuChannelHost* channel_host_,
+  cl_command_queue command_queue) {
+    return channel_host_ ->CallclReleaseCommandQueue(command_queue);
+}
+
+cl_mem CallclCreateBuffer(
+  GpuChannelHost* channel_host_,
+  cl_context context,
+  cl_mem_flags flags,
+  size_t size,
+  void *host_ptr,
+  cl_int *errcode_ret) {
+    return channel_host_ ->CallclCreateBuffer(
+      context,
+      flags,
+      size,
+      host_ptr,
+      errcode_ret);
+}
+
+cl_mem CallclCreateSubBuffer(
+  GpuChannelHost* channel_host_,
+  cl_mem buffer,
+  cl_mem_flags flags,
+  cl_buffer_create_type buffer_create_type,
+  const void *buffer_create_info,
+  cl_int *errcode_ret) {
+    return channel_host_ ->CallclCreateSubBuffer(
+      buffer, 
+      flags,
+      buffer_create_type,
+      buffer_create_info,
+      errcode_ret);
+}
+
+cl_mem CallclCreateImage(
+  GpuChannelHost* channel_host_,
+  cl_context context,
+  cl_mem_flags flags,
+  const cl_image_format *image_format,
+  const cl_image_desc *image_desc,
+  void *host_ptr,
+  cl_int *errcode_ret) {
+    return channel_host_ ->CallclCreateImage(
+      context,
+      flags,
+      image_format,
+      image_desc,
+      host_ptr,
+      errcode_ret);
+}
+
+cl_int CallclRetainMemObject(GpuChannelHost* channel_host_, cl_mem memobj) {
+  return channel_host_ ->CallclRetainMemObject(memobj);
+}
+
+cl_int CallclReleaseMemObject(GpuChannelHost* channel_host_, cl_mem memobj) {
+  return channel_host_ ->CallclReleaseMemObject(memobj);
+}
+
+cl_int CallclGetSupportedImageFormats(
+  GpuChannelHost* channel_host_,
+  cl_context context,
+  cl_mem_flags flags,
+  cl_mem_object_type image_type,
+  cl_uint num_entries,
+  cl_image_format *image_formats,
+  cl_uint *num_image_formats) {
+    return channel_host_ ->CallclGetSupportedImageFormats(
+      context,
+      flags,
+      image_type,
+      num_entries,
+      image_formats, 
+      num_image_formats);
+}
+cl_int CallclGetMemObjectInfo(
+  GpuChannelHost* channel_host_,
+  cl_mem memobj,
+  cl_mem_info param_name,
+  size_t param_value_size,
+  void *param_value,
+  size_t *param_value_size_ret){
+    return channel_host_ ->CallclGetMemObjectInfo(
+      memobj, 
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+cl_int CallclGetImageInfo(
+  GpuChannelHost* channel_host_,
+  cl_mem image,
+  cl_image_info param_name,
+  size_t param_value_size,
+  void *param_value,
+  size_t *param_value_size_ret) {
+    return channel_host_ ->CallclGetImageInfo(
+      image,
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+cl_int CallclSetMemObjectDestructorCallback(
+  GpuChannelHost* channel_host_,
+  cl_mem memobj,
+  void (CL_CALLBACK *pfn_notify)(cl_mem, void*),
+  void *user_data){
+    return channel_host_ ->CallclSetMemObjectDestructorCallback(
+      memobj,
+      pfn_notify,
+      user_data);
+}
+
+cl_sampler CallclCreateSampler(
+  GpuChannelHost* channel_host_,
+  cl_context context,
+  cl_bool normalized_coords,
+  cl_addressing_mode addressing_mode,
+  cl_filter_mode filter_mode,
+  cl_int *errcode_ret){
+    return channel_host_ ->CallclCreateSampler(
+      context,
+      normalized_coords,
+      addressing_mode,
+      filter_mode,
+      errcode_ret); 
+}
+
+cl_int CallclRetainSampler(GpuChannelHost* channel_host_, cl_sampler sampler){
+  return channel_host_ ->CallclRetainSampler(sampler);
+}
+
+cl_int CallclReleaseSampler(GpuChannelHost* channel_host_, cl_sampler sampler){
+  return channel_host_ ->CallclReleaseSampler(sampler);
+}
+
+cl_program CallclCreateProgramWithSource(
+  GpuChannelHost* channel_host_,
+  cl_context context,
+  cl_uint count,
+  const char **strings,
+  const size_t *lengths,
+  cl_int *errcode_ret){
+    return channel_host_ ->CallclCreateProgramWithSource(
+      context,
+      count,
+      strings,
+      lengths,
+      errcode_ret);
+}
+
+cl_program CallclCreateProgramWithBinary(
+  GpuChannelHost* channel_host_,
+  cl_context context,
+  cl_uint num_devices,
+  const cl_device_id *device_list,
+  const size_t *lengths,
+  const unsigned char **binaries,
+  cl_int *binary_status,
+  cl_int *errcode_ret){
+    return channel_host_ ->CallclCreateProgramWithBinary(
+      context,
+      num_devices,
+      device_list,
+      lengths,
+      binaries,
+      binary_status,
+      errcode_ret);
+}
+
+cl_program CallclCreateProgramWithBuiltInKernels(
+  GpuChannelHost* channel_host_,
+  cl_context context,
+  cl_uint num_devices,
+  const cl_device_id *device_list,
+  const char *kernel_names,
+  cl_int *errcode_ret){
+    return channel_host_ ->CallclCreateProgramWithBuiltInKernels(
+      context,
+      num_devices,
+      device_list,
+      kernel_names,
+      errcode_ret);
+}
+
+cl_int CallclRetainProgram(GpuChannelHost* channel_host_, cl_program program){
+  return channel_host_ ->CallclRetainProgram(program);
+}
+
+cl_int CallclReleaseProgram(GpuChannelHost* channel_host_, cl_program program){
+  return channel_host_ ->CallclReleaseProgram(program);
+}
+
+cl_int CallclBuildProgram(
+  GpuChannelHost* channel_host_,
+  cl_program program,
+  cl_uint num_devices,
+  const cl_device_id *device_list,
+  const char *options,
+  void (CL_CALLBACK* pfn_notify)(cl_program, void*),
+  void *user_data){
+    return channel_host_ ->CallclBuildProgram(
+      program,
+      num_devices,
+      device_list,
+      options,
+      pfn_notify,
+      user_data);
+}
+
+cl_int CallclCompileProgram(
+  GpuChannelHost* channel_host_,
+  cl_program program,
+  cl_uint num_devices,
+  const cl_device_id *device_list,
+  const char *options,
+  cl_uint num_input_headers,
+  const cl_program *input_headers,
+  const char **header_include_names,
+  void (CL_CALLBACK* pfn_notify)(cl_program, void*),
+  void *user_data){
+    return channel_host_ ->CallclCompileProgram(
+      program,
+      num_devices,
+      device_list,
+      options,
+      num_input_headers,
+      input_headers,
+      header_include_names,
+      pfn_notify,
+      user_data);
+}
+
+cl_program CallclLinkProgram(
+  GpuChannelHost* channel_host_,
+  cl_context context,
+  cl_uint num_devices,
+  const cl_device_id *device_list,
+  const char *options,
+  cl_uint num_input_programs,
+  const cl_program *input_programs,
+  void (CL_CALLBACK* pfn_notify)(cl_program, void*),
+  void *user_data,
+  cl_int *errcode_ret){
+    return channel_host_ ->CallclLinkProgram(
+      context,
+      num_devices,
+      device_list,
+      options,
+      num_input_programs,
+      input_programs,
+      pfn_notify,
+      user_data,
+      errcode_ret);
+}
+
+cl_int CallclUnloadPlatformCompiler(GpuChannelHost* channel_host_, cl_platform_id platform){
+  return channel_host_ ->CallclUnloadPlatformCompiler(platform);
+}
+
+cl_int CallclGetProgramInfo(
+  GpuChannelHost* channel_host_,
+  cl_program program,
+  cl_program_info param_name,
+  size_t param_value_size,
+  void *param_value, 
+  size_t *param_value_size_ret){
+    return channel_host_ ->CallclGetProgramInfo(
+      program,
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+cl_int CallclGetProgramBuildInfo(
+  GpuChannelHost* channel_host_,
+  cl_program program,
+  cl_device_id device,
+  cl_program_build_info param_name,
+  size_t param_value_size,
+  void *param_value,
+  size_t *param_value_size_ret){
+    return channel_host_ ->CallclGetProgramBuildInfo(
+      program,
+      device,
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+cl_kernel CallclCreateKernel(
+  GpuChannelHost* channel_host_,
+  cl_program program,
+  const char *kernel_name,
+  cl_int *errcode_ret){
+    return channel_host_ ->CallclCreateKernel(
+      program,
+      kernel_name,
+      errcode_ret);
+}
+
+cl_int CallclCreateKernelsInProgram(
+  GpuChannelHost* channel_host_,
+  cl_program program,
+  cl_uint num_kernels,
+  cl_kernel *kernels,
+  cl_uint *num_kernels_ret){
+    return channel_host_ ->CallclCreateKernelsInProgram(
+      program, 
+      num_kernels,
+      kernels,
+      num_kernels_ret);
+}
+
+cl_int CallclRetainKernel(GpuChannelHost* channel_host_, cl_kernel kernel){
+  return channel_host_ ->CallclRetainKernel(kernel);
+}
+
+cl_int CallclReleaseKernel(GpuChannelHost* channel_host_, cl_kernel kernel){
+  return channel_host_ ->CallclReleaseKernel(kernel);
+}
+
+cl_int CallclSetKernelArg(
+  GpuChannelHost* channel_host_,
+  cl_kernel kernel,
+  cl_uint arg_index,
+  size_t arg_size,
+  const void *arg_value){
+    return channel_host_ ->CallclSetKernelArg(
+      kernel,
+      arg_index,
+      arg_size,
+      arg_value);
+}
+
+cl_int CallclGetKernelInfo(
+  GpuChannelHost* channel_host_,
+  cl_kernel kernel,
+  cl_kernel_info param_name,
+  size_t param_value_size,
+  void *param_value,
+  size_t *param_value_size_ret){
+    return channel_host_ ->CallclGetKernelInfo(
+      kernel,
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+cl_int CallclGetKernelArgInfo(
+  GpuChannelHost* channel_host_,
+  cl_kernel kernel,
+  cl_uint arg_indx,
+  cl_kernel_arg_info param_name,
+  size_t param_value_size,
+  void *param_value,
+  size_t *param_value_size_ret){
+    return channel_host_ ->CallclGetKernelArgInfo(
+      kernel,
+      arg_indx,
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+cl_int CallclGetKernelWorkGroupInfo(
+  GpuChannelHost* channel_host_,
+  cl_kernel kernel,
+  cl_device_id device,
+  cl_kernel_work_group_info param_name,
+  size_t param_value_size, 
+  void *param_value,
+  size_t *param_value_size_ret){
+    return channel_host_ ->CallclGetKernelWorkGroupInfo(
+      kernel,
+      device,
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+cl_int CallclWaitForEvents(
+  GpuChannelHost* channel_host_ ,
+  cl_uint num_events,
+  const cl_event *event_list){
+    return channel_host_ ->CallclWaitForEvents(
+      num_events,
+      event_list);
+}
+
+cl_int CallclGetEventInfo(
+  GpuChannelHost* channel_host_,
+  cl_event clevent,
+  cl_event_info param_name,
+  size_t param_value_size,
+  void *param_value,
+  size_t *param_value_size_ret){
+    return channel_host_ ->CallclGetEventInfo(
+      clevent,
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+cl_event CallclCreateUserEvent(
+  GpuChannelHost *channel_host_,
+  cl_context context,
+  cl_int *errcode_ret){
+    return channel_host_ ->CallclCreateUserEvent(
+      context,
+      errcode_ret);
+}
+
+cl_int CallclRetainEvent(GpuChannelHost* channel_host_, cl_event clevent){
+  return channel_host_ ->CallclRetainEvent(clevent);
+}
+
+cl_int CallclReleaseEvent(GpuChannelHost* channel_host_, cl_event clevent){
+  return channel_host_ ->CallclReleaseEvent(clevent);
+}
+
+cl_int CallclSetUserEventStatus(
+  GpuChannelHost* channel_host_,
+  cl_event clevent,
+  cl_int execution_status){
+    return channel_host_ ->CallclSetUserEventStatus(
+      clevent,
+      execution_status);
+}
+
+cl_int CallclSetEventCallback(
+  GpuChannelHost* channel_host_,
+  cl_event clevent,
+  cl_int command_exec_callback_type,
+  void (CL_CALLBACK *pfn_event_notify)(cl_event, cl_int,void *),
+  void *user_data){
+    return channel_host_ ->CallclSetEventCallback(
+      clevent,
+      command_exec_callback_type,
+      pfn_event_notify,
+      user_data);
+}
+
+cl_int CallclGetEventProfilingInfo(
+  GpuChannelHost* channel_host_,
+  cl_event clevent,
+  cl_profiling_info param_name,
+  size_t param_value_size,
+  void *param_value,
+  size_t *param_value_size_ret){
+    return channel_host_ ->CallclGetEventProfilingInfo(
+      clevent,
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
+}
+
+cl_int CallclFlush(GpuChannelHost* channel_host_, cl_command_queue command_queue){
+  return channel_host_ ->CallclFlush(command_queue);
+}
+
+cl_int CallclFinish(GpuChannelHost* channel_host_, cl_command_queue command_queue) {
+  return channel_host_ ->CallclFinish(command_queue);
 }
 
 }  // namespace content

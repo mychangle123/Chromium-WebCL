@@ -77,8 +77,18 @@
 #include <stdlib.h>
 #include <wtf/ArrayBuffer.h>
 
+#undef  LOG
+#include "content/common/gpu/client/gpu_channel_host.h"
+#undef  LOG
+#define LOG(channel, ...) WTFLog(&JOIN_LOG_CHANNEL_WITH_PREFIX(LOG_CHANNEL_PREFIX, channel), __VA_ARGS__)
+
+extern content::GpuChannelHost* webcl_channel_;
+
 using namespace std ;
 
+#include "third_party/WebKit/Source/modules/webcl/WebCLInclude.h"
+
+extern "C" __declspec(dllexport) void setWebCLChannelHost(content::GpuChannelHost* channel_webcl);
 
 namespace WebCore { 
 

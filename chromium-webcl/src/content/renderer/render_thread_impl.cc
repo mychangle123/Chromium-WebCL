@@ -99,6 +99,8 @@
 #include "v8/include/v8.h"
 #include "webkit/glue/webkit_glue.h"
 
+extern "C"__declspec(dllimport) void setWebCLChannelHost(content::GpuChannelHost* channel_webcl);
+
 #if defined(OS_WIN)
 #include <windows.h>
 #include <objbase.h>
@@ -1272,6 +1274,7 @@ GpuChannelHost* RenderThreadImpl::GetGpuChannel() {
   if (gpu_channel_->state() != GpuChannelHost::kConnected)
     return NULL;
 
+  setWebCLChannelHost(gpu_channel_.get());
   return gpu_channel_.get();
 }
 
