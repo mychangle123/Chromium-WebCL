@@ -965,6 +965,7 @@ cl_int CallclRetainSampler(GpuChannelHost*,cl_sampler);
 cl_int CallclReleaseSampler(GpuChannelHost*,cl_sampler);
 
 cl_int CallclGetSamplerInfo(
+    GpuChannelHost*,
     cl_sampler,
     cl_sampler_info,
     size_t,

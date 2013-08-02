@@ -24,6 +24,8 @@
 using base::AutoLock;
 using base::MessageLoopProxy;
 
+#define WEBCL_SET_FUNC(func) setWebCL##func(content::Call##func);
+
 namespace content {
 
 GpuListenerInfo::GpuListenerInfo() {}
@@ -37,7 +39,88 @@ GpuChannelHost::GpuChannelHost(
       gpu_host_id_(gpu_host_id),
       state_(kUnconnected) {
   next_transfer_buffer_id_.GetNext();
-  setWebCLclGetPlatformIDs(content::CallclGetPlatformIDs);
+
+  WEBCL_SET_FUNC(clGetPlatformIDs                 )
+  WEBCL_SET_FUNC(clGetPlatformInfo                )
+  WEBCL_SET_FUNC(clGetDeviceIDs                   )
+  WEBCL_SET_FUNC(clGetDeviceInfo                  )
+  WEBCL_SET_FUNC(clCreateSubDevices               )
+  WEBCL_SET_FUNC(clRetainDevice                   )
+  WEBCL_SET_FUNC(clReleaseDevice                  )
+  WEBCL_SET_FUNC(clCreateContext                  )
+  WEBCL_SET_FUNC(clCreateContextFromType          )
+  WEBCL_SET_FUNC(clRetainContext                  )
+  WEBCL_SET_FUNC(clReleaseContext                 )
+  WEBCL_SET_FUNC(clGetContextInfo                 )
+  WEBCL_SET_FUNC(clCreateCommandQueue             )
+  WEBCL_SET_FUNC(clRetainCommandQueue             )
+  WEBCL_SET_FUNC(clReleaseCommandQueue            )
+  WEBCL_SET_FUNC(clGetCommandQueueInfo            )
+  WEBCL_SET_FUNC(clCreateBuffer                   )
+  WEBCL_SET_FUNC(clCreateSubBuffer                )
+  WEBCL_SET_FUNC(clCreateImage                    )
+  WEBCL_SET_FUNC(clRetainMemObject                )
+  WEBCL_SET_FUNC(clReleaseMemObject               )
+  WEBCL_SET_FUNC(clGetSupportedImageFormats       )
+  WEBCL_SET_FUNC(clGetMemObjectInfo               )
+  WEBCL_SET_FUNC(clGetImageInfo                   )
+  WEBCL_SET_FUNC(clSetMemObjectDestructorCallback )
+  WEBCL_SET_FUNC(clCreateSampler                  )
+  WEBCL_SET_FUNC(clRetainSampler                  )
+  WEBCL_SET_FUNC(clReleaseSampler                 )
+  WEBCL_SET_FUNC(clGetSamplerInfo                 )
+  WEBCL_SET_FUNC(clCreateProgramWithSource        )
+  WEBCL_SET_FUNC(clCreateProgramWithBinary        )
+  WEBCL_SET_FUNC(clCreateProgramWithBuiltInKernels)
+  WEBCL_SET_FUNC(clRetainProgram                  )
+  WEBCL_SET_FUNC(clReleaseProgram                 )
+  WEBCL_SET_FUNC(clBuildProgram                   )
+  WEBCL_SET_FUNC(clCompileProgram                 )
+  WEBCL_SET_FUNC(clLinkProgram                    )
+  WEBCL_SET_FUNC(clUnloadPlatformCompiler         )
+  WEBCL_SET_FUNC(clGetProgramInfo                 )
+  WEBCL_SET_FUNC(clGetProgramBuildInfo            )
+  WEBCL_SET_FUNC(clCreateKernel                   )
+  WEBCL_SET_FUNC(clCreateKernelsInProgram         )
+  WEBCL_SET_FUNC(clRetainKernel                   )
+  WEBCL_SET_FUNC(clReleaseKernel                  )
+  WEBCL_SET_FUNC(clSetKernelArg                   )
+  WEBCL_SET_FUNC(clGetKernelInfo                  )
+  WEBCL_SET_FUNC(clGetKernelArgInfo               )
+  WEBCL_SET_FUNC(clGetKernelWorkGroupInfo         )
+  WEBCL_SET_FUNC(clWaitForEvents                  )
+  WEBCL_SET_FUNC(clGetEventInfo                   )
+  WEBCL_SET_FUNC(clCreateUserEvent                )
+  WEBCL_SET_FUNC(clRetainEvent                    )
+  WEBCL_SET_FUNC(clReleaseEvent                   )
+  WEBCL_SET_FUNC(clSetUserEventStatus             )
+  WEBCL_SET_FUNC(clSetEventCallback               )
+  WEBCL_SET_FUNC(clGetEventProfilingInfo          )
+  WEBCL_SET_FUNC(clFlush                          )
+  WEBCL_SET_FUNC(clFinish                         )
+  //WEBCL_SET_FUNC(clEnqueueReadBuffer              )
+  //WEBCL_SET_FUNC(clEnqueueReadBufferRect          )
+  //WEBCL_SET_FUNC(clEnqueueWriteBuffer             )
+  //WEBCL_SET_FUNC(clEnqueueWriteBufferRect         )
+  //WEBCL_SET_FUNC(clEnqueueFillBuffer              )
+  //WEBCL_SET_FUNC(clEnqueueCopyBuffer              )
+  //WEBCL_SET_FUNC(clEnqueueCopyBufferRect          )
+  //WEBCL_SET_FUNC(clEnqueueReadImage               )
+  //WEBCL_SET_FUNC(clEnqueueWriteImage              )
+  //WEBCL_SET_FUNC(clEnqueueFillImage               )
+  //WEBCL_SET_FUNC(clEnqueueCopyImage               )
+  //WEBCL_SET_FUNC(clEnqueueCopyImageToBuffer       )
+  //WEBCL_SET_FUNC(clEnqueueCopyBufferToImage       )
+  //WEBCL_SET_FUNC(clEnqueueMapBuffer               )
+  //WEBCL_SET_FUNC(clEnqueueMapImage                )
+  //WEBCL_SET_FUNC(clEnqueueUnmapMemObject          )
+  //WEBCL_SET_FUNC(clEnqueueMigrateMemObjects       )
+  //WEBCL_SET_FUNC(clEnqueueNDRangeKernel           )
+  //WEBCL_SET_FUNC(clEnqueueTask                    )
+  //WEBCL_SET_FUNC(clEnqueueNativeKernel            )
+  //WEBCL_SET_FUNC(clEnqueueMarkerWithWaitList      )
+  //WEBCL_SET_FUNC(clEnqueueBarrierWithWaitList     )
+  //WEBCL_SET_FUNC(clSetPrintfCallback              )
 }
 
 void GpuChannelHost::Connect(
@@ -3627,6 +3710,21 @@ cl_int CallclRetainSampler(GpuChannelHost* channel_host_, cl_sampler sampler){
 
 cl_int CallclReleaseSampler(GpuChannelHost* channel_host_, cl_sampler sampler){
   return channel_host_ ->CallclReleaseSampler(sampler);
+}
+
+cl_int CallclGetSamplerInfo(
+  GpuChannelHost* channel_host_,
+  cl_sampler sampler,
+  cl_sampler_info param_name,
+  size_t param_value_size,
+  void *param_value,
+  size_t *param_value_size_ret){
+    return channel_host_ ->CallclGetSamplerInfo(
+      sampler,
+      param_name,
+      param_value_size,
+      param_value,
+      param_value_size_ret);
 }
 
 cl_program CallclCreateProgramWithSource(
