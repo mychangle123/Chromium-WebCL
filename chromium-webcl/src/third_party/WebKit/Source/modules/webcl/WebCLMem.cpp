@@ -67,27 +67,27 @@ WebCLGetInfo WebCLMem::getInfo(int param_name, ExceptionCode& ec)
 	switch(param_name)
 	{   	
 		case WebCL::MEM_MAP_COUNT:
-			err=clGetMemObjectInfo(m_cl_mem, CL_MEM_MAP_COUNT , sizeof(cl_uint), &uint_units, NULL);
+			err = webcl_clGetMemObjectInfo(webcl_channel_, m_cl_mem, CL_MEM_MAP_COUNT , sizeof(cl_uint), &uint_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(uint_units));	
 			break;
 		case WebCL::MEM_REFERENCE_COUNT:
-			err=clGetMemObjectInfo(m_cl_mem, CL_MEM_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
+			err = webcl_clGetMemObjectInfo(webcl_channel_, m_cl_mem, CL_MEM_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(uint_units));	
 			break;
 		case WebCL::MEM_SIZE:
-			err=clGetMemObjectInfo(m_cl_mem, CL_MEM_SIZE, sizeof(size_t), &sizet_units, NULL);
+			err = webcl_clGetMemObjectInfo(webcl_channel_, m_cl_mem, CL_MEM_SIZE, sizeof(size_t), &sizet_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(sizet_units));
 			break;
 		case WebCL::MEM_TYPE:			
-			err=clGetMemObjectInfo(m_cl_mem, CL_MEM_TYPE, sizeof(cl_mem_object_type), &mem_type, NULL);
+			err = webcl_clGetMemObjectInfo(webcl_channel_, m_cl_mem, CL_MEM_TYPE, sizeof(cl_mem_object_type), &mem_type, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(mem_type));
 			break;
 		case WebCL::MEM_CONTEXT:			
-			err=clGetMemObjectInfo(m_cl_mem, CL_MEM_CONTEXT, sizeof(cl_context), &cl_context_id, NULL);
+			err = webcl_clGetMemObjectInfo(webcl_channel_, m_cl_mem, CL_MEM_CONTEXT, sizeof(cl_context), &cl_context_id, NULL);
 			contextObj = WebCLContext::create(m_context, cl_context_id);
 			if(contextObj == NULL)
 			{
@@ -98,7 +98,7 @@ WebCLGetInfo WebCLMem::getInfo(int param_name, ExceptionCode& ec)
 				return WebCLGetInfo(PassRefPtr<WebCLContext>(contextObj));
 			break;
 		case WebCL::MEM_HOST_PTR:			
-			err=clGetMemObjectInfo(m_cl_mem, CL_MEM_HOST_PTR, sizeof(mem_ptr), &mem_ptr, NULL);
+			err = webcl_clGetMemObjectInfo(webcl_channel_, m_cl_mem, CL_MEM_HOST_PTR, sizeof(mem_ptr), &mem_ptr, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(mem_ptr);
 			break;
@@ -145,7 +145,7 @@ void WebCLMem::releaseCL( ExceptionCode& ec)
 		ec = WebCL::FAILURE;
 		return;
 	}
-	err = clReleaseMemObject(m_cl_mem);
+	err = webcl_clReleaseMemObject(webcl_channel_, m_cl_mem);
 	if (err != CL_SUCCESS) {
 		switch (err) {
 			case CL_INVALID_MEM_OBJECT:

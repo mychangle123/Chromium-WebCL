@@ -79,13 +79,13 @@ WebCLDeviceList::WebCLDeviceList(WebCL* compute_context,
 	cl_uint num_devices = 0;
 
 	if(device_type == WebCL::DEVICE_TYPE_GPU)
-		err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_GPU, 0, NULL, &num_devices);
+		err = webcl_clGetDeviceIDs(webcl_channel_, platform_id, CL_DEVICE_TYPE_GPU, 0, NULL, &num_devices);
 	else if(device_type ==  WebCL::DEVICE_TYPE_CPU)
-		err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_CPU, 1, NULL, &num_devices);
+		err = webcl_clGetDeviceIDs(webcl_channel_, platform_id, CL_DEVICE_TYPE_CPU, 1, NULL, &num_devices);
 	else if(device_type ==  WebCL::DEVICE_TYPE_ACCELERATOR)
-		err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ACCELERATOR, 1, NULL, &num_devices);
+		err = webcl_clGetDeviceIDs(webcl_channel_, platform_id, CL_DEVICE_TYPE_ACCELERATOR, 1, NULL, &num_devices);
 	else if(device_type == WebCL::DEVICE_TYPE_DEFAULT)
-		err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, NULL, &num_devices);
+		err = webcl_clGetDeviceIDs(webcl_channel_, platform_id, CL_DEVICE_TYPE_DEFAULT, 1, NULL, &num_devices);
 	//else if(device_type == WebCL::DEVICE_TYPE_ALL)
 	//	err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ALL, 1, NULL, &num_devices);
 	else
@@ -128,13 +128,13 @@ WebCLDeviceList::WebCLDeviceList(WebCL* compute_context,
 	m_cl_devices = new cl_device_id[num_devices];
 	
 	if(device_type == WebCL::DEVICE_TYPE_GPU)
-		err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_GPU, 1, m_cl_devices, &num_devices);
+		err = webcl_clGetDeviceIDs(webcl_channel_, platform_id, CL_DEVICE_TYPE_GPU, 1, m_cl_devices, &num_devices);
 	else if(device_type == WebCL::DEVICE_TYPE_CPU)
-		err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_CPU, 1, m_cl_devices, &num_devices);
+		err = webcl_clGetDeviceIDs(webcl_channel_, platform_id, CL_DEVICE_TYPE_CPU, 1, m_cl_devices, &num_devices);
 	else if(device_type == WebCL::DEVICE_TYPE_ACCELERATOR)
-		err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ACCELERATOR, 1, m_cl_devices, &num_devices);
+		err = webcl_clGetDeviceIDs(webcl_channel_, platform_id, CL_DEVICE_TYPE_ACCELERATOR, 1, m_cl_devices, &num_devices);
 	else if(device_type == WebCL::DEVICE_TYPE_DEFAULT)
-		err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_DEFAULT, 1, m_cl_devices, &num_devices);
+		err = webcl_clGetDeviceIDs(webcl_channel_, platform_id, CL_DEVICE_TYPE_DEFAULT, 1, m_cl_devices, &num_devices);
 	//else if(device_type == WebCL::DEVICE_TYPE_ALL)
 	//	err = clGetDeviceIDs(platform_id, CL_DEVICE_TYPE_ALL, 1, m_cl_devices , &num_devices);
 	else

@@ -66,28 +66,28 @@ WebCLGetInfo WebCLSampler::getInfo(cl_sampler_info param_name, ExceptionCode& ec
 	switch(param_name)
 	{
 		case WebCL::SAMPLER_REFERENCE_COUNT:
-			err=clGetSamplerInfo (m_cl_sampler, CL_SAMPLER_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
+			err = webcl_clGetSamplerInfo (webcl_channel_, m_cl_sampler, CL_SAMPLER_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(uint_units));
 			break;
 		case WebCL::SAMPLER_NORMALIZED_COORDS:
-			err=clGetSamplerInfo(m_cl_sampler, CL_SAMPLER_NORMALIZED_COORDS , sizeof(cl_bool), &bool_units, NULL);
+			err = webcl_clGetSamplerInfo(webcl_channel_, m_cl_sampler, CL_SAMPLER_NORMALIZED_COORDS , sizeof(cl_bool), &bool_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<bool>(bool_units));
 			break;
 		case WebCL::SAMPLER_CONTEXT:
-			err=clGetSamplerInfo(m_cl_sampler, CL_SAMPLER_CONTEXT, sizeof(cl_context), &cl_context_id, NULL);
+			err = webcl_clGetSamplerInfo(webcl_channel_, m_cl_sampler, CL_SAMPLER_CONTEXT, sizeof(cl_context), &cl_context_id, NULL);
 			contextObj = WebCLContext::create(m_context, cl_context_id);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(PassRefPtr<WebCLContext>(contextObj));
 			break;
 		case WebCL::SAMPLER_ADDRESSING_MODE:
-			err=clGetSamplerInfo (m_cl_sampler, CL_SAMPLER_ADDRESSING_MODE , sizeof(cl_uint), &uint_units, NULL);
+			err = webcl_clGetSamplerInfo (webcl_channel_, m_cl_sampler, CL_SAMPLER_ADDRESSING_MODE , sizeof(cl_uint), &uint_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(uint_units));
 			break;
 		case WebCL::SAMPLER_FILTER_MODE:
-			err=clGetSamplerInfo (m_cl_sampler, CL_SAMPLER_FILTER_MODE , sizeof(cl_uint), &uint_units, NULL);
+			err = webcl_clGetSamplerInfo (webcl_channel_, m_cl_sampler, CL_SAMPLER_FILTER_MODE , sizeof(cl_uint), &uint_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(uint_units));
 			break;
@@ -130,7 +130,7 @@ void WebCLSampler::releaseCL( ExceptionCode& ec)
 		ec = WebCLException::INVALID_SAMPLER;
 		return;
 	}
-	err = clReleaseSampler(m_cl_sampler);
+	err = webcl_clReleaseSampler(webcl_channel_, m_cl_sampler);
 	if (err != CL_SUCCESS) {
 		switch (err) {
 			case CL_INVALID_SAMPLER :

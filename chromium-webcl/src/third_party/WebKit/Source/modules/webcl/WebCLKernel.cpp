@@ -72,28 +72,28 @@ WebCLGetInfo WebCLKernel::getInfo (int kernel_info, ExceptionCode& ec)
 	switch(kernel_info)
 	{
 		case WebCL::KERNEL_FUNCTION_NAME:
-			err=clGetKernelInfo(m_cl_kernel, CL_KERNEL_FUNCTION_NAME, sizeof(function_name), &function_name, NULL);
+			err = webcl_clGetKernelInfo(webcl_channel_, m_cl_kernel, CL_KERNEL_FUNCTION_NAME, sizeof(function_name), &function_name, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(String(function_name));
 			break;
 		case WebCL::KERNEL_NUM_ARGS:
-			err=clGetKernelInfo(m_cl_kernel, CL_KERNEL_NUM_ARGS , sizeof(cl_uint), &uint_units, NULL);
+			err = webcl_clGetKernelInfo(webcl_channel_, m_cl_kernel, CL_KERNEL_NUM_ARGS , sizeof(cl_uint), &uint_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(uint_units));	
 			break;
 		case WebCL::KERNEL_REFERENCE_COUNT:
-			err=clGetKernelInfo(m_cl_kernel, CL_KERNEL_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
+			err = webcl_clGetKernelInfo(webcl_channel_, m_cl_kernel, CL_KERNEL_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(uint_units));
 			break;
 		case WebCL::KERNEL_PROGRAM:
-			err=clGetKernelInfo(m_cl_kernel, CL_KERNEL_PROGRAM, sizeof(cl_program_id), &cl_program_id, NULL);
+			err = webcl_clGetKernelInfo(webcl_channel_, m_cl_kernel, CL_KERNEL_PROGRAM, sizeof(cl_program_id), &cl_program_id, NULL);
 			programObj = WebCLProgram::create(m_context, cl_program_id);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(PassRefPtr<WebCLProgram>(programObj));
 			break;
 		case WebCL::KERNEL_CONTEXT:
-			err=clGetKernelInfo(m_cl_kernel, CL_KERNEL_CONTEXT, sizeof(cl_context), &cl_context_id, NULL);
+			err = webcl_clGetKernelInfo(webcl_channel_, m_cl_kernel, CL_KERNEL_CONTEXT, sizeof(cl_context), &cl_context_id, NULL);
 			contextObj = WebCLContext::create(m_context, cl_context_id);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(PassRefPtr<WebCLContext>(contextObj));
@@ -150,16 +150,16 @@ WebCLGetInfo WebCLKernel::getWorkGroupInfo( WebCLDevice* device, int param_name,
 	switch (param_name) {
 
 		case WebCL::KERNEL_WORK_GROUP_SIZE:
-			err = clGetKernelWorkGroupInfo(m_cl_kernel, cl_device, CL_KERNEL_WORK_GROUP_SIZE, sizeof(size_t), &sizet_units, NULL);
+			err = webcl_clGetKernelWorkGroupInfo(webcl_channel_, m_cl_kernel, cl_device, CL_KERNEL_WORK_GROUP_SIZE, sizeof(size_t), &sizet_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(sizet_units));
 			break;
 		case WebCL::KERNEL_COMPILE_WORK_GROUP_SIZE:
-			err =clGetKernelWorkGroupInfo(m_cl_kernel, cl_device, CL_KERNEL_COMPILE_WORK_GROUP_SIZE, sizeof(size_t), &sizet_units, NULL);
+			err = webcl_clGetKernelWorkGroupInfo(webcl_channel_, m_cl_kernel, cl_device, CL_KERNEL_COMPILE_WORK_GROUP_SIZE, sizeof(size_t), &sizet_units, NULL);
 			return WebCLGetInfo(static_cast<unsigned int>(sizet_units));
 			break;
 		case WebCL::KERNEL_LOCAL_MEM_SIZE:
-			err =clGetKernelWorkGroupInfo(m_cl_kernel, cl_device, CL_KERNEL_LOCAL_MEM_SIZE, sizeof(cl_ulong), &ulong_units, NULL);
+			err = webcl_clGetKernelWorkGroupInfo(webcl_channel_, m_cl_kernel, cl_device, CL_KERNEL_LOCAL_MEM_SIZE, sizeof(cl_ulong), &ulong_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned long>(ulong_units));
 			break;
@@ -508,7 +508,7 @@ void WebCLKernel::setKernelArgGlobal(unsigned int arg_index, WebCLMem* arg_value
 			return;
 		}
 	}
-	err = clSetKernelArg(m_cl_kernel, arg_index, sizeof(cl_mem), &cl_mem_id);
+	err = webcl_clSetKernelArg(webcl_channel_, m_cl_kernel, arg_index, sizeof(cl_mem), &cl_mem_id);
 	if (err != CL_SUCCESS) {
 		switch (err) {
 			case CL_INVALID_KERNEL:
@@ -577,13 +577,13 @@ void WebCLKernel::setKernelArgConstant(unsigned int arg_index, WebCLMem* arg_val
 	if (m_device_id != NULL) {
 		cl_device = m_device_id->getCLDevice();
 		cl_ulong max_buffer_size = 0;
-		clGetDeviceInfo(cl_device, CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE, sizeof(cl_ulong), &max_buffer_size, NULL);
+		webcl_clGetDeviceInfo(webcl_channel_, cl_device, CL_DEVICE_MAX_CONSTANT_BUFFER_SIZE, sizeof(cl_ulong), &max_buffer_size, NULL);
 		cl_uint max_args = 0;
-		clGetDeviceInfo(cl_device, CL_DEVICE_MAX_CONSTANT_ARGS, sizeof(cl_uint), &max_args,NULL);
+		webcl_clGetDeviceInfo(webcl_channel_, cl_device, CL_DEVICE_MAX_CONSTANT_ARGS, sizeof(cl_uint), &max_args,NULL);
 		// Check for __constant qualifier restrictions
 		if ( (sizeof(cl_mem) <= max_buffer_size)  && (arg_index <= max_args))
 		{
-			err = clSetKernelArg(m_cl_kernel, arg_index, sizeof(cl_mem), &cl_mem_id);
+			err = webcl_clSetKernelArg(webcl_channel_, m_cl_kernel, arg_index, sizeof(cl_mem), &cl_mem_id);
 			if (err != CL_SUCCESS) {
 				switch (err) {
 					case CL_INVALID_KERNEL:
@@ -641,7 +641,7 @@ void WebCLKernel::setKernelArgLocal(unsigned int arg_index, unsigned int arg_siz
 		ec = WebCLException::INVALID_KERNEL;
 		return;
 	}
-	err = clSetKernelArg(m_cl_kernel, arg_index, arg_size, NULL);
+	err = webcl_clSetKernelArg(webcl_channel_, m_cl_kernel, arg_index, arg_size, NULL);
 	if (err != CL_SUCCESS) {
 		switch (err) {
 			case CL_INVALID_KERNEL:
@@ -745,7 +745,7 @@ void WebCLKernel::releaseCL( ExceptionCode& ec)
 		ec = WebCLException::INVALID_KERNEL;
 		return;
 	}
-	err = clReleaseKernel(m_cl_kernel);
+	err = webcl_clReleaseKernel(webcl_channel_, m_cl_kernel);
 	if (err != CL_SUCCESS) {
 		switch (err) {
 			case CL_INVALID_KERNEL :
@@ -789,7 +789,7 @@ clSetKernelArgPrimitiveType(cl_kernel cl_kernel_id,
 		printf("Error: WebCL Kernel Type Value Not Proper\n");
 		return -1;	
 	}
-	cl_int err  =  clSetKernelArg(cl_kernel_id, argIndex, size, &nodeId);		
+	cl_int err  =  webcl_clSetKernelArg(webcl_channel_, cl_kernel_id, argIndex, size, &nodeId);		
 	return(err);
 }
 
@@ -804,7 +804,7 @@ clSetKernelArgVectorType(cl_kernel cl_kernel_id,
 		printf("Error: Invalid WebCL Kernel Type %d\n", array->length());
 		return -1;	
 	}
-	cl_int err = clSetKernelArg(cl_kernel_id, argIndex, size, &array);			
+	cl_int err = webcl_clSetKernelArg(webcl_channel_, cl_kernel_id, argIndex, size, &array);			
 	return(err);
 }
 

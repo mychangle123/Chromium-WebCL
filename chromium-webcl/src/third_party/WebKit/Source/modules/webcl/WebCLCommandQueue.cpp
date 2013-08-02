@@ -71,24 +71,24 @@ WebCLGetInfo WebCLCommandQueue:: getInfo(int param_name, ExceptionCode& ec)
 		{
 
 				case WebCL::QUEUE_REFERENCE_COUNT:
-						err=clGetCommandQueueInfo(m_cl_command_queue, CL_QUEUE_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
+						err=webcl_clGetCommandQueueInfo(webcl_channel_, m_cl_command_queue, CL_QUEUE_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
 						if (err == CL_SUCCESS)
 								return WebCLGetInfo(static_cast<unsigned int>(uint_units));	
 						break;
 				case WebCL::QUEUE_CONTEXT:
-						clGetCommandQueueInfo(m_cl_command_queue, CL_QUEUE_CONTEXT, sizeof(cl_context), &cl_context_id, NULL);
+						webcl_clGetCommandQueueInfo(webcl_channel_, m_cl_command_queue, CL_QUEUE_CONTEXT, sizeof(cl_context), &cl_context_id, NULL);
 						contextObj = WebCLContext::create(m_context, cl_context_id);
 						if (err == CL_SUCCESS)
 								return WebCLGetInfo(PassRefPtr<WebCLContext>(contextObj));
 						break;
 				case WebCL::QUEUE_DEVICE:
-						clGetCommandQueueInfo(m_cl_command_queue, CL_QUEUE_DEVICE, sizeof(cl_device_id), &cl_device, NULL);
+						webcl_clGetCommandQueueInfo(webcl_channel_, m_cl_command_queue, CL_QUEUE_DEVICE, sizeof(cl_device_id), &cl_device, NULL);
 						deviceObj = WebCLDevice::create(m_context, cl_device);
 						if (err == CL_SUCCESS)
 								return WebCLGetInfo(PassRefPtr<WebCLDevice>(deviceObj));
 						break;
 				case WebCL::QUEUE_PROPERTIES:
-						   clGetCommandQueueInfo(m_cl_command_queue, CL_QUEUE_PROPERTIES, sizeof(cl_command_queue_properties), &queue_properties, NULL);
+						   webcl_clGetCommandQueueInfo(webcl_channel_, m_cl_command_queue, CL_QUEUE_PROPERTIES, sizeof(cl_command_queue_properties), &queue_properties, NULL);
 						   return WebCLGetInfo(static_cast<unsigned int>(queue_properties));
 							break;
 
@@ -165,10 +165,10 @@ void  WebCLCommandQueue::enqueueWriteBuffer(WebCLMem* mem, bool blocking_write,
 
 		// TODO(siba samal) - NULL parameters need to be addressed later
 		if(blocking_write)
-				err = clEnqueueWriteBuffer(m_cl_command_queue, cl_mem_id, CL_TRUE, offset, 
+				err = webcl_clEnqueueWriteBuffer(webcl_channel_, m_cl_command_queue, cl_mem_id, CL_TRUE, offset, 
 								buffer_size, ptr->baseAddress(), eventsLength, cl_event_wait_lists, &cl_event_id);
 		else
-				err = clEnqueueWriteBuffer(m_cl_command_queue, cl_mem_id, CL_FALSE, offset, 
+				err = webcl_clEnqueueWriteBuffer(webcl_channel_, m_cl_command_queue, cl_mem_id, CL_FALSE, offset, 
 								buffer_size, ptr->baseAddress(), eventsLength, cl_event_wait_lists, &cl_event_id);
 
 		if (err != CL_SUCCESS) {
@@ -264,12 +264,12 @@ PassRefPtr<WebCLEvent> WebCLCommandQueue::enqueueWriteBuffer(WebCLMem* mem, bool
 
 		// TODO(won.jeon) - NULL parameters need to be addressed later
 		if(blocking_write) 
-				err = clEnqueueWriteBuffer(m_cl_command_queue, cl_mem_id, CL_TRUE, 
+				err = webcl_clEnqueueWriteBuffer(webcl_channel_, m_cl_command_queue, cl_mem_id, CL_TRUE, 
 								offset, buffer_size, buffer, event_wait_list, NULL, &cl_event_id);
 		//		err = clEnqueueWriteBuffer(m_cl_command_queue, cl_mem_id, CL_TRUE, 
 		//						offset, buffer_size, imageData, event_wait_list, NULL, &cl_event_id);
 		else
-				err = clEnqueueWriteBuffer(m_cl_command_queue, cl_mem_id, CL_FALSE, 
+				err = webcl_clEnqueueWriteBuffer(webcl_channel_, m_cl_command_queue, cl_mem_id, CL_FALSE, 
 								offset, buffer_size, buffer, event_wait_list, NULL, &cl_event_id);
 		//		err = clEnqueueWriteBuffer(m_cl_command_queue, cl_mem_id, CL_FALSE, 
 		//						offset, buffer_size, imageData, event_wait_list, NULL, &cl_event_id);
@@ -362,12 +362,12 @@ PassRefPtr<WebCLEvent>  WebCLCommandQueue::enqueueReadBuffer(WebCLMem* mem, bool
 
 		// TODO(siba samal) - NULL parameters need to be addressed later
 		if(blocking_read)
-				err = clEnqueueReadBuffer(m_cl_command_queue, cl_mem_id, CL_TRUE, 
+				err = webcl_clEnqueueReadBuffer(webcl_channel_, m_cl_command_queue, cl_mem_id, CL_TRUE, 
 								offset,buffer_size, buffer, event_wait_list, NULL, &cl_event_id);
 		//		err = clEnqueueReadBuffer(m_cl_command_queue, cl_mem_id, CL_TRUE, 
 		//						offset,buffer_size, imageData, event_wait_list, NULL, &cl_event_id);
 		else
-				err = clEnqueueReadBuffer(m_cl_command_queue, cl_mem_id, CL_FALSE, 
+				err = webcl_clEnqueueReadBuffer(webcl_channel_, m_cl_command_queue, cl_mem_id, CL_FALSE, 
 								offset, buffer_size,  buffer, event_wait_list, NULL, &cl_event_id);
 		//		err = clEnqueueReadBuffer(m_cl_command_queue, cl_mem_id, CL_FALSE, 
 		//						offset, buffer_size,  imageData, event_wait_list, NULL, &cl_event_id);
@@ -481,9 +481,9 @@ void  WebCLCommandQueue::enqueueReadBuffer(WebCLMem* mem, bool blocking_read,
 
 		// TODO(siba samal) - NULL parameters need to be addressed later
 		if(blocking_read)
-				err = clEnqueueReadBuffer(m_cl_command_queue, cl_mem_id, CL_TRUE, offset, buffer_size, ptr->baseAddress(), eventsLength, cl_event_wait_lists, &cl_event_id);
+				err = webcl_clEnqueueReadBuffer(webcl_channel_, m_cl_command_queue, cl_mem_id, CL_TRUE, offset, buffer_size, ptr->baseAddress(), eventsLength, cl_event_wait_lists, &cl_event_id);
 		else
-				err = clEnqueueReadBuffer(m_cl_command_queue, cl_mem_id, CL_FALSE, offset, buffer_size, ptr->baseAddress(), eventsLength, cl_event_wait_lists, &cl_event_id);
+				err = webcl_clEnqueueReadBuffer(webcl_channel_, m_cl_command_queue, cl_mem_id, CL_FALSE, offset, buffer_size, ptr->baseAddress(), eventsLength, cl_event_wait_lists, &cl_event_id);
 
 		if (err != CL_SUCCESS) {
 				printf("Error: clEnqueueReadBuffer\n");
@@ -600,7 +600,7 @@ void  WebCLCommandQueue::enqueueNDRangeKernel(WebCLKernel* kernel, Int32Array* o
 		}
 
 
-		err = clEnqueueNDRangeKernel(m_cl_command_queue, cl_kernel_id, work_dim, 
+		err = webcl_clEnqueueNDRangeKernel(webcl_channel_, m_cl_command_queue, cl_kernel_id, work_dim, 
 						g_work_offset, g_work_size, l_work_size, eventsLength, 
 						cl_event_wait_lists, &cl_event_id);
 
@@ -693,7 +693,7 @@ void WebCLCommandQueue::finish(ExceptionCode& ec)
 				printf("Error: Invalid Command Queue\n");
 				return;
 		}
-		err = clFinish(m_cl_command_queue);
+		err = webcl_clFinish(webcl_channel_, m_cl_command_queue);
 		if (err != CL_SUCCESS) {
 				switch (err) {
 						case CL_INVALID_COMMAND_QUEUE:
@@ -767,7 +767,7 @@ void WebCLCommandQueue::flush( ExceptionCode& ec)
 				ec = WebCLException::FAILURE;
 				return;
 		}
-		err = clFlush(m_cl_command_queue);
+		err = webcl_clFlush(webcl_channel_, m_cl_command_queue);
 		if (err != CL_SUCCESS) {
 				switch (err) {
 						case CL_INVALID_COMMAND_QUEUE:
@@ -803,7 +803,7 @@ void WebCLCommandQueue::releaseCL( ExceptionCode& ec)
 				ec = WebCLException::INVALID_COMMAND_QUEUE;
 				return;
 		}
-		err = clReleaseCommandQueue(m_cl_command_queue);
+		err = webcl_clReleaseCommandQueue(webcl_channel_, m_cl_command_queue);
 		if (err != CL_SUCCESS) {
 				switch (err) {
 						case CL_INVALID_COMMAND_QUEUE  :
@@ -898,10 +898,10 @@ PassRefPtr<WebCLEvent> WebCLCommandQueue::enqueueWriteImage(WebCLMem* mem_image,
 		}
 
 		if(blocking_write)
-				err = clEnqueueWriteImage(m_cl_command_queue, cl_mem_image, CL_TRUE, 
+				err = webcl_clEnqueueWriteImage(webcl_channel_, m_cl_command_queue, cl_mem_image, CL_TRUE, 
 								origin_array, region_array, 0, 0, image_data, event_wait_list, NULL, &cl_event_id);
 		else
-				err = clEnqueueWriteImage(m_cl_command_queue, cl_mem_image, CL_FALSE, 
+				err = webcl_clEnqueueWriteImage(webcl_channel_, m_cl_command_queue, cl_mem_image, CL_FALSE, 
 								origin_array, region_array, 0, 0, image_data, event_wait_list, NULL, &cl_event_id);
 
 		if (err != CL_SUCCESS) {
@@ -1156,7 +1156,7 @@ void WebCLCommandQueue::enqueueCopyBuffer(WebCLMem* src_buffer, WebCLMem* dst_bu
 						return;
 				}
 		}
-		err = clEnqueueCopyBuffer(m_cl_command_queue, cl_src_buffer_id, cl_dst_buffer_id,
+		err = webcl_clEnqueueCopyBuffer(webcl_channel_, m_cl_command_queue, cl_src_buffer_id, cl_dst_buffer_id,
 						0, 0, cb, 0, NULL, NULL);
 		if (err != CL_SUCCESS) {
 				printf("Error: clEnqueueCopyBuffer\n");
@@ -1223,9 +1223,9 @@ void WebCLCommandQueue::enqueueBarrier( ExceptionCode& ec)
 				return;
 		}
 #if defined(CL_VERSION_1_2)
-		err = clEnqueueBarrierWithWaitList(m_cl_command_queue, 0 /*eventWaitListLength*/, 0 /*eventsWaitList*/, 0 /*event*/);
+		err = webcl_clEnqueueBarrierWithWaitList(webcl_channel_,m_cl_command_queue, 0 /*eventWaitListLength*/, 0 /*eventsWaitList*/, 0 /*event*/);
 #else
-		err = clEnqueueBarrier(m_cl_command_queue);
+		err = webcl_clEnqueueBarrier(webcl_channel_, m_cl_command_queue);
 #endif
 
 		if (err != CL_SUCCESS) {
@@ -1274,7 +1274,7 @@ void WebCLCommandQueue::enqueueMarker(WebCLEvent* event, ExceptionCode& ec)
 		}
 
 #if defined(CL_VERSION_1_2)
-    err = clEnqueueBarrierWithWaitList(m_cl_command_queue, 0 /*eventWaitListLength*/, 0 /*eventsWaitList*/,&cl_event_id /*event*/);
+    err = webcl_clEnqueueBarrierWithWaitList(webcl_channel_, m_cl_command_queue, 0 /*eventWaitListLength*/, 0 /*eventsWaitList*/,&cl_event_id /*event*/);
 #else
     err = clEnqueueMarker(m_cl_command_queue, &cl_event_id);
 #endif
@@ -1396,7 +1396,7 @@ PassRefPtr<WebCLEvent> WebCLCommandQueue::enqueueTask(WebCLKernel* kernel,
 				}
 		}
 
-		err = clEnqueueTask(m_cl_command_queue, cl_kernel_id, 0, NULL,&cl_event_id); 
+		err = webcl_clEnqueueTask(webcl_channel_, m_cl_command_queue, cl_kernel_id, 0, NULL,&cl_event_id); 
 
 		if (err != CL_SUCCESS) {
 				printf("Error: clEnqueueTask\n");

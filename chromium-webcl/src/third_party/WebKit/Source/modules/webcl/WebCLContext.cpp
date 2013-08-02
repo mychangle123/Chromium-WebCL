@@ -81,7 +81,7 @@ WebCLGetInfo WebCLContext::getInfo(int param_name, ExceptionCode& ec)
 		switch(param_name)
 		{	
 				case WebCL::CONTEXT_REFERENCE_COUNT:
-						err = clGetContextInfo(m_cl_context, CL_CONTEXT_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
+						err = webcl_clGetContextInfo(webcl_channel_, m_cl_context, CL_CONTEXT_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
 						if (err == CL_SUCCESS)
 								return WebCLGetInfo(static_cast<unsigned int>(uint_units));	
 						break;
@@ -94,11 +94,11 @@ WebCLGetInfo WebCLContext::getInfo(int param_name, ExceptionCode& ec)
 				#endif
 				case WebCL::CONTEXT_DEVICES:
 						cl_device_id* cdDevices;
-						clGetContextInfo(m_cl_context, CL_CONTEXT_DEVICES, 0, NULL, &szParmDataBytes);
+						webcl_clGetContextInfo(webcl_channel_, m_cl_context, CL_CONTEXT_DEVICES, 0, NULL, &szParmDataBytes);
 						if (err == CL_SUCCESS) {
 								int nd = szParmDataBytes / sizeof(cl_device_id);
 								cdDevices = (cl_device_id*) malloc(szParmDataBytes);
-								clGetContextInfo(m_cl_context, CL_CONTEXT_DEVICES, szParmDataBytes, cdDevices, NULL);
+								webcl_clGetContextInfo(webcl_channel_, m_cl_context, CL_CONTEXT_DEVICES, szParmDataBytes, cdDevices, NULL);
 								deviceList = WebCLDeviceList::create(m_context, cdDevices, nd);
 								printf("Size Vs Size = %lu %d %d \n\n", szParmDataBytes,nd,deviceList->length());
 								free(cdDevices);
@@ -106,14 +106,14 @@ WebCLGetInfo WebCLContext::getInfo(int param_name, ExceptionCode& ec)
 						}
 						break;	
 				case WebCL::CONTEXT_PROPERTIES:
-						err = clGetContextInfo(m_cl_context, CL_CONTEXT_PROPERTIES, 0, NULL, &szParmDataBytes);
+						err = webcl_clGetContextInfo(webcl_channel_, m_cl_context, CL_CONTEXT_PROPERTIES, 0, NULL, &szParmDataBytes);
 						if (err == CL_SUCCESS) {
 								int nd = szParmDataBytes / sizeof(cl_uint);
 								if(nd == 0)	 {	
 										printf("No Context Properties defined \n");
 										return WebCLGetInfo();
 								}
-								err = clGetContextInfo(m_cl_context, CL_CONTEXT_PROPERTIES, szParmDataBytes, &uint_array, &szParmDataBytes);
+								err = webcl_clGetContextInfo(webcl_channel_, m_cl_context, CL_CONTEXT_PROPERTIES, szParmDataBytes, &uint_array, &szParmDataBytes);
 								if (err == CL_SUCCESS) {
 										// Should int repacle cl_context_properties
 										int values[1024] = {0};
@@ -178,13 +178,13 @@ PassRefPtr<WebCLCommandQueue> WebCLContext::createCommandQueue(WebCLDeviceList* 
 		switch (command_queue_prop)
 		{
 				case WebCL::QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE:
-						cl_command_queue_id = clCreateCommandQueue(m_cl_context, cl_device, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &err);
+						cl_command_queue_id = webcl_clCreateCommandQueue(webcl_channel_, m_cl_context, cl_device, CL_QUEUE_OUT_OF_ORDER_EXEC_MODE_ENABLE, &err);
 						break;
 				case WebCL::QUEUE_PROFILING_ENABLE:
-						cl_command_queue_id = clCreateCommandQueue(m_cl_context, cl_device, CL_QUEUE_PROFILING_ENABLE, &err);
+						cl_command_queue_id = webcl_clCreateCommandQueue(webcl_channel_, m_cl_context, cl_device, CL_QUEUE_PROFILING_ENABLE, &err);
 						break;
 				default:
-						cl_command_queue_id = clCreateCommandQueue(m_cl_context, cl_device, NULL, &err);
+						cl_command_queue_id = webcl_clCreateCommandQueue(webcl_channel_, m_cl_context, cl_device, NULL, &err);
 						break;
 		}
 		if (err != CL_SUCCESS) {
@@ -320,7 +320,7 @@ PassRefPtr<WebCLProgram> WebCLContext::createProgram(const String& kernelSource,
 		const char* source = strdup(kernelSource.utf8().data());
 
 		// TODO(won.jeon) - the second and fourth arguments need to be addressed later
-		cl_program_id = clCreateProgramWithSource(m_cl_context, 1, (const char**)&source, 
+		cl_program_id = webcl_clCreateProgramWithSource(webcl_channel_, m_cl_context, 1, (const char**)&source, 
 						NULL, &err);
 
 		if (err != CL_SUCCESS) {
@@ -375,13 +375,13 @@ PassRefPtr<WebCLMem> WebCLContext::createBuffer(int flags, int size, int host_pt
 		switch (flags)
 		{
 				case WebCL::MEM_READ_ONLY:
-						cl_mem_id = clCreateBuffer(m_cl_context, CL_MEM_READ_ONLY, size, NULL, &err);
+						cl_mem_id = webcl_clCreateBuffer(webcl_channel_, m_cl_context, CL_MEM_READ_ONLY, size, NULL, &err);
 						break;
 				case WebCL::MEM_WRITE_ONLY:
-						cl_mem_id = clCreateBuffer(m_cl_context, CL_MEM_WRITE_ONLY, size, NULL, &err);
+						cl_mem_id = webcl_clCreateBuffer(webcl_channel_, m_cl_context, CL_MEM_WRITE_ONLY, size, NULL, &err);
 						break;
 				case WebCL::MEM_READ_WRITE:
-						cl_mem_id = clCreateBuffer(m_cl_context, CL_MEM_READ_WRITE, size, NULL, &err);
+						cl_mem_id = webcl_clCreateBuffer(webcl_channel_, m_cl_context, CL_MEM_READ_WRITE, size, NULL, &err);
 						break;
 				default:
 						printf("Error: Unsupported Mem Flsg\n");
@@ -486,7 +486,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags,
 						clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE2D;
 						clImageDescriptor.image_width = width;
 						clImageDescriptor.image_height = height;
-						cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,
+						cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,
 										&image_format,&clImageDescriptor,image,&err);
 #else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR , 
@@ -496,7 +496,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags,
 				case WebCL::MEM_WRITE_ONLY:
 #if defined(CL_VERSION_1_2)
 					
-					    cl_mem_image = clCreateImage(m_cl_context,(CL_MEM_WRITE_ONLY | CL_MEM_USE_HOST_PTR |CL_MEM_COPY_HOST_PTR),&image_format,&clImageDescriptor,image,&err);
+					    cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,(CL_MEM_WRITE_ONLY | CL_MEM_USE_HOST_PTR |CL_MEM_COPY_HOST_PTR),&image_format,&clImageDescriptor,image,&err);
 #else
 						cl_mem_image = clCreateImage2D(m_cl_context, (CL_MEM_READ_ONLY | CL_MEM_USE_HOST_PTR |CL_MEM_COPY_HOST_PTR), 
 										&image_format, width, height, 0, image, &err);
@@ -615,7 +615,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags, HTMLImageElement* im
 						clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE2D;
 						clImageDescriptor.image_width = width;
 						clImageDescriptor.image_height = height;
-						cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)image1,&err);
+						cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)image1,&err);
 #else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_READ_ONLY| CL_MEM_USE_HOST_PTR, 
 										&image_format, width, height, 0, (void*)image1, &err);
@@ -625,7 +625,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags, HTMLImageElement* im
 					
 #if defined(CL_VERSION_1_2)
 					 
-						cl_mem_image = clCreateImage(m_cl_context,CL_MEM_WRITE_ONLY ,&image_format,&clImageDescriptor,(void*)image1,&err);
+						cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_WRITE_ONLY ,&image_format,&clImageDescriptor,(void*)image1,&err);
 #else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_WRITE_ONLY, 
 										&image_format, width, height, 0, (void*)image1, &err);
@@ -739,7 +739,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags, HTMLVideoElement* vi
 						clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE2D;
 						clImageDescriptor.image_width = width;
 						clImageDescriptor.image_height = height;
-						cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)image_data,&err);
+						cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)image_data,&err);
 #else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_READ_ONLY| CL_MEM_USE_HOST_PTR, 
 										&image_format, width, height, 0, (void *)image_data, &err);
@@ -748,7 +748,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags, HTMLVideoElement* vi
 				case WebCL::MEM_WRITE_ONLY:
 #if defined(CL_VERSION_1_2)
 					  
-						cl_mem_image = clCreateImage(m_cl_context,CL_MEM_WRITE_ONLY,&image_format,&clImageDescriptor,(void*)image_data,&err);
+						cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_WRITE_ONLY,&image_format,&clImageDescriptor,(void*)image_data,&err);
 #else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_WRITE_ONLY, 
 										&image_format, width, height, 0, (void *)image_data, &err);
@@ -849,7 +849,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags, ImageData* data, Exc
                         clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE2D;
                         clImageDescriptor.image_width = width;
                         clImageDescriptor.image_height = height;
-					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)(pixelarray->data()),&err);
+					    cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)(pixelarray->data()),&err);
 #else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, 
 										&image_format, width, height, 0, (void*)(pixelarray->data()), &err);
@@ -858,7 +858,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags, ImageData* data, Exc
 				case WebCL::MEM_WRITE_ONLY:
 #if defined(CL_VERSION_1_2)
 					 
-					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_WRITE_ONLY , &image_format,&clImageDescriptor,(void*)(pixelarray->data()),&err);
+					    cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_WRITE_ONLY , &image_format,&clImageDescriptor,(void*)(pixelarray->data()),&err);
 #else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_WRITE_ONLY, 
 										&image_format, width, height, 0, (void*)(pixelarray->data()), &err);
@@ -954,7 +954,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags,unsigned int width,
                         clImageDescriptor.image_type = CL_MEM_OBJECT_IMAGE2D;
                         clImageDescriptor.image_width = width;
                         clImageDescriptor.image_height = height;
-					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
+					    cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
 #else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, 
 										&image_format, cl_width, cl_height, 0, data->data(), &err);
@@ -963,7 +963,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage2D(int flags,unsigned int width,
 				case WebCL::MEM_WRITE_ONLY:
 #if defined(CL_VERSION_1_2)
 					   
-					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_WRITE_ONLY ,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
+					    cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_WRITE_ONLY ,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
 #else
 						cl_mem_image = clCreateImage2D(m_cl_context, CL_MEM_WRITE_ONLY, 
 										&image_format, cl_width, cl_height, 0, data->data(), &err);
@@ -1064,7 +1064,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage3D(int flags,unsigned int width,
                         clImageDescriptor.image_width = width;
                         clImageDescriptor.image_height = height;
 						clImageDescriptor.image_depth = depth;
-					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
+					    cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_READ_ONLY |CL_MEM_USE_HOST_PTR,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
 #else
 						cl_mem_image = clCreateImage3D(m_cl_context, CL_MEM_READ_ONLY|CL_MEM_USE_HOST_PTR, 
 										&image_format, cl_width, cl_height, cl_depth,0, 0, data->data(), &err);
@@ -1073,7 +1073,7 @@ PassRefPtr<WebCLMem> WebCLContext::createImage3D(int flags,unsigned int width,
 				case WebCL::MEM_WRITE_ONLY:
 #if defined(CL_VERSION_1_2)
 					   
-					    cl_mem_image = clCreateImage(m_cl_context,CL_MEM_WRITE_ONLY,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
+					    cl_mem_image = webcl_clCreateImage(webcl_channel_, m_cl_context,CL_MEM_WRITE_ONLY,&image_format,&clImageDescriptor,(void*)(data->data()),&err);
 #else
 						cl_mem_image = clCreateImage3D(m_cl_context, CL_MEM_WRITE_ONLY, 
 										&image_format, cl_width, cl_height, cl_depth, 0, 0,data->data(), &err);
@@ -1334,7 +1334,7 @@ PassRefPtr<WebCLSampler> WebCLContext::createSampler(bool norm_cords,
 						ec = WebCLException::FAILURE;
 						return NULL;
 		}
-		cl_sampler_id = clCreateSampler(m_cl_context, normalized_coords, addressing_mode, 
+		cl_sampler_id = webcl_clCreateSampler(webcl_channel_, m_cl_context, normalized_coords, addressing_mode, 
 						filter_mode, &err);
 
 		if (err != CL_SUCCESS) {
@@ -1512,7 +1512,7 @@ void WebCLContext::releaseCL( ExceptionCode& ec)
 				ec = WebCLException::FAILURE;
 				return;
 		}
-		err = clReleaseContext(m_cl_context);
+		err = webcl_clReleaseContext(webcl_channel_, m_cl_context);
 		if (err != CL_SUCCESS) {
 				switch (err) {
 						case CL_INVALID_CONTEXT :

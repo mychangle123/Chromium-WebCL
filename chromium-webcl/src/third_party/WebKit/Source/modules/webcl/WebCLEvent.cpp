@@ -75,22 +75,22 @@ WebCLGetInfo WebCLEvent::getInfo(int param_name, ExceptionCode& ec)
 	switch(param_name)
 	{   
 		case WebCL::EVENT_COMMAND_EXECUTION_STATUS :
-			err=clGetEventInfo(m_cl_Event, CL_EVENT_COMMAND_EXECUTION_STATUS  , sizeof(cl_uint), &uint_units, NULL);
+			err = webcl_clGetEventInfo(webcl_channel_, m_cl_Event, CL_EVENT_COMMAND_EXECUTION_STATUS  , sizeof(cl_uint), &uint_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(uint_units));	
 			break;
 		case WebCL::EVENT_REFERENCE_COUNT:
-			err=clGetEventInfo(m_cl_Event, CL_EVENT_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
+			err = webcl_clGetEventInfo(webcl_channel_, m_cl_Event, CL_EVENT_REFERENCE_COUNT , sizeof(cl_uint), &uint_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(uint_units));
 			break;
 		case WebCL::EVENT_COMMAND_TYPE:			
-			err=clGetEventInfo(m_cl_Event, CL_EVENT_COMMAND_TYPE , sizeof(cl_command_type), &command_type, NULL);;
+			err = webcl_clGetEventInfo(webcl_channel_, m_cl_Event, CL_EVENT_COMMAND_TYPE , sizeof(cl_command_type), &command_type, NULL);;
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(command_type));
 			break;
 		case WebCL::EVENT_COMMAND_QUEUE:			
-			err = clGetEventInfo(m_cl_Event, CL_EVENT_COMMAND_QUEUE , sizeof(cl_command_queue), &command_queue, NULL);;
+			err = webcl_clGetEventInfo(webcl_channel_, m_cl_Event, CL_EVENT_COMMAND_QUEUE , sizeof(cl_command_queue), &command_queue, NULL);;
 			cqObj = WebCLCommandQueue::create(m_context, command_queue);
 			if(cqObj == NULL)
 			{
@@ -143,22 +143,22 @@ WebCLGetInfo WebCLEvent::getProfilingInfo(int param_name, ExceptionCode& ec)
 	switch(param_name)
 	{   
 		case WebCL::PROFILING_COMMAND_QUEUED:
-			err=clGetEventProfilingInfo(m_cl_Event, CL_PROFILING_COMMAND_QUEUED, sizeof(cl_ulong), &ulong_units, NULL);
+			err = webcl_clGetEventProfilingInfo(webcl_channel_, m_cl_Event, CL_PROFILING_COMMAND_QUEUED, sizeof(cl_ulong), &ulong_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned long>(ulong_units));
 			break;
 		case WebCL::PROFILING_COMMAND_SUBMIT:
-			err=clGetEventProfilingInfo(m_cl_Event, CL_PROFILING_COMMAND_SUBMIT, sizeof(cl_ulong), &ulong_units, NULL);
+			err = webcl_clGetEventProfilingInfo(webcl_channel_, m_cl_Event, CL_PROFILING_COMMAND_SUBMIT, sizeof(cl_ulong), &ulong_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned long>(ulong_units));
 			break;
 		case WebCL::PROFILING_COMMAND_START:
-			err=clGetEventProfilingInfo(m_cl_Event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &ulong_units, NULL);
+			err = webcl_clGetEventProfilingInfo(webcl_channel_, m_cl_Event, CL_PROFILING_COMMAND_START, sizeof(cl_ulong), &ulong_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned long>(ulong_units));
 			break;
 		case WebCL::PROFILING_COMMAND_END:
-			err=clGetEventProfilingInfo(m_cl_Event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &ulong_units, NULL);
+			err = webcl_clGetEventProfilingInfo(webcl_channel_, m_cl_Event, CL_PROFILING_COMMAND_END, sizeof(cl_ulong), &ulong_units, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(static_cast<unsigned int>(ulong_units));
 			break;
@@ -328,7 +328,7 @@ void WebCLEvent::releaseCL( ExceptionCode& ec)
 		ec = WebCLException::INVALID_EVENT;
 		return;
 	}
-	err = clReleaseEvent(m_cl_Event);
+	err = webcl_clReleaseEvent(webcl_channel_, m_cl_Event);
 	if (err != CL_SUCCESS) {
 		switch (err) {
 			case CL_INVALID_EVENT  :

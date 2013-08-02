@@ -62,27 +62,27 @@ WebCLGetInfo WebCLPlatform::getInfo (int platform_info, ExceptionCode& ec)
 	switch(platform_info)
 	{
 		case WebCL::PLATFORM_PROFILE:
-			err = clGetPlatformInfo(m_cl_platform_id, CL_PLATFORM_PROFILE, sizeof(platform_string), &platform_string, NULL);
+			err = webcl_clGetPlatformInfo(webcl_channel_, m_cl_platform_id, CL_PLATFORM_PROFILE, sizeof(platform_string), &platform_string, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(String(platform_string));
 			break;
 		case WebCL::PLATFORM_VERSION:
-			err = clGetPlatformInfo(m_cl_platform_id, CL_PLATFORM_VERSION, sizeof(platform_string), &platform_string, NULL);
+			err = webcl_clGetPlatformInfo(webcl_channel_, m_cl_platform_id, CL_PLATFORM_VERSION, sizeof(platform_string), &platform_string, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(String(platform_string));
 			break;
 		case WebCL::PLATFORM_NAME:
-			err = clGetPlatformInfo(m_cl_platform_id, CL_PLATFORM_NAME, sizeof(platform_string), &platform_string, NULL);
+			err = webcl_clGetPlatformInfo(webcl_channel_, m_cl_platform_id, CL_PLATFORM_NAME, sizeof(platform_string), &platform_string, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(String(platform_string));
 			break;
 		case WebCL::PLATFORM_VENDOR:
-			err = clGetPlatformInfo(m_cl_platform_id, CL_PLATFORM_VENDOR, sizeof(platform_string), &platform_string, NULL);
+			err = webcl_clGetPlatformInfo(webcl_channel_, m_cl_platform_id, CL_PLATFORM_VENDOR, sizeof(platform_string), &platform_string, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(String(platform_string));
 			break;
 		case WebCL::PLATFORM_EXTENSIONS:
-			err = clGetPlatformInfo(m_cl_platform_id, CL_PLATFORM_EXTENSIONS, sizeof(platform_string), &platform_string, NULL);
+			err = webcl_clGetPlatformInfo(webcl_channel_, m_cl_platform_id, CL_PLATFORM_EXTENSIONS, sizeof(platform_string), &platform_string, NULL);
 			if (err == CL_SUCCESS)
 				return WebCLGetInfo(String(platform_string));
 			break;
@@ -147,7 +147,7 @@ Vector<String> WebCLPlatform::getSupportedExtensions(ExceptionCode& ec )
         ec = WebCLException::INVALID_PLATFORM;
         return result;
     }
-    cl_int err = clGetPlatformInfo(m_cl_platform_id, CL_PLATFORM_EXTENSIONS, sizeof(platform_string), &platform_string, NULL);
+    cl_int err = webcl_clGetPlatformInfo(webcl_channel_, m_cl_platform_id, CL_PLATFORM_EXTENSIONS, sizeof(platform_string), &platform_string, NULL);
     if (err != CL_SUCCESS) {
 		ec = WebCLException::INVALID_PLATFORM;
         return result;

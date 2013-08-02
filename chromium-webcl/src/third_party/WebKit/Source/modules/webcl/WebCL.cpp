@@ -105,32 +105,32 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 		switch(param_name)
 		{   
 			case IMAGE_ELEMENT_SIZE:
-				err=clGetImageInfo(cl_Image_id, CL_IMAGE_ELEMENT_SIZE, sizeof(size_t), &sizet_units, NULL);
+				err=webcl_clGetImageInfo(webcl_channel_, cl_Image_id, CL_IMAGE_ELEMENT_SIZE, sizeof(size_t), &sizet_units, NULL);
 				if (err == CL_SUCCESS)
 					return WebCLGetInfo(static_cast<unsigned int>(sizet_units));
 				break;
 			case IMAGE_ROW_PITCH:
-				err=clGetImageInfo(cl_Image_id, CL_IMAGE_ROW_PITCH, sizeof(size_t), &sizet_units, NULL);
+				err=webcl_clGetImageInfo(webcl_channel_, cl_Image_id, CL_IMAGE_ROW_PITCH, sizeof(size_t), &sizet_units, NULL);
 				if (err == CL_SUCCESS)
 					return WebCLGetInfo(static_cast<unsigned int>(sizet_units));
 				break;
 			case IMAGE_SLICE_PITCH:
-				err=clGetImageInfo(cl_Image_id, CL_IMAGE_SLICE_PITCH, sizeof(size_t), &sizet_units, NULL);
+				err=webcl_clGetImageInfo(webcl_channel_, cl_Image_id, CL_IMAGE_SLICE_PITCH, sizeof(size_t), &sizet_units, NULL);
 				if (err == CL_SUCCESS)
 					return WebCLGetInfo(static_cast<unsigned int>(sizet_units));
 				break;
 			case IMAGE_WIDTH:
-				err=clGetImageInfo(cl_Image_id, CL_IMAGE_WIDTH, sizeof(size_t), &sizet_units, NULL);
+				err=webcl_clGetImageInfo(webcl_channel_, cl_Image_id, CL_IMAGE_WIDTH, sizeof(size_t), &sizet_units, NULL);
 				if (err == CL_SUCCESS)
 					return WebCLGetInfo(static_cast<unsigned int>(sizet_units));
 				break;
 			case IMAGE_HEIGHT:
-				err=clGetImageInfo(cl_Image_id, CL_IMAGE_HEIGHT, sizeof(size_t), &sizet_units, NULL);
+				err=webcl_clGetImageInfo(webcl_channel_, cl_Image_id, CL_IMAGE_HEIGHT, sizeof(size_t), &sizet_units, NULL);
 				if (err == CL_SUCCESS)
 					return WebCLGetInfo(static_cast<unsigned int>(sizet_units));
 				break;
 			case IMAGE_DEPTH:
-				err=clGetImageInfo(cl_Image_id, CL_IMAGE_DEPTH, sizeof(size_t), &sizet_units, NULL);
+				err=webcl_clGetImageInfo(webcl_channel_, cl_Image_id, CL_IMAGE_DEPTH, sizeof(size_t), &sizet_units, NULL);
 				if (err == CL_SUCCESS)
 					return WebCLGetInfo(static_cast<unsigned int>(sizet_units));
 				break;
@@ -178,7 +178,7 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 				return;
 			}
 		}
-		err = clWaitForEvents(events->length(), cl_event_id);
+		err = webcl_clWaitForEvents(webcl_channel_, events->length(), cl_event_id);
 		if (err != CL_SUCCESS) {
 			switch (err) {
 				case CL_INVALID_CONTEXT:
@@ -226,18 +226,18 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 		cl_platform_id* m_cl_platforms = NULL;
 		cl_device_id* m_cl_devices = NULL;
 		
-		err = clGetPlatformIDs(0, NULL, &m_num_platforms);
+		err = webcl_clGetPlatformIDs(webcl_channel_, 0, NULL, &m_num_platforms);
 		
 		if(err == CL_SUCCESS) {
 			m_cl_platforms = new cl_platform_id[m_num_platforms];
-			err = clGetPlatformIDs(m_num_platforms, m_cl_platforms, NULL);
+			err = webcl_clGetPlatformIDs(webcl_channel_, m_num_platforms, m_cl_platforms, NULL);
 		}
 		if(err == CL_SUCCESS) {
-			err = clGetDeviceIDs(m_cl_platforms[0], CL_DEVICE_TYPE_DEFAULT, 1, NULL, &num_devices);
+			err = webcl_clGetDeviceIDs(webcl_channel_, m_cl_platforms[0], CL_DEVICE_TYPE_DEFAULT, 1, NULL, &num_devices);
 		}
 		if((num_devices != 0) && (err == CL_SUCCESS)) {
 			m_cl_devices = new cl_device_id[num_devices];
-			err = clGetDeviceIDs(m_cl_platforms[0], CL_DEVICE_TYPE_DEFAULT, 1, m_cl_devices,
+			err = webcl_clGetDeviceIDs(webcl_channel_, m_cl_platforms[0], CL_DEVICE_TYPE_DEFAULT, 1, m_cl_devices,
 																	&num_devices);
 													
 		}
@@ -248,7 +248,7 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 		}
 			
 		if(err == CL_SUCCESS) {
-			cl_context_id = clCreateContext(NULL, 1, &m_cl_devices[0], NULL, NULL, &err);
+			cl_context_id = webcl_clCreateContext(webcl_channel_, NULL, 1, &m_cl_devices[0], NULL, NULL, &err);
 		}
 		if (err != CL_SUCCESS) {
 			switch (err) {
@@ -336,7 +336,7 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 		}
 
 		// TODO(won.jeon) - prop, pfn_notify, and user_data need to be addressed later
-		cl_context_id = clCreateContext(NULL, 1, &cl_device, NULL, NULL, &err);
+		cl_context_id = webcl_clCreateContext(webcl_channel_, NULL, 1, &cl_device, NULL, NULL, &err);
 		if (err != CL_SUCCESS) {
 			switch (err) {
 				case CL_INVALID_PLATFORM:
@@ -408,13 +408,13 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 		}
 
 		if(device_type == DEVICE_TYPE_GPU)
-			cl_context_id = clCreateContextFromType(NULL, CL_DEVICE_TYPE_GPU, NULL, NULL, &err);
+			cl_context_id = webcl_clCreateContextFromType(webcl_channel_, NULL, CL_DEVICE_TYPE_GPU, NULL, NULL, &err);
 		else if(device_type == DEVICE_TYPE_CPU)
-			cl_context_id = clCreateContextFromType(NULL, CL_DEVICE_TYPE_CPU, NULL, NULL, &err);
+			cl_context_id = webcl_clCreateContextFromType(webcl_channel_, NULL, CL_DEVICE_TYPE_CPU, NULL, NULL, &err);
 		else if( device_type == DEVICE_TYPE_ACCELERATOR)
-			cl_context_id = clCreateContextFromType(NULL, CL_DEVICE_TYPE_ACCELERATOR, NULL, NULL, &err);
+			cl_context_id = webcl_clCreateContextFromType(webcl_channel_, NULL, CL_DEVICE_TYPE_ACCELERATOR, NULL, NULL, &err);
 		else if(device_type == DEVICE_TYPE_DEFAULT)
-			cl_context_id = clCreateContextFromType(NULL, CL_DEVICE_TYPE_DEFAULT, NULL, NULL, &err);
+			cl_context_id = webcl_clCreateContextFromType(webcl_channel_, NULL, CL_DEVICE_TYPE_DEFAULT, NULL, NULL, &err);
 		//else if(device_type == DEVICE_TYPE_ALL)
 		//	cl_context_id = clCreateContextFromType(NULL, CL_DEVICE_TYPE_ALL, NULL, NULL, &err);
 		else
@@ -520,7 +520,7 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 
 
 		// TODO (siba samal) Handle NULL parameters
-		cl_context_id = clCreateContext(properties, 0, 0, 0, 0, &err);
+		cl_context_id = webcl_clCreateContext(webcl_channel_, properties, 0, 0, 0, 0, &err);
 
 		if (err != CL_SUCCESS) {
 			switch (err) {
@@ -599,7 +599,7 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 		}
 
 		// TODO(won.jeon) - prop, pfn_notify, and user_data need to be addressed later
-		cl_context_id = clCreateContext(NULL, 1, &cl_device, NULL, NULL, &err);
+		cl_context_id = webcl_clCreateContext(webcl_channel_, NULL, 1, &cl_device, NULL, NULL, &err);
 		if (err != CL_SUCCESS) {
 			switch (err) {
 				case CL_INVALID_PLATFORM:
@@ -669,7 +669,7 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 		} else {
 			cl_int err = 0;
 			// typically there is only 1 platform
-			err = clGetPlatformIDs(1, &platform_id, NULL);
+			err = webcl_clGetPlatformIDs(webcl_channel_, 1, &platform_id, NULL);
 			if (err != CL_SUCCESS) {
 				switch (err) {
 					case CL_INVALID_VALUE:
@@ -787,10 +787,10 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 
 			if (properties && properties->devices()) {
 				// deviceType will be ignored
-				cl_context_id = clCreateContext(context_properties, 1, &device_id, NULL, NULL, &err);
+				cl_context_id = webcl_clCreateContext(webcl_channel_, context_properties, 1, &device_id, NULL, NULL, &err);
 			} else {
 				// deviceType will be used
-				cl_context_id = clCreateContextFromType(context_properties, device_type, NULL, NULL, &err);
+				cl_context_id = webcl_clCreateContextFromType(webcl_channel_, context_properties, device_type, NULL, NULL, &err);
 			}
 		}else {
 			cl_context_properties context_properties[] = {
@@ -800,9 +800,9 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 			};
 
 			if (properties && properties->devices()) {
-				cl_context_id = clCreateContext(context_properties, 1, &device_id, NULL, NULL, &err);
+				cl_context_id = webcl_clCreateContext(webcl_channel_, context_properties, 1, &device_id, NULL, NULL, &err);
 			} else {
-				cl_context_id = clCreateContextFromType(context_properties, device_type, NULL, NULL, &err);
+				cl_context_id = webcl_clCreateContextFromType(webcl_channel_, context_properties, device_type, NULL, NULL, &err);
 			}
 
 		} // shareResource
@@ -854,13 +854,13 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 #if defined(CL_VERSION_1_2)
     cl_platform_id* m_cl_platforms = NULL;
     unsigned int m_num_platforms;
-    err = clGetPlatformIDs(0, NULL, &m_num_platforms);
+    err = webcl_clGetPlatformIDs(webcl_channel_, 0, NULL, &m_num_platforms);
 
     if(err == CL_SUCCESS) {
       m_cl_platforms = new cl_platform_id[m_num_platforms];
-      err = clGetPlatformIDs(m_num_platforms, m_cl_platforms, NULL);
+      err = webcl_clGetPlatformIDs(webcl_channel_, m_num_platforms, m_cl_platforms, NULL);
     }
-    err = clUnloadPlatformCompiler(m_cl_platforms[0]);
+    err = webcl_clUnloadPlatformCompiler(webcl_channel_, m_cl_platforms[0]);
     delete[] m_cl_platforms;
 #else
     err =  clUnloadCompiler();
