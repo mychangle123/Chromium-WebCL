@@ -1243,10 +1243,15 @@ cl_program GpuChannelHost::CallclCreateProgramWithSource(
 
   // Dump the inputs of the Sync IPC Message calling.
   string_list.clear();
+  if (NULL != strings) {
+    for (cl_uint index = 0; index < count; ++index)
+      string_list.push_back(std::string(strings[index]));
+  }
+
   length_list.clear();
-  for (cl_uint index = 0; index < count; ++index) {
-    string_list.push_back(std::string(strings[index]));
-    length_list.push_back(lengths[index]);
+  if (NULL != lengths) {
+    for (cl_uint index = 0; index < count; ++index)
+      length_list.push_back(lengths[index]);
   }
 
   // Send a Sync IPC Message and wait for the results.
