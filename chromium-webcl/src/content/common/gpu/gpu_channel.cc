@@ -1723,11 +1723,15 @@ void GpuChannel::OnCallclCreateProgramWithSource(
     errcode_ret_inter = NULL;
 
   // Dump the inputs of the Sync IPC Message calling.
-  if (count > 0 && !string_list.empty() && !length_list.empty()) {
+  if (count > 0 && !string_list.empty()) {
     strings = new const char*[count];
-    lengths = new size_t[count];
     for(cl_uint index = 0; index < count; ++index) {
       strings[index] = string_list[index].c_str();
+    }
+  }
+  if (count > 0 && !length_list.empty()) {
+    lengths = new size_t[count];
+    for(cl_uint index = 0; index < count; ++index) {
       lengths[index] = length_list[index];
     }
   }
@@ -1740,8 +1744,11 @@ void GpuChannel::OnCallclCreateProgramWithSource(
                     lengths,
                     errcode_ret);
 
-  if (count > 0 && !string_list.empty() && !length_list.empty()) {
+  if (count > 0 && !string_list.empty()) {
     delete[] strings;
+  }
+
+  if (count > 0 && !length_list.empty()) {
     delete[] lengths;
   }
 
