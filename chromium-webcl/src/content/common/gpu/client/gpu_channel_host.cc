@@ -1398,7 +1398,7 @@ cl_int GpuChannelHost::CallclBuildProgram(
   cl_int errcode_ret;
   cl_point point_program = (cl_point) program;
   std::vector<cl_point> point_device_list;
-  std::string str_options(options); // if option == NULL, what will happen??
+  std::string str_options = "";
   std::vector<cl_point> point_pfn_list;
 
   // Dump the inputs of the Sync IPC Message calling.
@@ -1408,6 +1408,9 @@ cl_int GpuChannelHost::CallclBuildProgram(
   point_device_list.clear();
   for (cl_uint index = 0; index < num_devices; ++index)
     point_device_list.push_back((cl_point) device_list[index]);
+
+  if (NULL != options)
+    str_options = std::string(options);
   
   // Send a Sync IPC Message and wait for the results.
   if (!Send(new OpenCLChannelMsg_BuildProgram(

@@ -1907,7 +1907,7 @@ void GpuChannel::OnCallclBuildProgram(
                      program,
                      num_devices,
                      device_list,
-                     str_options.c_str(),
+                     "" == str_options ? NULL : str_options.c_str(),
                      pfn_notify,
                      user_data);
 
