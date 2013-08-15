@@ -3415,6 +3415,613 @@ cl_int GpuChannelHost::CallclGetEventProfilingInfo(
   }
 }
 
+cl_int GpuChannelHost::CallclEnqueueReadBuffer(cl_command_queue command_queue, cl_mem buffer,cl_bool blocking_read, size_t offset, size_t size,
+  void *ptr, cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.	
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_list;
+  cl_point point_ptr;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueReadBuffer(point_in_list, blocking_read, size_t_list, point_ptr, num_events_in_wait_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueReadBufferRect(cl_command_queue command_queue, cl_mem buffer,cl_bool blocking_read, const size_t *buffer_origin,
+  const size_t *host_origin, const size_t *region,size_t buffer_row_pitch, size_t buffer_slice_pitch,
+  size_t host_row_pitch, size_t host_slice_pitch,void *ptr, cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  // Sending a Sync IPC Message, to call a clCreateSubDevices API
+  // in other process, and getting the results of the API.	
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_list;
+  cl_point point_ptr;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueReadBufferRect(point_in_list, blocking_read, size_t_list, point_ptr, num_events_in_wait_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueWriteBuffer(cl_command_queue command_queue, cl_mem buffer,cl_bool blocking_write, size_t offset, size_t size,
+  const void *ptr, cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_list;
+  cl_point point_ptr;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueWriteBuffer(point_in_list, blocking_write, size_t_list, point_ptr, num_events_in_wait_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueWriteBufferRect(cl_command_queue command_queue,cl_mem buffer, cl_bool blocking_write,const size_t *buffer_origin, 
+  const size_t *host_origin,const size_t *region, size_t buffer_row_pitch,size_t buffer_slice_pitch, size_t host_row_pitch,size_t host_slice_pitch, const void *ptr,
+  cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_list;
+  cl_point point_ptr;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueWriteBufferRect(point_in_list, blocking_write, size_t_list, point_ptr, num_events_in_wait_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueFillBuffer(cl_command_queue command_queue,cl_mem buffer, const void *pattern,size_t pattern_size, size_t offset, size_t size,
+  cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_list;
+  cl_point point_pattren = (cl_point) pattern;
+  std::vector<cl_point> point_list;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueFillBuffer(point_list, point_pattren, size_t_list, num_events_in_wait_list, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueCopyBuffer(cl_command_queue command_queue,cl_mem src_buffer, cl_mem dst_buffer,	size_t src_offset, size_t dst_offset, 
+  size_t size,cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_list;
+  std::vector<cl_point> point_list;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueCopyBuffer(point_list, size_t_list, num_events_in_wait_list, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueCopyBufferRect(cl_command_queue command_queue,cl_mem src_buffer, cl_mem dst_buffer,	const size_t *src_origin,const size_t *dst_origin,
+  const size_t *region, size_t src_row_pitch,size_t src_slice_pitch, size_t dst_row_pitch,size_t dst_slice_pitch, cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_ptr_list;
+  std::vector<size_t> size_t_list;
+  std::vector<cl_point> point_list;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueCopyBufferRect(point_list, size_t_ptr_list, size_t_list, num_events_in_wait_list, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueReadImage(cl_command_queue command_queue,cl_mem image, cl_bool blocking_read,const size_t *origin, const size_t *region,
+  size_t row_pitch, size_t slice_pitch, void *ptr,cl_uint num_events_in_wait_list, const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_list;
+  cl_point point_ptr;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueReadImage(point_in_list, blocking_read, size_t_list, point_ptr, num_events_in_wait_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueWriteImage(cl_command_queue command_queue,cl_mem image, cl_bool blocking_write,const size_t *origin, const size_t *region,size_t input_row_pitch,
+  size_t input_slice_pitch,const void *ptr, cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_list;
+  cl_point point_ptr;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueWriteImage(point_in_list, blocking_write, size_t_list, point_ptr, num_events_in_wait_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueFillImage(cl_command_queue command_queue,cl_mem image, const void *fill_color,const size_t *origin, const size_t *region,
+  cl_uint num_events_in_wait_list,const cl_event *event_wait_list,cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_list;
+  cl_point point_pattren = (cl_point) fill_color;
+  std::vector<cl_point> point_list;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueFillImage(point_list, point_pattren, size_t_list, num_events_in_wait_list, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueCopyImage(cl_command_queue command_queue,cl_mem src_image, cl_mem dst_image,const size_t *src_origin, const size_t *dst_origin,
+  const size_t *region, cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<size_t> size_t_list;
+  std::vector<cl_point> point_list;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueCopyImage(point_list, size_t_list, num_events_in_wait_list, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueCopyImageToBuffer(cl_command_queue command_queue,cl_mem src_image, cl_mem dst_buffer,const size_t *src_origin, const size_t *region,
+  size_t dst_offset, cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret = 0;
+  std::vector<cl_point> point_in_list;
+  std::vector<cl_point> point_list;
+  std::vector<size_t> size_t_list;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueCopyImageToBuffer(point_list, size_t_list, dst_offset, num_events_in_wait_list, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueCopyBufferToImage(cl_command_queue command_queue,cl_mem src_buffer, cl_mem dst_image,size_t src_offset,const size_t *dst_origin, 
+  const size_t *region,cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret = 0;
+  std::vector<cl_point> point_in_list;
+  std::vector<cl_point> point_list;
+  std::vector<size_t> size_t_list;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueCopyBufferToImage(point_list, src_offset, size_t_list, num_events_in_wait_list, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+void * GpuChannelHost::CallclEnqueueMapBuffer(cl_command_queue command_queue, cl_mem buffer,cl_bool blocking_map, cl_map_flags map_flags,size_t offset, size_t size, 
+  cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent,cl_int *errcode_ret)
+{
+  cl_point point_out_val = (size_t) -1;
+  std::vector<cl_point> point_in_list;
+  std::vector<cl_point> point_list;
+  std::vector<size_t> size_t_list;
+  cl_point point_ptr_ret;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueMapBuffer(point_list, blocking_map, map_flags, size_t_list, &point_out_val, errcode_ret, &point_ptr_ret))) {
+    return NULL;
+  }
+  return (void*) point_ptr_ret;
+}
+
+void * GpuChannelHost::CallclEnqueueMapImage(cl_command_queue command_queue, cl_mem image,cl_bool blocking_map, cl_map_flags map_flags,const size_t *origin, const size_t *region,
+  size_t *image_row_pitch, size_t *image_slice_pitch,cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent, cl_int *errcode_ret)
+{
+  cl_point point_out_val = (size_t) -1;
+  std::vector<cl_point> point_in_list;
+  std::vector<cl_point> point_list;
+  std::vector<size_t> size_t_list;
+  cl_point point_ptr_ret;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueMapImage(point_list, blocking_map, map_flags, size_t_list, num_events_in_wait_list, &point_out_val, errcode_ret, &point_ptr_ret))) {
+    return NULL;
+  }
+  return (void*) point_ptr_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueUnmapMemObject(cl_command_queue command_queue,cl_mem memobj, void *mapped_ptr,cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  cl_point point_command_queue = (cl_point) command_queue;
+  cl_point point_memobj = (cl_point) memobj;
+  cl_point point_mapped_ptr = (cl_point) mapped_ptr;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueUnmapMemObject(point_command_queue, point_memobj, point_mapped_ptr, num_events_in_wait_list, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueMigrateMemObjects(cl_command_queue command_queue,cl_uint num_mem_objects,	const cl_mem *mem_objects,cl_mem_migration_flags flags,
+  cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret = 0;
+  std::vector<cl_point> point_in_list;
+  cl_point point_in_val = (cl_point) command_queue;
+  std::vector<cl_uint> cluint_list;
+  std::vector<cl_point> point_mem_list;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueMigrateMemObjects(point_in_val, cluint_list, point_mem_list, flags, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueNDRangeKernel(cl_command_queue command_queue,cl_kernel kernel, cl_uint work_dim,const size_t *global_work_offset,
+  const size_t *global_work_size,const size_t *local_work_size,cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<cl_uint> cluint_list;
+  std::vector<size_t> size_t_list;
+  std::vector<cl_point> point_list;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueNDRangeKernel(point_list, cluint_list, size_t_list, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueTask(cl_command_queue command_queue,cl_kernel kernel, cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  cl_point point_command_queue = (cl_point) command_queue;
+  cl_point point_kernel = (cl_point) kernel;
+  std::vector<cl_point> point_in_list;
+
+  point_in_list.clear();
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueTask(point_command_queue, point_kernel, num_events_in_wait_list, point_in_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueNativeKernel(cl_command_queue command_queue, void (CL_CALLBACK* user_func)(void*), void* args, size_t cb_args,
+  cl_uint num_mem_objects, const cl_mem *mem_list, const void** args_mem_loc, cl_uint num_events_in_wait_list, const cl_event* event_wait_list, cl_event* clevent)
+{
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_in_list;
+  std::vector<cl_uint> cluint_list;
+  std::vector<cl_point> point_mem_list;
+
+  point_in_list.clear();
+  point_in_list.push_back((cl_point) command_queue);
+  point_in_list.push_back((cl_point) user_func);
+  point_in_list.push_back((cl_point) args);
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_in_list.push_back((cl_point) event_wait_list[index]);
+
+  point_mem_list.clear();
+  for (cl_uint index = 0; index < num_mem_objects; ++index)
+    point_mem_list.push_back((cl_point) event_wait_list[index]);
+
+  cluint_list.clear();
+  cluint_list.push_back(num_mem_objects);
+  cluint_list.push_back(num_events_in_wait_list);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  cl_point point_args_mem_loc = (cl_point) args_mem_loc;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueNativeKernel(point_in_list, cb_args, cluint_list, point_args_mem_loc, point_mem_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueMarkerWithWaitList(cl_command_queue command_queue,cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_in_val = (cl_point) command_queue;
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_list;
+  point_list.clear();
+
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueMarkerWithWaitList(point_in_val, num_events_in_wait_list, point_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
+cl_int GpuChannelHost::CallclEnqueueBarrierWithWaitList(cl_command_queue command_queue,cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
+{
+  cl_point point_in_val = (cl_point) command_queue;
+  cl_point point_out_val = (size_t) -1;
+  cl_int errcode_ret;
+  std::vector<cl_point> point_list;
+  point_list.clear();
+
+  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+    point_list.push_back((cl_point) event_wait_list[index]);
+
+  if (clevent != NULL)
+    point_out_val = 0;
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_EnqueueBarrierWithWaitList(point_in_val, num_events_in_wait_list, point_list, &point_out_val, &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+
+  if (clevent != NULL)
+    *clevent = (cl_event) point_out_val;
+
+  return errcode_ret;
+}
+
 cl_int CallclGetPlatformIDs(
   GpuChannelHost* channel_host_,
   cl_uint num_entries,
