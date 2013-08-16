@@ -98,9 +98,9 @@ GpuChannelHost::GpuChannelHost(
   WEBCL_SET_FUNC(clGetEventProfilingInfo          )
   WEBCL_SET_FUNC(clFlush                          )
   WEBCL_SET_FUNC(clFinish                         )
-  //WEBCL_SET_FUNC(clEnqueueReadBuffer              )
+  WEBCL_SET_FUNC(clEnqueueReadBuffer              )
   //WEBCL_SET_FUNC(clEnqueueReadBufferRect          )
-  //WEBCL_SET_FUNC(clEnqueueWriteBuffer             )
+  WEBCL_SET_FUNC(clEnqueueWriteBuffer             )
   //WEBCL_SET_FUNC(clEnqueueWriteBufferRect         )
   //WEBCL_SET_FUNC(clEnqueueFillBuffer              )
   //WEBCL_SET_FUNC(clEnqueueCopyBuffer              )
@@ -115,7 +115,7 @@ GpuChannelHost::GpuChannelHost(
   //WEBCL_SET_FUNC(clEnqueueMapImage                )
   //WEBCL_SET_FUNC(clEnqueueUnmapMemObject          )
   //WEBCL_SET_FUNC(clEnqueueMigrateMemObjects       )
-  //WEBCL_SET_FUNC(clEnqueueNDRangeKernel           )
+  WEBCL_SET_FUNC(clEnqueueNDRangeKernel           )
   //WEBCL_SET_FUNC(clEnqueueTask                    )
   //WEBCL_SET_FUNC(clEnqueueNativeKernel            )
   //WEBCL_SET_FUNC(clEnqueueMarkerWithWaitList      )
@@ -3415,31 +3415,46 @@ cl_int GpuChannelHost::CallclGetEventProfilingInfo(
   }
 }
 
-cl_int GpuChannelHost::CallclEnqueueReadBuffer(cl_command_queue command_queue, cl_mem buffer,cl_bool blocking_read, size_t offset, size_t size,
-  void *ptr, cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
-{
-  // Sending a Sync IPC Message, to call a clCreateSubDevices API
-  // in other process, and getting the results of the API.	
-  cl_point point_out_val = (size_t) -1;
+cl_int GpuChannelHost::CallclEnqueueReadBuffer(
+    cl_command_queue command_queue,
+    cl_mem buffer,
+    cl_bool blocking_read,
+    size_t offset,
+    size_t size,
+    void *ptr,
+    cl_uint num_events_in_wait_list,
+    const cl_event *event_wait_list,
+    cl_event * clevent) {
+  // Sending a Sync IPC Message, to call a clEnqueueReadBuffer API
+  // in other process, and getting the results of the API.
   cl_int errcode_ret;
-  std::vector<cl_point> point_in_list;
+  std::vector<cl_point> point_list;
   std::vector<size_t> size_t_list;
-  cl_point point_ptr;
+  std::vector<unsigned char> ptr_list;
+  cl_point clevent_ret;
 
-  point_in_list.clear();
-  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
-    point_in_list.push_back((cl_point) event_wait_list[index]);
+  // Dump the inputs of the Sync IPC Message calling.
+  point_list.clear();
+  point_list.push_back((cl_point) command_queue);
+  point_list.push_back((cl_point) buffer);
+  for (cl_uint index = 0; event_wait_list && index < num_events_in_wait_list; ++index)
+    point_list.push_back((cl_point) event_wait_list[index]);
 
-  if (clevent != NULL)
-    point_out_val = 0;
+  size_t_list.clear();
+  size_t_list.push_back(offset);
+  size_t_list.push_back(size);
 
   // Send a Sync IPC Message and wait for the results.
-  if (!Send(new OpenCLChannelMsg_EnqueueReadBuffer(point_in_list, blocking_read, size_t_list, point_ptr, num_events_in_wait_list, &point_out_val, &errcode_ret))) {
+  if (!Send(new OpenCLChannelMsg_EnqueueReadBuffer(point_list, blocking_read, size_t_list, num_events_in_wait_list, &ptr_list, &clevent_ret, &errcode_ret))) {
     return CL_SEND_IPC_MESSAGE_FAILURE;
   }
 
+  for (cl_uint index = 0; index < size; ++index) {
+    ((unsigned char*) ptr)[index + offset] = ptr_list[index];
+  }
+
   if (clevent != NULL)
-    *clevent = (cl_event) point_out_val;
+    *clevent = (cl_event) clevent_ret;
 
   return errcode_ret;
 }
@@ -3477,26 +3492,37 @@ cl_int GpuChannelHost::CallclEnqueueReadBufferRect(cl_command_queue command_queu
 cl_int GpuChannelHost::CallclEnqueueWriteBuffer(cl_command_queue command_queue, cl_mem buffer,cl_bool blocking_write, size_t offset, size_t size,
   const void *ptr, cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
 {
-  cl_point point_out_val = (size_t) -1;
+  // Sending a Sync IPC Message, to call a clEnqueueWriteBuffer API
+  // in other process, and getting the results of the API.
   cl_int errcode_ret;
-  std::vector<cl_point> point_in_list;
+  std::vector<cl_point> point_list;
   std::vector<size_t> size_t_list;
-  cl_point point_ptr;
+  std::vector<unsigned char> ptr_list;
+  cl_point clevent_ret;
 
-  point_in_list.clear();
-  for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
-    point_in_list.push_back((cl_point) event_wait_list[index]);
+  // Dump the inputs of the Sync IPC Message calling.
+  point_list.clear();
+  point_list.push_back((cl_point) command_queue);
+  point_list.push_back((cl_point) buffer);
+  for (cl_uint index = 0; event_wait_list && index < num_events_in_wait_list; ++index)
+    point_list.push_back((cl_point) event_wait_list[index]);
 
-  if (clevent != NULL)
-    point_out_val = 0;
+  size_t_list.clear();
+  size_t_list.push_back(offset);
+  size_t_list.push_back(size);
+
+  ptr_list.clear();
+  for (cl_uint index = 0; index < size; ++index) {
+    ptr_list.push_back(((unsigned char *)ptr)[offset + index]);
+  }
 
   // Send a Sync IPC Message and wait for the results.
-  if (!Send(new OpenCLChannelMsg_EnqueueWriteBuffer(point_in_list, blocking_write, size_t_list, point_ptr, num_events_in_wait_list, &point_out_val, &errcode_ret))) {
+  if (!Send(new OpenCLChannelMsg_EnqueueWriteBuffer(point_list, blocking_write, size_t_list, ptr_list, num_events_in_wait_list, &clevent_ret, &errcode_ret))) {
     return CL_SEND_IPC_MESSAGE_FAILURE;
   }
 
   if (clevent != NULL)
-    *clevent = (cl_event) point_out_val;
+    *clevent = (cl_event) clevent_ret;
 
   return errcode_ret;
 }
@@ -3880,29 +3906,31 @@ cl_int GpuChannelHost::CallclEnqueueMigrateMemObjects(cl_command_queue command_q
 cl_int GpuChannelHost::CallclEnqueueNDRangeKernel(cl_command_queue command_queue,cl_kernel kernel, cl_uint work_dim,const size_t *global_work_offset,
   const size_t *global_work_size,const size_t *local_work_size,cl_uint num_events_in_wait_list,const cl_event *event_wait_list, cl_event * clevent)
 {
-  cl_point point_out_val = (size_t) -1;
-  cl_int errcode_ret;
-  std::vector<cl_point> point_in_list;
-  std::vector<cl_uint> cluint_list;
-  std::vector<size_t> size_t_list;
   std::vector<cl_point> point_list;
+  point_list.clear();
+  point_list.push_back((cl_point) command_queue);
+  point_list.push_back((cl_point) kernel);
+//  cl_int errcode_ret;
+  std::vector<cl_uint> cluint_list;
+//  cluint_list.pu
+  std::vector<size_t> size_t_list;
+//  std::vector<cl_point> point_list;
 
-  point_in_list.clear();
   for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
-    point_in_list.push_back((cl_point) event_wait_list[index]);
+    point_list.push_back((cl_point) event_wait_list[index]);
 
-  if (clevent != NULL)
-    point_out_val = 0;
+//  if (clevent != NULL)
+//    point_out_val = 0;
 
   // Send a Sync IPC Message and wait for the results.
-  if (!Send(new OpenCLChannelMsg_EnqueueNDRangeKernel(point_list, cluint_list, size_t_list, point_in_list, &point_out_val, &errcode_ret))) {
+//  if (!Send(new OpenCLChannelMsg_EnqueueNDRangeKernel(point_list, cluint_list, size_t_list, point_list, &point_out_val, &errcode_ret))) {
     return CL_SEND_IPC_MESSAGE_FAILURE;
-  }
+//  }
 
   if (clevent != NULL)
-    *clevent = (cl_event) point_out_val;
+//    *clevent = (cl_event) point_out_val;
 
-  return errcode_ret;
+  return 1;//errcode_ret;
 }
 
 cl_int GpuChannelHost::CallclEnqueueTask(cl_command_queue command_queue,cl_kernel kernel, cl_uint num_events_in_wait_list,
@@ -4676,6 +4704,524 @@ cl_int CallclFlush(GpuChannelHost* channel_host_, cl_command_queue command_queue
 
 cl_int CallclFinish(GpuChannelHost* channel_host_, cl_command_queue command_queue) {
   return channel_host_ ->CallclFinish(command_queue);
+}
+
+cl_int CallclEnqueueReadBuffer(
+  GpuChannelHost* channel_host_, 
+  cl_command_queue command_queue,
+  cl_mem buffer,
+  cl_bool blocking_read,
+  size_t offset,
+  size_t size,
+  void *ptr, 
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_->CallclEnqueueReadBuffer(
+      command_queue,
+      buffer,
+      blocking_read,
+      offset,
+      size,
+      ptr, 
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+cl_int CallclEnqueueReadBufferRect(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue, 
+  cl_mem buffer,
+  cl_bool blocking_read, 
+  const size_t *buffer_origin,
+  const size_t *host_origin,
+  const size_t *region,
+  size_t buffer_row_pitch,
+  size_t buffer_slice_pitch,
+  size_t host_row_pitch, 
+  size_t host_slice_pitch,
+  void *ptr, 
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_->CallclEnqueueReadBufferRect(
+      command_queue, 
+      buffer,
+      blocking_read, 
+      buffer_origin,
+      host_origin,
+      region,
+      buffer_row_pitch,
+      buffer_slice_pitch,
+      host_row_pitch, 
+      host_slice_pitch,
+      ptr, 
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+cl_int CallclEnqueueWriteBuffer(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem buffer,
+  cl_bool blocking_write,
+  size_t offset,
+  size_t size,
+  const void *ptr, 
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueWriteBuffer(
+      command_queue,
+      buffer,
+      blocking_write,
+      offset,
+      size,
+      ptr, 
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+cl_int CallclEnqueueWriteBufferRect(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem buffer,
+  cl_bool blocking_write,
+  const size_t *buffer_origin, 
+  const size_t *host_origin,
+  const size_t *region,
+  size_t buffer_row_pitch,
+  size_t buffer_slice_pitch, 
+  size_t host_row_pitch,
+  size_t host_slice_pitch,
+  const void *ptr,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_->CallclEnqueueWriteBufferRect(
+      command_queue,
+      buffer,
+      blocking_write,
+      buffer_origin, 
+      host_origin,
+      region,
+      buffer_row_pitch,
+      buffer_slice_pitch, 
+      host_row_pitch,
+      host_slice_pitch,
+      ptr,
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);      
+}
+
+cl_int CallclEnqueueFillBuffer(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem buffer, 
+  const void *pattern,
+  size_t pattern_size,
+  size_t offset, 
+  size_t size,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueFillBuffer(
+      command_queue,
+      buffer, 
+      pattern,
+      pattern_size,
+      offset, 
+      size,
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+
+cl_int CallclEnqueueCopyBuffer(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem src_buffer, 
+  cl_mem dst_buffer,
+  size_t src_offset, 
+  size_t dst_offset, 
+  size_t size,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list, 
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueCopyBuffer(
+      command_queue,
+      src_buffer, 
+      dst_buffer,
+      src_offset, 
+      dst_offset, 
+      size,
+      num_events_in_wait_list,
+      event_wait_list, 
+      clevent);
+}
+
+cl_int CallclEnqueueCopyBufferRect(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem src_buffer, 
+  cl_mem dst_buffer,
+  const size_t *src_origin,
+  const size_t *dst_origin,
+  const size_t *region,
+  size_t src_row_pitch,
+  size_t src_slice_pitch,
+  size_t dst_row_pitch,
+  size_t dst_slice_pitch,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueCopyBufferRect(
+      command_queue,
+      src_buffer, 
+      dst_buffer,
+      src_origin,
+      dst_origin,
+      region,
+      src_row_pitch,
+      src_slice_pitch,
+      dst_row_pitch,
+      dst_slice_pitch,
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+
+cl_int CallclEnqueueReadImage(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem image, 
+  cl_bool blocking_read,
+  const size_t *origin,
+  const size_t *region,
+  size_t row_pitch, 
+  size_t slice_pitch,
+  void *ptr,
+  cl_uint num_events_in_wait_list, 
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_->CallclEnqueueReadImage(
+      command_queue,
+      image, 
+      blocking_read,
+      origin,
+      region,
+      row_pitch, 
+      slice_pitch,
+      ptr,
+      num_events_in_wait_list, 
+      event_wait_list,
+      clevent);
+}
+
+cl_int CallclEnqueueWriteImage(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem image,
+  cl_bool blocking_write,
+  const size_t *origin,
+  const size_t *region,
+  size_t input_row_pitch,
+  size_t input_slice_pitch,
+  const void *ptr, 
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueWriteImage(
+      command_queue,
+      image,
+      blocking_write,
+      origin,
+      region,
+      input_row_pitch,
+      input_slice_pitch,
+      ptr, 
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+cl_int CallclEnqueueFillImage(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem image, 
+  const void *fill_color,
+  const size_t *origin,
+  const size_t *region,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueFillImage(
+      command_queue,
+      image, 
+      fill_color,
+      origin,
+      region,
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+cl_int CallclEnqueueCopyImage(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem src_image,
+  cl_mem dst_image,
+  const size_t *src_origin,
+  const size_t *dst_origin,
+  const size_t *region,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueCopyImage(
+      command_queue,
+      src_image,
+      dst_image,
+      src_origin,
+      dst_origin,
+      region,
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+cl_int CallclEnqueueCopyImageToBuffer(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem src_image, 
+  cl_mem dst_buffer,
+  const size_t *src_origin, 
+  const size_t *region,
+  size_t dst_offset, 
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_  ->CallclEnqueueCopyImageToBuffer(
+      command_queue,
+      src_image, 
+      dst_buffer,
+      src_origin, 
+      region,
+      dst_offset, 
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+cl_int CallclEnqueueCopyBufferToImage(
+    GpuChannelHost* channel_host_,
+    cl_command_queue command_queue,
+    cl_mem src_buffer, 
+    cl_mem dst_image,
+    size_t src_offset,
+    const size_t *dst_origin, 
+    const size_t *region,
+    cl_uint num_events_in_wait_list,
+    const cl_event *event_wait_list,
+	cl_event * clevent){
+      return channel_host_ ->CallclEnqueueCopyBufferToImage(
+        command_queue,
+        src_buffer, 
+        dst_image,
+        src_offset,
+        dst_origin, 
+        region,
+        num_events_in_wait_list,
+        event_wait_list,
+        clevent);
+}
+
+void *CallclEnqueueMapBuffer(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem buffer,
+  cl_bool blocking_map,
+  cl_map_flags map_flags,
+  size_t offset, 
+  size_t size, 
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent,
+  cl_int *errcode_ret){
+    return channel_host_->CallclEnqueueMapBuffer(
+      command_queue,
+      buffer,
+      blocking_map,
+      map_flags,
+      offset, 
+      size, 
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent,
+      errcode_ret);
+}
+
+
+void *CallclEnqueueMapImage(
+    GpuChannelHost* channel_host_,
+    cl_command_queue command_queue,
+    cl_mem image,
+    cl_bool blocking_map,
+    cl_map_flags map_flags,
+    const size_t *origin, 
+    const size_t *region,
+    size_t *image_row_pitch,
+    size_t *image_slice_pitch,
+    cl_uint num_events_in_wait_list,
+    const cl_event *event_wait_list,
+    cl_event * clevent,
+    cl_int *errcode_ret){
+      return channel_host_ ->CallclEnqueueMapImage(
+        command_queue,
+        image,
+        blocking_map,
+        map_flags,
+        origin, 
+        region,
+        image_row_pitch,
+        image_slice_pitch,
+        num_events_in_wait_list,
+        event_wait_list,
+        clevent,
+        errcode_ret);
+}
+
+cl_int CallclEnqueueUnmapMemObject(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_mem memobj, 
+  void *mapped_ptr,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list, 
+  cl_event * clevent){
+  return channel_host_ ->CallclEnqueueUnmapMemObject(
+     command_queue,
+     memobj, 
+     mapped_ptr,
+     num_events_in_wait_list,
+     event_wait_list, 
+     clevent);
+}
+
+cl_int CallclEnqueueMigrateMemObjects(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_uint num_mem_objects,
+  const cl_mem *mem_objects,
+  cl_mem_migration_flags flags,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueMigrateMemObjects(
+      command_queue,
+      num_mem_objects,
+      mem_objects,
+      flags,
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+
+cl_int CallclEnqueueNDRangeKernel(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_kernel kernel,
+  cl_uint work_dim,
+  const size_t *global_work_offset,
+  const size_t *global_work_size,
+  const size_t *local_work_size,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list, 
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueNDRangeKernel(
+      command_queue,
+      kernel,
+      work_dim,
+      global_work_offset,
+      global_work_size,
+      local_work_size,
+      num_events_in_wait_list,
+      event_wait_list, 
+      clevent);
+}
+
+cl_int CallclEnqueueTask(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_kernel kernel, 
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueTask(
+      command_queue,
+      kernel, 
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+
+cl_int CallclEnqueueNativeKernel(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue, 
+  void (CL_CALLBACK* user_func)(void*),
+  void* args,
+  size_t cb_args,
+  cl_uint num_mem_objects, 
+  const cl_mem *mem_list,
+  const void** args_mem_loc, 
+  cl_uint num_events_in_wait_list,
+  const cl_event* event_wait_list,
+  cl_event* clevent){
+    return channel_host_ ->CallclEnqueueNativeKernel(
+      command_queue, 
+      user_func,
+      args,
+      cb_args,
+      num_mem_objects, 
+      mem_list,
+      args_mem_loc, 
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
+}
+
+cl_int CallclEnqueueMarkerWithWaitList(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list, 
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueMarkerWithWaitList(
+      command_queue,
+      num_events_in_wait_list,
+      event_wait_list, 
+      clevent);
+}
+
+
+cl_int CallclEnqueueBarrierWithWaitList(
+  GpuChannelHost* channel_host_,
+  cl_command_queue command_queue,
+  cl_uint num_events_in_wait_list,
+  const cl_event *event_wait_list,
+  cl_event * clevent){
+    return channel_host_ ->CallclEnqueueBarrierWithWaitList(
+      command_queue,
+      num_events_in_wait_list,
+      event_wait_list,
+      clevent);
 }
 
 }  // namespace content

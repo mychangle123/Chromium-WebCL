@@ -968,6 +968,52 @@ class GpuChannel : public IPC::Listener,
       cl_ulong*,
       size_t*,
       cl_int*);
+
+  void OnCallclEnqueueReadBuffer(
+      const std::vector<cl_point>&,
+      const cl_bool&,
+      const std::vector<size_t>&,
+      const cl_uint&,
+      std::vector<unsigned char>*,
+      cl_point*,
+      cl_int*);
+
+  void OnCallclEnqueueWriteBuffer(
+    const std::vector<cl_point>&,
+    const cl_bool&,
+    const std::vector<size_t>&,
+    const std::vector<unsigned char>&,
+    const cl_uint&,
+    cl_point*,
+    cl_int*);
+
+  void OnCallclEnqueueNDRangeKernel(
+    const std::vector<cl_point>&,
+    const std::vector<cl_uint>&,
+    const std::vector<size_t>&,
+    const std::vector<cl_point>&,
+    cl_point*,
+    cl_int*);
+
+  void OnCallclEnqueueReadBufferRect             (std::vector<cl_point>, cl_bool, std::vector<size_t>, cl_point, cl_uint, cl_point*, cl_int*);
+  void OnCallclEnqueueWriteBufferRect            (std::vector<cl_point>, cl_bool, std::vector<size_t>, cl_point, cl_uint, cl_point*, cl_int*);
+  void OnCallclEnqueueFillBuffer                 (std::vector<cl_point>, cl_point, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueCopyBuffer                 (std::vector<cl_point>, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueCopyBufferRect             (std::vector<cl_point>, std::vector<size_t>, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueReadImage                  (std::vector<cl_point>, cl_bool, std::vector<size_t>, cl_point, cl_uint, cl_point*, cl_int*);
+  void OnCallclEnqueueWriteImage                 (std::vector<cl_point>, cl_bool, std::vector<size_t>, cl_point, cl_uint, cl_point*, cl_int*);
+  void OnCallclEnqueueFillImage                  (std::vector<cl_point>, cl_point, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueCopyImage                  (std::vector<cl_point>, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueCopyImageToBuffer          (std::vector<cl_point>, std::vector<size_t>, size_t, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueCopyBufferToImage          (std::vector<cl_point>, size_t, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueMapBuffer                  (std::vector<cl_point>, cl_bool, cl_map_flags, std::vector<size_t>, cl_point*, cl_int*, cl_point*);
+  void OnCallclEnqueueMapImage                   (std::vector<cl_point>, cl_bool, cl_map_flags, std::vector<size_t>, cl_uint, cl_point*, cl_int*, cl_point*);
+  void OnCallclEnqueueUnmapMemObject             (cl_point, cl_point, cl_point, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueMigrateMemObjects          (cl_point, std::vector<cl_uint>, std::vector<cl_point>, cl_mem_migration_flags, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueTask                       (cl_point, cl_point, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueNativeKernel               (std::vector<cl_point>, size_t, std::vector<cl_uint>, cl_point, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueMarkerWithWaitList         (cl_point, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+  void OnCallclEnqueueBarrierWithWaitList        (cl_point, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
 };
 
 }  // namespace content

@@ -1151,245 +1151,268 @@ cl_int CallclFlush(GpuChannelHost*, cl_command_queue);
 
 cl_int CallclFinish (GpuChannelHost*, cl_command_queue);
 
-cl_int CallclEnqueueReadBuffer(/////////////////////////////not found  
+cl_int CallclEnqueueReadBuffer(
+    GpuChannelHost*, 
     cl_command_queue,
     cl_mem,
     cl_bool,
     size_t,
     size_t,
-    void*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    void *, 
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueReadBufferRect(
-    cl_command_queue,
-    cl_mem,
-    cl_bool,
-    const size_t*,
-    const size_t*,
-    const size_t*,
-    size_t,
-    size_t,
-    size_t,
-    size_t,
-    void*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost*,
+    cl_command_queue , 
+    cl_mem ,
+    cl_bool , 
+    const size_t *,
+    const size_t *,
+    const size_t *,
+    size_t ,
+    size_t ,
+    size_t , 
+    size_t ,
+    void *, 
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueWriteBuffer(
-    cl_command_queue,
-    cl_mem,
-    cl_bool,
-    size_t,
-    size_t,
-    const void*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem ,
+    cl_bool ,
+    size_t ,
+    size_t ,
+    const void *, 
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueWriteBufferRect(
-    cl_command_queue,
-    cl_mem,
-    cl_bool,
-    const size_t*,
-    const size_t*,
-    const size_t*,
-    size_t,
-    size_t,
-    size_t,
-    size_t,
-    const void*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem ,
+    cl_bool ,
+    const size_t *, 
+    const size_t *,
+    const size_t *,
+    size_t ,
+    size_t , 
+    size_t ,
+    size_t ,
+    const void *,
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueFillBuffer(
-    cl_command_queue,
-    cl_mem,
-    const void*,
-    size_t,
-    size_t,
-    size_t,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem , 
+    const void *,
+    size_t ,
+    size_t , 
+    size_t ,
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueCopyBuffer(
-    cl_command_queue,
-    cl_mem,
-    cl_mem,
-    size_t,
-    size_t,
-    size_t,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem , 
+    cl_mem ,
+    size_t , 
+    size_t , 
+    size_t ,
+    cl_uint ,
+    const cl_event *, 
+    cl_event * );
 
 cl_int CallclEnqueueCopyBufferRect(
-    cl_command_queue,
-    cl_mem,
-    cl_mem,
-    const size_t*,
-    const size_t*,
-    const size_t*,
-    size_t,
-    size_t,
-    size_t,
-    size_t,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem , 
+    cl_mem ,
+    const size_t *,
+    const size_t *,
+    const size_t *,
+    size_t ,
+    size_t ,
+    size_t ,
+    size_t ,
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueReadImage(
-    cl_command_queue,
-    cl_mem,
-    cl_bool,
-    const size_t*,
-    const size_t*,
-    size_t,
-    size_t,
-    void*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem , 
+    cl_bool ,
+    const size_t *,
+    const size_t *,
+    size_t , 
+    size_t ,
+    void *,
+    cl_uint , 
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueWriteImage(
-    cl_command_queue,
-    cl_mem,
-    cl_bool,
-    const size_t*,
-    const size_t*,
-    size_t,
-    size_t,
-    const void*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem ,
+    cl_bool ,
+    const size_t *,
+    const size_t *,
+    size_t ,
+    size_t ,
+    const void *, 
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueFillImage(
-    cl_command_queue,
-    cl_mem,
-    const void*,
-    const size_t*,
-    const size_t*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem , 
+    const void *,
+    const size_t *,
+    const size_t *,
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueCopyImage(
-    cl_command_queue,
-    cl_mem,
-    cl_mem,
-    const size_t*,
-    const size_t*,
-    const size_t*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem ,
+    cl_mem ,
+    const size_t *,
+    const size_t *,
+    const size_t *,
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueCopyImageToBuffer(
-    cl_command_queue,
-    cl_mem,
-    cl_mem,
-    const size_t*,
-    const size_t*,
-    size_t,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem , 
+    cl_mem ,
+    const size_t *, 
+    const size_t *,
+    size_t , 
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueCopyBufferToImage(
-    cl_command_queue,
-    cl_mem,
-    cl_mem,
-    size_t,
-    const size_t*,
-    const size_t*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem , 
+    cl_mem ,
+    size_t ,
+    const size_t *, 
+    const size_t *,
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
-void* CallclEnqueueMapBuffer(
-    cl_command_queue,
-    cl_mem,
-    cl_bool,
-    cl_map_flags,
-    size_t, size_t,
-    cl_uint,
-    const cl_event*,
-    cl_event*,
-    cl_int*);
+void *CallclEnqueueMapBuffer(
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem ,
+    cl_bool ,
+    cl_map_flags ,
+    size_t , 
+    size_t , 
+    cl_uint ,
+    const cl_event *,
+    cl_event * ,
+    cl_int *);
 
-void* CallclEnqueueMapImage(
-    cl_command_queue,
-    cl_mem,
-    cl_bool,
-    cl_map_flags,
-    const size_t*,
-    const size_t*,
-    size_t*,
-    size_t*,
-    cl_uint,
-    const cl_event*,
-    cl_event*,
-    cl_int*);
+void *CallclEnqueueMapImage(
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem ,
+    cl_bool ,
+    cl_map_flags ,
+    const size_t *, 
+    const size_t *,
+    size_t *,
+    size_t *,
+    cl_uint ,
+    const cl_event *,
+    cl_event * ,
+    cl_int *);
 
 cl_int CallclEnqueueUnmapMemObject(
-    cl_command_queue,
-    cl_mem,
-    void*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_mem , 
+    void *,
+    cl_uint ,
+    const cl_event *, 
+    cl_event * );
 
 cl_int CallclEnqueueMigrateMemObjects(
-    cl_command_queue,
-    cl_uint,
-    const cl_mem*,
-    cl_mem_migration_flags,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_uint ,
+    const cl_mem *,
+    cl_mem_migration_flags ,
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueNDRangeKernel(
-    cl_command_queue,
-    cl_kernel,
-    cl_uint,
-    const size_t*,
-    const size_t*,
-    const size_t*,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_kernel ,
+	  cl_uint work_dim,
+    const size_t *,
+    const size_t *,
+    const size_t *,
+    cl_uint ,
+    const cl_event *, 
+    cl_event * );
 
 cl_int CallclEnqueueTask(
-    cl_command_queue,
-    cl_kernel,
-    cl_uint,
-    const cl_event*,
-    cl_event*);
+    GpuChannelHost* ,
+    cl_command_queue ,
+    cl_kernel , 
+    cl_uint ,
+    const cl_event *,
+    cl_event * );
 
 cl_int CallclEnqueueNativeKernel(
-    cl_command_queue,
-    void (CL_CALLBACK*)(void*),
+    GpuChannelHost* ,
+    cl_command_queue , 
+    void (CL_CALLBACK* user_func)(void*),
     void*,
     size_t,
-    cl_uint,
+    cl_uint, 
     const cl_mem*,
-    const void**,
+    const void**, 
     cl_uint,
     const cl_event*,
-    cl_event*);
+    cl_event* );
 
 cl_int CallclEnqueueMarkerWithWaitList(
+    GpuChannelHost*,
     cl_command_queue,
     cl_uint,
-    const cl_event*,
-    cl_event*);
+    const cl_event *, 
+    cl_event* );
 
 cl_int CallclEnqueueBarrierWithWaitList(
+    GpuChannelHost*,
     cl_command_queue,
     cl_uint,
     const cl_event*,

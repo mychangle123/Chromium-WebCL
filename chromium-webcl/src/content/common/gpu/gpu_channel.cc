@@ -3874,4 +3874,434 @@ void GpuChannel::OnCallclGetEventProfilingInfo_cl_ulong(
                      cl_ulong_ret_inter,
                      param_value_size_ret_inter);
 }
+
+void GpuChannel::OnCallclEnqueueReadBuffer(
+  const std::vector<cl_point>& point_list,
+  const cl_bool& blocking_read,
+  const std::vector<size_t>& size_t_list,
+  const cl_uint& num_events_in_wait_list,
+  std::vector<unsigned char>* ptr_list,
+  cl_point* clevent_ret,
+  cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clEnqueueReadBuffer OpenCL API calling.
+  cl_command_queue command_queue = (cl_command_queue) point_list[0];
+  cl_mem buffer = (cl_mem) point_list[1];
+  size_t offset = size_t_list[0];
+  size_t size = size_t_list[1];
+  cl_event *event_wait_list = NULL;
+  cl_event clevent;
+  unsigned char* ptr;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (num_events_in_wait_list > 0 && point_list.size() > 2) {
+    event_wait_list = new cl_event[num_events_in_wait_list];
+    for (cl_uint index = 0; index < num_events_in_wait_list; ++index) {
+      event_wait_list[index] = (cl_event) point_list[2 + index];
+    }
+  }
+
+  ptr = new unsigned char[offset + size];
+
+  // Call the OpenCL API.
+  *errcode_ret = clEnqueueReadBuffer(command_queue, buffer, blocking_read, offset, size, ptr, num_events_in_wait_list, event_wait_list, &clevent);
+
+  if (num_events_in_wait_list > 0 && point_list.size() > 2)
+    delete[] event_wait_list;
+
+  for (cl_uint index = 0; index < size; ++index)
+  {
+    (*ptr_list).push_back(ptr[index+offset]);
+  }
+
+  *clevent_ret = (cl_point) clevent;
+}
+void GpuChannel::OnCallclEnqueueReadBufferRect (std::vector<cl_point>, cl_bool, std::vector<size_t>, cl_point, cl_uint, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clEnqueueReadBufferRect OpenCL API calling.
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueWriteBuffer(
+  const std::vector<cl_point>& point_list,
+  const cl_bool& blocking_write,
+  const std::vector<size_t>& size_t_list,
+  const std::vector<unsigned char>& ptr_list,
+  const cl_uint& num_events_in_wait_list,
+  cl_point* clevent_ret,
+  cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process
+  // and return the results of clEnqueueReadBuffer OpenCL API calling.
+  cl_command_queue command_queue = (cl_command_queue) point_list[0];
+  cl_mem buffer = (cl_mem) point_list[1];
+  size_t offset = size_t_list[0];
+  size_t size = size_t_list[1];
+  cl_event *event_wait_list = NULL;
+  cl_event clevent;
+  unsigned char* ptr;
+
+  // Dump the inputs of the Sync IPC Message calling.
+  if (num_events_in_wait_list > 0 && point_list.size() > 2) {
+    event_wait_list = new cl_event[num_events_in_wait_list];
+    for (cl_uint index = 0; index < num_events_in_wait_list; ++index) {
+      event_wait_list[index] = (cl_event) point_list[2 + index];
+    }
+  }
+
+  ptr = new unsigned char[offset + size];
+  for (cl_uint index = 0; index < size; ++index) {
+    ptr[index + offset] = ptr_list[index];
+  }
+
+  // Call the OpenCL API.
+  *errcode_ret = clEnqueueWriteBuffer(command_queue, buffer, blocking_write, offset, size, ptr, num_events_in_wait_list, event_wait_list, &clevent);
+
+  if (num_events_in_wait_list > 0 && point_list.size() > 2)
+    delete[] event_wait_list;
+
+  delete[] ptr;
+
+  *clevent_ret = (cl_point) clevent;
+}
+void GpuChannel::OnCallclEnqueueWriteBufferRect (std::vector<cl_point>, cl_bool, std::vector<size_t>, cl_point, cl_uint, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueFillBuffer (std::vector<cl_point>, cl_point, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueCopyBuffer (std::vector<cl_point>, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueCopyBufferRect (std::vector<cl_point>, std::vector<size_t>, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueReadImage (std::vector<cl_point>, cl_bool, std::vector<size_t>, cl_point, cl_uint, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueWriteImage (std::vector<cl_point>, cl_bool, std::vector<size_t>, cl_point, cl_uint, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueFillImage (std::vector<cl_point>, cl_point, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueCopyImage (std::vector<cl_point>, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueCopyImageToBuffer (std::vector<cl_point>, std::vector<size_t>, size_t, cl_uint, std::vector<cl_point>, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueCopyBufferToImage (std::vector<cl_point>, size_t, std::vector<size_t>, cl_uint, std::vector<cl_point>, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueMapBuffer (std::vector<cl_point>, cl_bool, cl_map_flags, std::vector<size_t>, cl_point* point_out_val, cl_int* errcode_ret, cl_point*)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueMapImage (std::vector<cl_point>, cl_bool, cl_map_flags, std::vector<size_t>, cl_uint, cl_point* point_out_val, cl_int* errcode_ret, cl_point*)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueUnmapMemObject (cl_point, cl_point, cl_point, cl_uint, std::vector<cl_point>, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueMigrateMemObjects (cl_point, std::vector<cl_uint>, std::vector<cl_point>, cl_mem_migration_flags, std::vector<cl_point>, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  // Receiving and responding the Sync IPC Message from another process and
+  // return the results of clEnqueueMigrateMemObjects OpenCL API calling.
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+void GpuChannel::OnCallclEnqueueNDRangeKernel (const std::vector<cl_point>&, const std::vector<cl_uint>&, const std::vector<size_t>&, const std::vector<cl_point>&, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  // Receiving and responding the Sync IPC Message from another process and
+  // return the results of clEnqueueNDRangeKernel OpenCL API calling.
+  cl_event event_ret = NULL;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_events_in_wait_list = 0;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+
+void GpuChannel::OnCallclEnqueueTask (cl_point point_command_queue, cl_point point_kernel, cl_uint num_events_in_wait_list, std::vector<cl_point> point_in_list, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  // Receiving and responding the Sync IPC Message from another process and
+  // return the results of clEnqueueNativeKernel OpenCL API calling.
+  cl_command_queue command_queue = (cl_command_queue) point_command_queue;
+  cl_kernel kernel = (cl_kernel) point_kernel;
+  cl_event event_ret;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+
+  if (num_events_in_wait_list > 0)
+  {
+    event_wait_list = new cl_event[num_events_in_wait_list];
+    for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+      event_wait_list[index] = (cl_event) point_in_list[index + 3];
+  }
+
+  if ((size_t) -1 != *point_out_val)
+    event_ret_inter = &event_ret;
+
+  *errcode_ret = clEnqueueTask(command_queue, kernel, num_events_in_wait_list, event_wait_list, event_ret_inter);
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+
+void GpuChannel::OnCallclEnqueueNativeKernel (std::vector<cl_point> point_in_list, size_t cb_args, std::vector<cl_uint> cluint_list, cl_point point_args_mem_loc, std::vector<cl_point> point_mem_list, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  // Receiving and responding the Sync IPC Message from another process and
+  // return the results of clEnqueueNativeKernel OpenCL API calling.
+  cl_command_queue command_queue = (cl_command_queue) point_in_list[0];
+  void (CL_CALLBACK* user_func)(void*) = (void (CL_CALLBACK*)(void*)) point_in_list[1];
+  void* args = (void*) point_in_list[2];
+  cl_event event_ret;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+  cl_uint num_mem_objects = cluint_list[0];
+  cl_uint num_events_in_wait_list = cluint_list[1];
+  const void** args_mem_loc = (const void**) point_args_mem_loc;
+  cl_mem* mem_list = NULL;
+
+  if (num_mem_objects > 0)
+  {
+    mem_list = new cl_mem[num_mem_objects];
+    for (cl_uint index = 0; index < num_mem_objects; ++index)
+      mem_list[index] = (cl_mem) point_mem_list[index];
+  }
+
+  if (num_events_in_wait_list > 0)
+  {
+    event_wait_list = new cl_event[num_events_in_wait_list];
+    for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+      event_wait_list[index] = (cl_event) point_in_list[index + 3];
+  }
+
+  if ((size_t) -1 != *point_out_val)
+    event_ret_inter = &event_ret;
+
+  *errcode_ret = clEnqueueNativeKernel(command_queue, user_func, args, cb_args, num_mem_objects, mem_list, args_mem_loc, num_events_in_wait_list,event_wait_list, event_ret_inter);
+
+  if (num_mem_objects > 0)
+    delete[] mem_list;
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+
+void GpuChannel::OnCallclEnqueueMarkerWithWaitList (cl_point point_in_val, cl_uint num_events_in_wait_list, std::vector<cl_point> point_list, cl_point* point_out_val, cl_int* errcode_ret)
+{
+  // Receiving and responding the Sync IPC Message from another process and
+  // return the results of clEnqueueMarkerWithWaitList OpenCL API calling.
+  cl_command_queue command_queue = (cl_command_queue) point_in_val;
+  cl_event event_ret;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+
+  if (num_events_in_wait_list > 0)
+  {
+    event_wait_list = new cl_event[num_events_in_wait_list];
+    for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+      event_wait_list[index] = (cl_event) point_list[index];
+  }
+
+  if ((size_t) -1 != *point_out_val)
+    event_ret_inter = &event_ret;
+
+  *errcode_ret = clEnqueueMarkerWithWaitList(command_queue, num_events_in_wait_list, event_wait_list, event_ret_inter);
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
+
+void GpuChannel::OnCallclEnqueueBarrierWithWaitList(
+    cl_point point_command_queue,
+    cl_uint num_events_in_wait_list,
+    std::vector<cl_point> point_list,
+    cl_point* point_out_val,
+    cl_int* errcode_ret) {
+  // Receiving and responding the Sync IPC Message from another process and
+  // return the results of clEnqueueBarrierWithWaitList OpenCL API calling.
+  cl_command_queue command_queue = (cl_command_queue) point_command_queue;
+  cl_event event_ret;
+  cl_event* event_ret_inter = NULL;
+  cl_event *event_wait_list = NULL;
+
+  if (num_events_in_wait_list > 0)
+  {
+    event_wait_list = new cl_event[num_events_in_wait_list];
+    for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+      event_wait_list[index] = (cl_event) point_list[index];
+  }
+
+  if ((size_t) -1 != *point_out_val)
+    event_ret_inter = &event_ret;
+
+  *errcode_ret = clEnqueueBarrierWithWaitList(command_queue, num_events_in_wait_list, event_wait_list, event_ret_inter);
+
+  if (num_events_in_wait_list > 0)
+    delete[] event_wait_list;
+
+  if ((size_t) -1 != *point_out_val)
+    *point_out_val = (cl_point) event_ret;
+}
 }  // namespace content

@@ -1013,12 +1013,12 @@ IPC_SYNC_MESSAGE_CONTROL1_1(OpenCLChannelMsg_Finish,
                             cl_int)
 
 // Call and respond OpenCL API clEnqueueReadBuffer using Sync IPC Message
-IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_EnqueueReadBuffer,
+IPC_SYNC_MESSAGE_CONTROL4_3(OpenCLChannelMsg_EnqueueReadBuffer,
                             std::vector<cl_point>,
                             cl_bool,
                             std::vector<size_t>,
-                            cl_point,
                             cl_uint,
+                            std::vector<unsigned char>,
                             cl_point,
                             cl_int)
 
@@ -1037,7 +1037,7 @@ IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_EnqueueWriteBuffer,
                             std::vector<cl_point>,
                             cl_bool,
                             std::vector<size_t>,
-                            cl_point,
+                            std::vector<unsigned char>,
                             cl_uint,
                             cl_point,
                             cl_int)
