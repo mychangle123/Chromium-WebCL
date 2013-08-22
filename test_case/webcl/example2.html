@@ -1,0 +1,365 @@
+<html>
+<head>
+<title>WebCL Hello World</title>
+<meta HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+
+<style type="text/css">
+.info {
+	font-family: Arial, Helvetica, sans-serif;
+	font-weight: bold;
+	font-size: 14px;
+color: white;
+	   text-align: right;
+}
+</style>
+
+<!-- <script src="opencl.js"></script> -->
+
+<script id="Matrixmulti" type="x-kernel">
+__kernel void Matrixmulti(
+		__global int4* matrixA,
+		__global int4* matrixB,
+		__global int4* matrixC,
+		uint width,
+		uint width1)
+{
+	int2 pos = (int2)(get_global_id(0), get_global_id(1));
+
+    int4 sum0 = (int4)(0);
+    int4 sum1 = (int4)(0);
+    int4 sum2 = (int4)(0);
+    int4 sum3 = (int4)(0);
+
+    width1 /= 4;
+
+    for(int i = 0; i < width; i=i+4)
+    {
+        int4 tempA0 = matrixA[i/4 + (pos.y << 2) * (width/ 4)];
+        int4 tempA1 = matrixA[i/4 + ((pos.y << 2) + 1) * (width/ 4)];
+        int4 tempA2 = matrixA[i/4 + ((pos.y << 2) + 2) * (width/ 4)];
+        int4 tempA3 = matrixA[i/4 + ((pos.y << 2) + 3) * (width/ 4)];
+
+        //Matrix B is not transposed 
+        int4 tempB0 = matrixB[pos.x + i * width1];	
+        int4 tempB1 = matrixB[pos.x + (i + 1) * width1];
+        int4 tempB2 = matrixB[pos.x + (i + 2) * width1];
+        int4 tempB3 = matrixB[pos.x + (i + 3) * width1];
+
+        sum0.x += tempA0.x * tempB0.x + tempA0.y * tempB1.x + tempA0.z * tempB2.x + tempA0.w * tempB3.x;
+        sum0.y += tempA0.x * tempB0.y + tempA0.y * tempB1.y + tempA0.z * tempB2.y + tempA0.w * tempB3.y;
+        sum0.z += tempA0.x * tempB0.z + tempA0.y * tempB1.z + tempA0.z * tempB2.z + tempA0.w * tempB3.z;
+        sum0.w += tempA0.x * tempB0.w + tempA0.y * tempB1.w + tempA0.z * tempB2.w + tempA0.w * tempB3.w;
+
+        sum1.x += tempA1.x * tempB0.x + tempA1.y * tempB1.x + tempA1.z * tempB2.x + tempA1.w * tempB3.x;
+        sum1.y += tempA1.x * tempB0.y + tempA1.y * tempB1.y + tempA1.z * tempB2.y + tempA1.w * tempB3.y;
+        sum1.z += tempA1.x * tempB0.z + tempA1.y * tempB1.z + tempA1.z * tempB2.z + tempA1.w * tempB3.z;
+        sum1.w += tempA1.x * tempB0.w + tempA1.y * tempB1.w + tempA1.z * tempB2.w + tempA1.w * tempB3.w;
+
+        sum2.x += tempA2.x * tempB0.x + tempA2.y * tempB1.x + tempA2.z * tempB2.x + tempA2.w * tempB3.x;
+        sum2.y += tempA2.x * tempB0.y + tempA2.y * tempB1.y + tempA2.z * tempB2.y + tempA2.w * tempB3.y;
+        sum2.z += tempA2.x * tempB0.z + tempA2.y * tempB1.z + tempA2.z * tempB2.z + tempA2.w * tempB3.z;
+        sum2.w += tempA2.x * tempB0.w + tempA2.y * tempB1.w + tempA2.z * tempB2.w + tempA2.w * tempB3.w;
+
+        sum3.x += tempA3.x * tempB0.x + tempA3.y * tempB1.x + tempA3.z * tempB2.x + tempA3.w * tempB3.x;
+        sum3.y += tempA3.x * tempB0.y + tempA3.y * tempB1.y + tempA3.z * tempB2.y + tempA3.w * tempB3.y;
+        sum3.z += tempA3.x * tempB0.z + tempA3.y * tempB1.z + tempA3.z * tempB2.z + tempA3.w * tempB3.z;
+        sum3.w += tempA3.x * tempB0.w + tempA3.y * tempB1.w + tempA3.z * tempB2.w + tempA3.w * tempB3.w;
+    }
+    matrixC[pos.x + ((pos.y <<  2) + 0) * width1] = sum0;
+    matrixC[pos.x + ((pos.y <<  2) + 1) * width1] = sum1;
+    matrixC[pos.x + ((pos.y <<  2) + 2) * width1] = sum2;
+    matrixC[pos.x + ((pos.y <<  2) + 3) * width1] = sum3;
+
+}
+</script>
+
+<script>
+function getKernel (id ) {
+	var kernelScript = document.getElementById( id );
+	if(kernelScript === null || kernelScript.type !== "x-kernel")
+		return null;
+
+	return kernelScript.firstChild.textContent;
+	/*var k = kernelScript.firstChild;
+	  var str = "";
+
+	  while ( k ) {
+	  if ( k.nodeType == 3 ) {
+	  str += k.textContent;
+	  }
+	  k = k.nextSibling;
+	  }
+	  return str;*/
+}
+</script>
+
+<script>
+var DATA_SIZE = 32;
+
+// Global data (moved out of main function so can access in clFinish callback),
+// this should be moved to a UserData object.
+//
+var err;									// error code returned from API calls
+
+var data = new Int32Array(DATA_SIZE*DATA_SIZE);		// original data set given to device
+var data1 = new Int32Array(DATA_SIZE * DATA_SIZE); 	// original data set given to device
+var results = new Int32Array(DATA_SIZE * DATA_SIZE); 	// results returned from device
+var results1 = new Int32Array(DATA_SIZE * DATA_SIZE); 	// results returned from device
+
+var width0;								 
+var height0;									 
+var width1;									 
+
+var correct;								// number of correct results returned
+
+var cl;										// OpenCL context
+var platforms;							// array of compue platform ids
+var platform;							// compute platform id
+var devices;								// array of device ids
+var device;								// compute device id
+var context;								// compute context
+var queue;									// compute command queue
+var program;								// compute program
+var kernel;									// compute kernel
+
+var matrixA;									// device memory used for the input array
+var matrixB;									// device memory used for the input array
+
+var matrixC;									// device memory used for the output array
+
+var globalWorkSize = new Int32Array(2);		// global domain size for our calculation
+var localWorkSize = new Int32Array(2);		// local domain size for our calculation
+
+function InitCL()
+{
+	// Fill our data set with random float values
+    //
+
+	height0 = DATA_SIZE;
+    weight0 = DATA_SIZE;
+    weight1 = DATA_SIZE;
+
+	for(var i = 0; i < height0 *weight0 ; i++){
+		data[i] = Math.random();
+                  }
+	for(var i = 0; i < weight0 *weight1 ; i++){
+	      data1[i] = Math.random();
+       }
+
+	  try {
+
+	          if (typeof (WebCL) === "undefined") {
+	              console.error("WebCL is yet to be undefined");
+	              return null;
+	          }
+
+	          cl = new WebCL();
+
+	          if (cl === null) {
+	              console.error("Failed to create WebCL context");
+	              return;
+	          }
+
+	          platforms = cl.getPlatforms();
+	          if (platforms.length === 0) {
+	              console.error("No platforms available");
+	              return;
+	          }
+	          platform = platforms[0];
+
+	          {
+	              var platform_profile = platform.getInfo(cl.PLATFORM_PROFILE);
+	              console.info(platform_profile);
+	              var platform_version = platform.getInfo(cl.PLATFORM_VERSION);
+	              console.info(platform_version);
+	              var platform_name = platform.getInfo(cl.PLATFORM_NAME);
+	              console.info(platform_name);
+	              var platform_verdor = platform.getInfo(cl.PLATFORM_VENDOR);
+	              console.info(platform_verdor);
+	              var platform_extension = platform.getInfo(cl.PLATFORM_EXTENSIONS);
+	              console.info(platform_extension);
+	          }
+
+	          // Connect to a compute device
+	          //
+	          var gpu = true;
+	          devices = platform.getDevices(gpu ? cl.DEVICE_TYPE_GPU : cl.DEVICE_TYPE_CPU);
+	          if (devices.length === 0) {
+	              console.error("No devices available");
+	              return;
+	          }
+	          device = devices[0];
+	          {
+	              var device_name = device.getInfo(cl.DEVICE_NAME);
+	              console.info(device_name);
+	              var device_vendor = device.getInfo(cl.DEVICE_VENDOR);
+	              console.info(device_vendor);
+	              var device_version = device.getInfo(cl.DEVICE_VERSION);
+	              console.info(device_version);
+	              var driver_version = device.getInfo(cl.DRIVER_VERSION);
+	              console.info(driver_version);
+	              var device_extensions = device.getInfo(cl.DEVICE_EXTENSIONS);
+	              console.info(device_extensions);
+	          }
+
+	          // Create a compute context - takes default device
+	          var properties = new WebCLContextProperties();
+	          properties.platform = platform;
+	          properties.devices = devices;
+
+	          context = cl.createContext(properties);
+
+	          // Create a command queue
+	          //
+	          queue = context.createCommandQueue(devices, null);
+
+	          // Create the compute program from the source buffer
+	          //
+	          var kernelSource = getKernel("Matrixmulti");
+	          if (kernelSource === null) {
+	              console.error("No kernel named: " + "Matrixmulti");
+	              return;
+	          }
+	          program = context.createProgram(kernelSource);
+
+	          // Build the program executable
+	          //
+	          program.buildProgram(null, null, null);
+	          // also allow the following form since can provide a device list
+	          // cl.buildProgram(program, devices, null, null, null);
+
+	          // Create the compute kernel in the program we wish to run
+	          //
+	          kernel = program.createKernel("Matrixmulti");
+
+	          // Create the input and output arrays in device memory for our calculation
+	          //
+	          matrixA = context.createBuffer(cl.MEM_READ_ONLY, Int32Array.BYTES_PER_ELEMENT * DATA_SIZE * DATA_SIZE, null);
+	          matrixB = context.createBuffer(cl.MEM_READ_ONLY, Int32Array.BYTES_PER_ELEMENT * DATA_SIZE * DATA_SIZE, null);
+
+	          matrixC = context.createBuffer(cl.MEM_WRITE_ONLY, Int32Array.BYTES_PER_ELEMENT * DATA_SIZE * DATA_SIZE, null);
+	          if (matrixA === null || matrixB === null || matrixC === null) {
+	              console.error("Failed to allocate device memory");
+	              return;
+	          }
+
+	          // Write our data set into the input array in device memory
+	          //
+	          queue.enqueueWriteBuffer(matrixA, true, 0, Int32Array.BYTES_PER_ELEMENT * DATA_SIZE * DATA_SIZE, data);
+	          queue.enqueueWriteBuffer(matrixB, true, 0, Int32Array.BYTES_PER_ELEMENT * DATA_SIZE * DATA_SIZE, data1);
+	          // Set the arguments to our compute kernel
+	          //
+//	          kernel.setKernelArgGlobal(0, matrixA);
+//	          kernel.setKernelArgGlobal(1, matrixB);
+//	          kernel.setKernelArgGlobal(2, matrixC);
+//	          kernel.setKernelArg(3, DATA_SIZE, cl.KERNEL_ARG_INT);
+//	          kernel.setKernelArg(4, DATA_SIZE, cl.KERNEL_ARG_INT);
+
+	          // Get the maximum work group size for executing the kernel on the device
+	          //
+	          //var workGroupSize = kernel.getWorkGroupInfo(device, cl.KERNEL_WORK_GROUP_SIZE);
+
+	          globalWorkSize[0] = DATA_SIZE / 4;
+	          globalWorkSize[1] = DATA_SIZE / 4;
+	          localWorkSize[0] = 8;
+	          localWorkSize[1] = 8;
+
+	          //		 Execute the kernel over the entire range of our 1d input data set
+	          //		 using the maximum number of work group items for this device
+	          //		
+//	          		queue.enqueueNDRangeKernel( kernel, null, globalWorkSize, null);
+	          var d = new Date();
+	          var time0 = d.getTime();
+	          for (var jjj = 0; jjj < 30000; jjj++) {
+
+//	          queue.enqueueNDRangeKernel(kernel, null, globalWorkSize, localWorkSize);
+	      }
+	          // Wait for the command queue to get serviced before reading back results
+	          //
+	          queue.finish();
+
+	          // Read back the results from the device to verify the output
+	          //
+	          queue.enqueueReadBuffer(matrixC, true, 0, Int32Array.BYTES_PER_ELEMENT * DATA_SIZE * DATA_SIZE, results);
+	     
+	      var d1 = new Date();
+
+		var time1 = d1.getTime();
+		var time = time1 - time0;
+
+		var msg = "GPU version execution is completed!  " + "The total time of 30000 times is " + time + "ms";
+		document.getElementById("msg").firstChild.nodeValue = msg;
+		// Shutdown and cleanup
+		//
+		input.releaseCL();
+		output.releaseCL();
+		program.releaseCL();
+		kernel.releaseCL();
+		queue.releaseCL();
+		context.releaseCL();
+	}
+	catch (e)
+	{
+		console.error("Hello Example Failed ; Message: "+ e.message);
+	}
+}
+
+function Cversion() {
+    var d3 = new Date();
+
+    var time0 = d3.getTime();
+    for (var jjj = 0; jjj < 30000; jjj++) {
+        for (var i = 0; i < DATA_SIZE; i++) {
+            for (var j = 0; j < DATA_SIZE; j++) {
+                for (var k = 0; k < DATA_SIZE; k++) {
+                    results1[i * DATA_SIZE + j] += (data[i * DATA_SIZE + k] * data1[k * DATA_SIZE + j]);
+                }
+            }
+        } 
+    }
+    var d4 = new Date();
+    var time1 = d4.getTime();
+    var time = (time1 - time0);
+
+    var msg = "CPU version execution is completed!  " + "The total time of 30000 times is " + time + "ms";
+    document.getElementById("msg").firstChild.nodeValue = msg;
+
+}
+
+function Compare() {
+	var TOINT = function(x) { return Math.floor(1000000 * x); };
+
+    correct = 0;
+
+    for (var i = 0; i < DATA_SIZE * DATA_SIZE; i++)
+	{
+		if(TOINT(results[i]) === TOINT(results1[i]))
+			correct++;
+	}
+
+		// Print a brief summary detailing the results
+		//
+    var msg = "Computed " + correct + "/" + DATA_SIZE * DATA_SIZE + " correct values";
+   document.getElementById("msg").firstChild.nodeValue = msg;   
+}
+
+</script>
+</head>
+
+<body bgcolor="black">
+<table border="0" ;" align="center">
+<tr>
+<td><div style="border:1px solid #ccc;"><INPUT onclick=InitCL() type=button style="background:#99D9EA" value="Execute GPU version"></div></td>
+<td><div style="border:1px solid #ccc;"><INPUT onclick=Cversion() type=button style="background:#fff200" value="Execute C version"></div></td>
+<td><div style="border:1px solid #ccc;"><INPUT onclick=Compare() type=button style="background:#DFA8B9" value="Compare"></div></td>
+</tr>
+</table>
+
+<div style="position:absolute; left:0px; top:100px">
+<div          class="info" style="position:absolute; left:10px; top:15px; width:40px;">Results:</div>
+<div id="msg" class="info" style="position:absolute; left:70px; top:15px; width:600px;">XX</div>
+</div>
+</body>
+</html>
+
+
