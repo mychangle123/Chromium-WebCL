@@ -492,6 +492,12 @@ class GpuChannelHost : public IPC::Sender,
       size_t,
       const void*);
 
+  cl_int CallclSetKernelArg_vector(
+      cl_kernel,
+      cl_uint,
+      size_t,
+      const void*);
+
   cl_int CallclGetKernelInfo(
       cl_kernel,
       cl_kernel_info,
@@ -1071,6 +1077,12 @@ cl_int CallclRetainKernel(GpuChannelHost*, cl_kernel);
 cl_int CallclReleaseKernel(GpuChannelHost*, cl_kernel);
 
 cl_int CallclSetKernelArg(
+    GpuChannelHost*,
+    cl_kernel,
+    cl_uint,
+    size_t,
+    const void*);
+cl_int CallclSetKernelArg_vector(
     GpuChannelHost*,
     cl_kernel,
     cl_uint,

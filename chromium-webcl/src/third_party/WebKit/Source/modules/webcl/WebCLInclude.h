@@ -45,6 +45,7 @@ typedef CL_API_ENTRY cl_int           (__cdecl *h_clCreateKernelsInProgram      
 typedef CL_API_ENTRY cl_int           (__cdecl *h_clRetainKernel                   ) (content::GpuChannelHost*, cl_kernel);
 typedef CL_API_ENTRY cl_int           (__cdecl *h_clReleaseKernel                  ) (content::GpuChannelHost*, cl_kernel);
 typedef CL_API_ENTRY cl_int           (__cdecl *h_clSetKernelArg                   ) (content::GpuChannelHost*, cl_kernel, cl_uint, size_t, const void*);
+typedef CL_API_ENTRY cl_int           (__cdecl *h_clSetKernelArg_vector                   ) (content::GpuChannelHost*, cl_kernel, cl_uint, size_t, const void*);
 typedef CL_API_ENTRY cl_int           (__cdecl *h_clGetKernelInfo                  ) (content::GpuChannelHost*, cl_kernel, cl_kernel_info, size_t, void*, size_t*);
 typedef CL_API_ENTRY cl_int           (__cdecl *h_clGetKernelArgInfo               ) (content::GpuChannelHost*, cl_kernel, cl_uint, cl_kernel_arg_info, size_t, void*, size_t*);
 typedef CL_API_ENTRY cl_int           (__cdecl *h_clGetKernelWorkGroupInfo         ) (content::GpuChannelHost*, cl_kernel, cl_device_id, cl_kernel_work_group_info, size_t, void*, size_t*);
@@ -135,6 +136,7 @@ CL_LOADING_PREFIX h_clCreateKernelsInProgram          webcl_clCreateKernelsInPro
 CL_LOADING_PREFIX h_clRetainKernel                    webcl_clRetainKernel                    CL_LOADING_SUFFIX;
 CL_LOADING_PREFIX h_clReleaseKernel                   webcl_clReleaseKernel                   CL_LOADING_SUFFIX;
 CL_LOADING_PREFIX h_clSetKernelArg                    webcl_clSetKernelArg                    CL_LOADING_SUFFIX;
+CL_LOADING_PREFIX h_clSetKernelArg_vector                    webcl_clSetKernelArg_vector                    CL_LOADING_SUFFIX;
 CL_LOADING_PREFIX h_clGetKernelInfo                   webcl_clGetKernelInfo                   CL_LOADING_SUFFIX;
 CL_LOADING_PREFIX h_clGetKernelArgInfo                webcl_clGetKernelArgInfo                CL_LOADING_SUFFIX;
 CL_LOADING_PREFIX h_clGetKernelWorkGroupInfo          webcl_clGetKernelWorkGroupInfo          CL_LOADING_SUFFIX;
@@ -228,6 +230,7 @@ WEBCL_LOAD_FUN_DEF(clCreateKernelsInProgram         )
 WEBCL_LOAD_FUN_DEF(clRetainKernel                   )
 WEBCL_LOAD_FUN_DEF(clReleaseKernel                  )
 WEBCL_LOAD_FUN_DEF(clSetKernelArg                   )
+WEBCL_LOAD_FUN_DEF(clSetKernelArg_vector                   )
 WEBCL_LOAD_FUN_DEF(clGetKernelInfo                  )
 WEBCL_LOAD_FUN_DEF(clGetKernelArgInfo               )
 WEBCL_LOAD_FUN_DEF(clGetKernelWorkGroupInfo         )

@@ -85,6 +85,7 @@ GpuChannelHost::GpuChannelHost(
   WEBCL_SET_FUNC(clRetainKernel                   )
   WEBCL_SET_FUNC(clReleaseKernel                  )
   WEBCL_SET_FUNC(clSetKernelArg                   )
+  WEBCL_SET_FUNC(clSetKernelArg_vector)
   WEBCL_SET_FUNC(clGetKernelInfo                  )
   WEBCL_SET_FUNC(clGetKernelArgInfo               )
   WEBCL_SET_FUNC(clGetKernelWorkGroupInfo         )
@@ -121,6 +122,7 @@ GpuChannelHost::GpuChannelHost(
   //WEBCL_SET_FUNC(clEnqueueMarkerWithWaitList      )
   //WEBCL_SET_FUNC(clEnqueueBarrierWithWaitList     )
   //WEBCL_SET_FUNC(clSetPrintfCallback              )
+
 }
 
 void GpuChannelHost::Connect(
@@ -1679,6 +1681,30 @@ cl_int GpuChannelHost::CallclSetKernelArg(
            arg_index,
            arg_size,
            point_arg_value,
+           &errcode_ret))) {
+    return CL_SEND_IPC_MESSAGE_FAILURE;
+  }
+  return errcode_ret;
+}
+cl_int GpuChannelHost::CallclSetKernelArg_vector(
+    cl_kernel kernel,
+    cl_uint arg_index,
+    size_t arg_size,
+    const void *arg_value) {
+  // Sending a Sync IPC Message, to call a clSetKernelArg API
+  // in other process, and getting the results of the API.
+  cl_int errcode_ret;
+  cl_point point_kernel = (cl_point) kernel;
+  cl_point point_arg_value = (cl_point) arg_value;
+  std::vector<unsigned char> data;
+  data.resize(arg_size);
+  memcpy(&data[0], arg_value, arg_size);
+
+  // Send a Sync IPC Message and wait for the results.
+  if (!Send(new OpenCLChannelMsg_SetKernelArg_vector(
+           point_kernel,
+           arg_index,
+           data,
            &errcode_ret))) {
     return CL_SEND_IPC_MESSAGE_FAILURE;
   }
@@ -3910,27 +3936,29 @@ cl_int GpuChannelHost::CallclEnqueueNDRangeKernel(cl_command_queue command_queue
   point_list.clear();
   point_list.push_back((cl_point) command_queue);
   point_list.push_back((cl_point) kernel);
-//  cl_int errcode_ret;
-  std::vector<cl_uint> cluint_list;
-//  cluint_list.pu
+  cl_event event_ret;
+  cl_int errcode_ret;
   std::vector<size_t> size_t_list;
-//  std::vector<cl_point> point_list;
+  for (int i=0; i<(int)work_dim; i++)
+	  size_t_list.push_back(global_work_offset ? global_work_offset[i] : (cl_uint)-1);
+  for (int i=0; i<(int)work_dim; i++)
+	  size_t_list.push_back(global_work_size[i]);
+  for (int i=0; i<(int)work_dim; i++)
+	  size_t_list.push_back(local_work_size? local_work_size[i] : (cl_uint)-1);
+  std::vector<cl_point> event_list;
 
   for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
-    point_list.push_back((cl_point) event_wait_list[index]);
-
-//  if (clevent != NULL)
-//    point_out_val = 0;
+    event_list.push_back((cl_point) event_wait_list[index]);
 
   // Send a Sync IPC Message and wait for the results.
-//  if (!Send(new OpenCLChannelMsg_EnqueueNDRangeKernel(point_list, cluint_list, size_t_list, point_list, &point_out_val, &errcode_ret))) {
+  if (!Send(new OpenCLChannelMsg_EnqueueNDRangeKernel(point_list, work_dim, size_t_list, event_list, (cl_point*)&event_ret, &errcode_ret))) {
     return CL_SEND_IPC_MESSAGE_FAILURE;
-//  }
+  }
 
   if (clevent != NULL)
-//    *clevent = (cl_event) point_out_val;
+    *clevent = (cl_event) event_ret;
 
-  return 1;//errcode_ret;
+  return errcode_ret;
 }
 
 cl_int GpuChannelHost::CallclEnqueueTask(cl_command_queue command_queue,cl_kernel kernel, cl_uint num_events_in_wait_list,
@@ -4565,6 +4593,19 @@ cl_int CallclSetKernelArg(
   size_t arg_size,
   const void *arg_value){
     return channel_host_ ->CallclSetKernelArg(
+      kernel,
+      arg_index,
+      arg_size,
+      arg_value);
+}
+
+cl_int CallclSetKernelArg_vector(
+  GpuChannelHost* channel_host_,
+  cl_kernel kernel,
+  cl_uint arg_index,
+  size_t arg_size,
+  const void *arg_value){
+    return channel_host_ ->CallclSetKernelArg_vector(
       kernel,
       arg_index,
       arg_size,

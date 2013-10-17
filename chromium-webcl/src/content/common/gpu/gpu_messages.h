@@ -966,6 +966,12 @@ IPC_SYNC_MESSAGE_CONTROL4_1(OpenCLChannelMsg_SetKernelArg,
                             cl_point,
                             cl_int)
 
+IPC_SYNC_MESSAGE_CONTROL3_1(OpenCLChannelMsg_SetKernelArg_vector,
+                            cl_point,
+                            cl_uint,
+                            std::vector<unsigned char>,
+                            cl_int)
+
 // Call and respond OpenCL API clWaitForEvents using Sync IPC Message
 IPC_SYNC_MESSAGE_CONTROL2_1(OpenCLChannelMsg_WaitForEvents,
                             cl_uint,
@@ -1188,7 +1194,7 @@ IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_EnqueueMigrateMemObjects,
 // Call and respond OpenCL API clEnqueueNDRangeKernel using Sync IPC Message
 IPC_SYNC_MESSAGE_CONTROL4_2(OpenCLChannelMsg_EnqueueNDRangeKernel,
                             std::vector<cl_point>,
-                            std::vector<cl_uint>,
+                            cl_int,
                             std::vector<size_t>,
                             std::vector<cl_point>,
                             cl_point,

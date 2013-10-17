@@ -497,6 +497,11 @@ class GpuChannel : public IPC::Listener,
       const size_t&,
       const cl_point&,
       cl_int*);
+  void OnCallclSetKernelArg_vector(
+      const cl_point&,
+      const cl_uint&,
+      const std::vector<unsigned char>&,
+      cl_int*);
 
   void OnCallclWaitForEvents(
       const cl_uint&,
@@ -989,7 +994,7 @@ class GpuChannel : public IPC::Listener,
 
   void OnCallclEnqueueNDRangeKernel(
     const std::vector<cl_point>&,
-    const std::vector<cl_uint>&,
+    cl_int,
     const std::vector<size_t>&,
     const std::vector<cl_point>&,
     cl_point*,

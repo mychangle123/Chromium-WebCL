@@ -370,8 +370,11 @@ void WebCLProgram::buildProgram(int options, int pfn_notify,
 		return;
 	}
 
+	cl_device_id device_id = m_device_id->getCLDevice();
+
 	// TODO(siba samal) - needs to be addressed later
-	err = webcl_clBuildProgram(webcl_channel_, m_cl_program, 0, NULL, NULL, NULL, NULL);
+	//err = webcl_clBuildProgram(webcl_channel_, m_cl_program, 1, &device_id, NULL, NULL, NULL);
+err = webcl_clBuildProgram(webcl_channel_, m_cl_program, 0, NULL, NULL, NULL, NULL);
 
 	if (err != CL_SUCCESS) {
 		switch (err) {

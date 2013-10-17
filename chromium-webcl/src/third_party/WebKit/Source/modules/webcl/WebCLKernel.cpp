@@ -508,7 +508,7 @@ void WebCLKernel::setKernelArgGlobal(unsigned int arg_index, WebCLMem* arg_value
 			return;
 		}
 	}
-	err = webcl_clSetKernelArg(webcl_channel_, m_cl_kernel, arg_index, sizeof(cl_mem), &cl_mem_id);
+	err = webcl_clSetKernelArg(webcl_channel_, m_cl_kernel, arg_index, sizeof(cl_mem), cl_mem_id);
 	if (err != CL_SUCCESS) {
 		switch (err) {
 			case CL_INVALID_KERNEL:
@@ -789,7 +789,7 @@ clSetKernelArgPrimitiveType(cl_kernel cl_kernel_id,
 		printf("Error: WebCL Kernel Type Value Not Proper\n");
 		return -1;	
 	}
-	cl_int err  =  webcl_clSetKernelArg(webcl_channel_, cl_kernel_id, argIndex, size, &nodeId);		
+ 	cl_int err  =  webcl_clSetKernelArg_vector(webcl_channel_, cl_kernel_id, argIndex, size, &nodeId);		
 	return(err);
 }
 
@@ -804,7 +804,7 @@ clSetKernelArgVectorType(cl_kernel cl_kernel_id,
 		printf("Error: Invalid WebCL Kernel Type %d\n", array->length());
 		return -1;	
 	}
-	cl_int err = webcl_clSetKernelArg(webcl_channel_, cl_kernel_id, argIndex, size, &array);			
+	cl_int err = webcl_clSetKernelArg_vector(webcl_channel_, cl_kernel_id, argIndex, size, &array);			
 	return(err);
 }
 

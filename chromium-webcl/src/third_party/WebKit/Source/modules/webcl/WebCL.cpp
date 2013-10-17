@@ -840,6 +840,7 @@ static clGetGLContextInfoKHR_fn clGetGLContextInfoKHR;
 
 		RefPtr<WebCLContext> O = WebCLContext::create(this, cl_context_id);
 		if (O != NULL) {
+			O->setDevice(properties->devices()->item(0));
 			m_context = O;
 			return O;
 		} else {

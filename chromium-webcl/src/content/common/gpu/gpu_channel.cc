@@ -831,6 +831,8 @@ bool GpuChannel::OnControlMessageReceived(const IPC::Message& msg) {
                                     OnCallclReleaseKernel)
     IPC_MESSAGE_HANDLER(OpenCLChannelMsg_SetKernelArg,
                                     OnCallclSetKernelArg)
+    IPC_MESSAGE_HANDLER(OpenCLChannelMsg_SetKernelArg_vector,
+                                    OnCallclSetKernelArg_vector)
     IPC_MESSAGE_HANDLER(OpenCLChannelMsg_WaitForEvents,
                                     OnCallclWaitForEvents)
     IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CreateUserEvent,
@@ -941,6 +943,11 @@ bool GpuChannel::OnControlMessageReceived(const IPC::Message& msg) {
                                     OnCallclGetEventInfo_cl_int)  
     IPC_MESSAGE_HANDLER(OpenCLChannelMsg_GetEventProfilingInfo_cl_ulong,
                                     OnCallclGetEventProfilingInfo_cl_ulong)
+	IPC_MESSAGE_HANDLER(OpenCLChannelMsg_EnqueueWriteBuffer,
+                                    OnCallclEnqueueWriteBuffer)
+	IPC_MESSAGE_HANDLER(OpenCLChannelMsg_EnqueueReadBuffer,
+                                    OnCallclEnqueueReadBuffer)
+	IPC_MESSAGE_HANDLER(OpenCLChannelMsg_EnqueueNDRangeKernel, OnCallclEnqueueNDRangeKernel);
     // Adding OK.
 #if defined(OS_ANDROID)
     IPC_MESSAGE_HANDLER(GpuChannelMsg_RegisterStreamTextureProxy,
@@ -1165,6 +1172,113 @@ void GpuChannel::OnCallclGetPlatformIDs(
                      num_entries,
                      platforms,
                      num_platforms_inter);
+
+#ifdef TEST_OPENCL
+  		/*Step1: Getting platforms and choose an available one.*/
+	cl_uint numPlatforms;	//the NO. of platforms
+	cl_platform_id platform = NULL;	//the chosen platform
+	cl_int	status = clGetPlatformIDs(0, NULL, &numPlatforms);
+	if (status != CL_SUCCESS)
+	{
+		//cout << "Error: Getting platforms!" << endl;
+		return;
+	}
+
+	/*For clarity, choose the first available platform. */
+	if(numPlatforms > 0)
+	{
+		cl_platform_id* platforms = (cl_platform_id* )malloc(numPlatforms* sizeof(cl_platform_id));
+		status = clGetPlatformIDs(numPlatforms, platforms, NULL);
+		platform = platforms[0];
+		free(platforms);
+	}
+
+	/*Step 2:Query the platform and choose the first GPU device if has one.Otherwise use the CPU as device.*/
+	cl_uint				numDevices = 0;
+	cl_device_id        *devices;
+	status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, 0, NULL, &numDevices);	
+	if (numDevices == 0)	//no GPU available.
+	{
+		//cout << "No GPU device available." << endl;
+		//cout << "Choose CPU as default device." << endl;
+		status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, 0, NULL, &numDevices);	
+		devices = (cl_device_id*)malloc(numDevices * sizeof(cl_device_id));
+		status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_CPU, numDevices, devices, NULL);
+	}
+	else
+	{
+		devices = (cl_device_id*)malloc(numDevices * sizeof(cl_device_id));
+		status = clGetDeviceIDs(platform, CL_DEVICE_TYPE_GPU, numDevices, devices, NULL);
+	}
+	
+
+	/*Step 3: Create context.*/
+	cl_context context = clCreateContext(NULL,1, devices,NULL,NULL,NULL);
+	
+	/*Step 4: Creating command queue associate with the context.*/
+	cl_command_queue commandQueue = clCreateCommandQueue(context, devices[0], 0, NULL);
+
+	/*Step 5: Create program object */
+	const char *source =
+"__kernel void helloworld(__global char* in, __global char* out) \n"
+"{ \n"
+"	int num = get_global_id(0); \n"
+"	out[num] = in[num] + 1; \n"
+"} \n"
+;
+	size_t sourceSize[] = {strlen(source)};
+	cl_program program = clCreateProgramWithSource(context, 1, &source, sourceSize, NULL);
+	
+	/*Step 6: Build program. */
+	status=clBuildProgram(program, 1,devices,NULL,NULL,NULL);
+
+	/*Step 7: Initial input,output for the host and create memory objects for the kernel*/
+	const char* input = "GdkknVnqkc";
+	size_t strlength = strlen(input);
+	//cout << "input string:" << endl;
+	//cout << input << endl;
+	char *output = (char*) malloc(strlength + 1);
+
+	cl_mem inputBuffer = clCreateBuffer(context, CL_MEM_READ_ONLY|CL_MEM_COPY_HOST_PTR, (strlength + 1) * sizeof(char),(void *) input, NULL);
+	cl_mem outputBuffer = clCreateBuffer(context, CL_MEM_WRITE_ONLY , (strlength + 1) * sizeof(char), NULL, NULL);
+
+	/*Step 8: Create kernel object */
+	cl_kernel kernel = clCreateKernel(program,"helloworld", NULL);
+
+	/*Step 9: Sets Kernel arguments.*/
+	status = clSetKernelArg(kernel, 0, sizeof(cl_mem), (void *)&inputBuffer);
+	status = clSetKernelArg(kernel, 1, sizeof(cl_mem), (void *)&outputBuffer);
+	
+	/*Step 10: Running the kernel.*/
+	size_t global_work_size[1] = {strlength};
+	status = clEnqueueNDRangeKernel(commandQueue, kernel, 1, NULL, global_work_size, NULL, 0, NULL, NULL);
+
+	/*Step 11: Read the cout put back to host memory.*/
+	status = clEnqueueReadBuffer(commandQueue, outputBuffer, CL_TRUE, 0, strlength * sizeof(char), output, 0, NULL, NULL);
+	
+	output[strlength] = '\0';	//Add the terminal character to the end of output.
+	//cout << "\noutput string:" << endl;
+	//cout << output << endl;
+
+	/*Step 12: Clean the resources.*/
+	status = clReleaseKernel(kernel);				//Release kernel.
+	status = clReleaseProgram(program);				//Release the program object.
+	status = clReleaseMemObject(inputBuffer);		//Release mem object.
+	status = clReleaseMemObject(outputBuffer);
+	status = clReleaseCommandQueue(commandQueue);	//Release  Command queue.
+	status = clReleaseContext(context);				//Release context.
+
+	if (output != NULL)
+	{
+		free(output);
+		output = NULL;
+	}
+#endif
+
+
+
+
+
 
   // Dump the results of OpenCL API calling.
   if (num_entries > 0 && !return_variable_null_status[1]) {
@@ -2127,7 +2241,20 @@ void GpuChannel::OnCallclSetKernelArg(
                      kernel,
                      arg_index,
                      arg_size,
-                     arg_value);
+                     &arg_value);
+}
+
+void GpuChannel::OnCallclSetKernelArg_vector(
+    const cl_point& point_kernel,
+    const cl_uint& arg_index,
+    const std::vector<unsigned char>& data,
+    cl_int* errcode_ret) {
+  cl_kernel kernel = (cl_kernel) point_kernel;
+  *errcode_ret = clSetKernelArg(
+                     kernel,
+                     arg_index,
+                     data.size(),
+                     &data[0]);
 }
 
 void GpuChannel::OnCallclWaitForEvents(
@@ -3914,6 +4041,8 @@ void GpuChannel::OnCallclEnqueueReadBuffer(
     (*ptr_list).push_back(ptr[index+offset]);
   }
 
+  delete ptr;
+
   *clevent_ret = (cl_point) clevent;
 }
 void GpuChannel::OnCallclEnqueueReadBufferRect (std::vector<cl_point>, cl_bool, std::vector<size_t>, cl_point, cl_uint, cl_point* point_out_val, cl_int* errcode_ret)
@@ -4156,23 +4285,43 @@ void GpuChannel::OnCallclEnqueueMigrateMemObjects (cl_point, std::vector<cl_uint
   if ((size_t) -1 != *point_out_val)
     *point_out_val = (cl_point) event_ret;
 }
-void GpuChannel::OnCallclEnqueueNDRangeKernel (const std::vector<cl_point>&, const std::vector<cl_uint>&, const std::vector<size_t>&, const std::vector<cl_point>&, cl_point* point_out_val, cl_int* errcode_ret)
+void GpuChannel::OnCallclEnqueueNDRangeKernel (const std::vector<cl_point>& cmdqueue_kernel, 
+	cl_int work_dim, const std::vector<size_t>& size_t_list, 
+	const std::vector<cl_point>& event_wait_list_,
+	cl_point* clevent_ret,
+    cl_int* errcode_ret)
 {
   // Receiving and responding the Sync IPC Message from another process and
   // return the results of clEnqueueNDRangeKernel OpenCL API calling.
-  cl_event event_ret = NULL;
-  cl_event* event_ret_inter = NULL;
+  cl_command_queue command_queue = (cl_command_queue) cmdqueue_kernel[0];
+  cl_kernel kernel = (cl_kernel)cmdqueue_kernel[1];
+  const size_t *global_work_offset = size_t_list[0]==(cl_uint)-1 ? NULL : &size_t_list[0];
+  const size_t *global_work_size = &size_t_list[1*work_dim];
+  const size_t *local_work_size = size_t_list[2*work_dim]==(cl_uint)-1 ? NULL : &size_t_list[2*work_dim];
+
   cl_event *event_wait_list = NULL;
-  cl_uint num_events_in_wait_list = 0;
+  cl_uint num_events_in_wait_list = event_wait_list_.size();
+
+  if (num_events_in_wait_list > 0)
+  {
+    event_wait_list = new cl_event[num_events_in_wait_list];
+    for (cl_uint index = 0; index < num_events_in_wait_list; ++index)
+      event_wait_list[index] = (cl_event) event_wait_list_[index];
+  }
+
+  *errcode_ret = clEnqueueNDRangeKernel(command_queue, kernel, work_dim,
+	  global_work_offset, global_work_size, local_work_size, num_events_in_wait_list, event_wait_list, (cl_event*)clevent_ret);
 
   if (num_events_in_wait_list > 0)
     delete[] event_wait_list;
 
-  if ((size_t) -1 != *point_out_val)
-    *point_out_val = (cl_point) event_ret;
+  //if ((size_t) -1 != *clevent_ret)
+  //  *clevent_ret = (cl_point) event_ret;
 }
 
-void GpuChannel::OnCallclEnqueueTask (cl_point point_command_queue, cl_point point_kernel, cl_uint num_events_in_wait_list, std::vector<cl_point> point_in_list, cl_point* point_out_val, cl_int* errcode_ret)
+void GpuChannel::OnCallclEnqueueTask (cl_point point_command_queue, cl_point point_kernel, 
+	cl_uint num_events_in_wait_list, std::vector<cl_point> point_in_list,
+	cl_point* point_out_val, cl_int* errcode_ret)
 {
   // Receiving and responding the Sync IPC Message from another process and
   // return the results of clEnqueueNativeKernel OpenCL API calling.

@@ -15,6 +15,14 @@ color: white;
 
 <!-- <script src="opencl.js"></script> -->
 
+<script id="helloworld" type="x-kernel">
+__kernel void helloworld(__global char* in, __global char* out)
+{
+	int num = get_global_id(0);
+	out[num] = in[num] + 1;
+}
+</script>
+
 <script id="Matrixmulti" type="x-kernel">
 __kernel void Matrixmulti(
 		__global int4* matrixA,
@@ -216,6 +224,7 @@ function InitCL()
 	          // Create the compute program from the source buffer
 	          //
 	          var kernelSource = getKernel("Matrixmulti");
+	          //var kernelSource = getKernel("helloworld");
 	          if (kernelSource === null) {
 	              console.error("No kernel named: " + "Matrixmulti");
 	              return;
@@ -225,8 +234,10 @@ function InitCL()
 	          // Build the program executable
 	          //
 	          program.buildProgram(null, null, null);
+
 	          // also allow the following form since can provide a device list
-	          // cl.buildProgram(program, devices, null, null, null);
+		  // THIS DOES NOT WORK: no such function
+	          //cl.buildProgram(program, devices, null, null, null);
 
 	          // Create the compute kernel in the program we wish to run
 	          //
@@ -249,15 +260,15 @@ function InitCL()
 	          queue.enqueueWriteBuffer(matrixB, true, 0, Int32Array.BYTES_PER_ELEMENT * DATA_SIZE * DATA_SIZE, data1);
 	          // Set the arguments to our compute kernel
 	          //
-//	          kernel.setKernelArgGlobal(0, matrixA);
-//	          kernel.setKernelArgGlobal(1, matrixB);
-//	          kernel.setKernelArgGlobal(2, matrixC);
-//	          kernel.setKernelArg(3, DATA_SIZE, cl.KERNEL_ARG_INT);
-//	          kernel.setKernelArg(4, DATA_SIZE, cl.KERNEL_ARG_INT);
+	          kernel.setKernelArgGlobal(0, matrixA);
+	          kernel.setKernelArgGlobal(1, matrixB);
+	          kernel.setKernelArgGlobal(2, matrixC);
+	          kernel.setKernelArg(3, DATA_SIZE, cl.KERNEL_ARG_INT);
+	          kernel.setKernelArg(4, DATA_SIZE, cl.KERNEL_ARG_INT);
 
 	          // Get the maximum work group size for executing the kernel on the device
 	          //
-	          //var workGroupSize = kernel.getWorkGroupInfo(device, cl.KERNEL_WORK_GROUP_SIZE);
+	          var workGroupSize = kernel.getWorkGroupInfo(device, cl.KERNEL_WORK_GROUP_SIZE);
 
 	          globalWorkSize[0] = DATA_SIZE / 4;
 	          globalWorkSize[1] = DATA_SIZE / 4;
@@ -267,12 +278,12 @@ function InitCL()
 	          //		 Execute the kernel over the entire range of our 1d input data set
 	          //		 using the maximum number of work group items for this device
 	          //		
-//	          		queue.enqueueNDRangeKernel( kernel, null, globalWorkSize, null);
+	          queue.enqueueNDRangeKernel( kernel, null, globalWorkSize, null);
 	          var d = new Date();
 	          var time0 = d.getTime();
-	          for (var jjj = 0; jjj < 30000; jjj++) {
+	          for (var jjj = 0; jjj < 3; jjj++) {
 
-//	          queue.enqueueNDRangeKernel(kernel, null, globalWorkSize, localWorkSize);
+	          queue.enqueueNDRangeKernel(kernel, null, globalWorkSize, localWorkSize);
 	      }
 	          // Wait for the command queue to get serviced before reading back results
 	          //
