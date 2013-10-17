@@ -1,0 +1,634 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{57551326-1964-04BE-8193-9AE76ACA5D18}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>remoting_webapp</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+  <PropertyGroup Label="Configuration">
+    <CharacterSet>Unicode</CharacterSet>
+    <ConfigurationType>Utility</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+  <ImportGroup Label="ExtensionSettings"/>
+  <ImportGroup Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros"/>
+  <PropertyGroup>
+    <ExecutablePath>$(ExecutablePath);$(MSBuildProjectDirectory)\..\third_party\cygwin\bin\;$(MSBuildProjectDirectory)\..\third_party\python_26\</ExecutablePath>
+    <OutDir>..\build\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)obj\$(ProjectName)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <TargetName>$(ProjectName)</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..;..\third_party\wtl\include;$(OutDir)obj\global_intermediate;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP /we4389 %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4351;4355;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <MinimalRebuild>false</MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;REMOTING_RDP_SESSION;REMOTING_MULTI_PROCESS;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;DYNAMIC_ANNOTATIONS_ENABLED=1;WTF_USE_DYNAMIC_ANNOTATIONS=1;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level4</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>wininet.lib;dnsapi.lib;version.lib;msimg32.lib;ws2_32.lib;usp10.lib;psapi.lib;dbghelp.lib;winmm.lib;shlwapi.lib;kernel32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;user32.lib;uuid.lib;odbc32.lib;odbccp32.lib;delayimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/safeseh /dynamicbase /ignore:4199 /ignore:4221 /nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <DelayLoadDLLs>dbghelp.dll;dwmapi.dll;shell32.dll;uxtheme.dll;mf.dll;mfplat.dll;mfreadwrite.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>$(OutDir)lib\$(TargetName).lib</ImportLibrary>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+      <ProgramDatabaseFile>$(TargetPath).pdb</ProgramDatabaseFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Midl>
+      <DllDataFileName>%(Filename).dlldata.c</DllDataFileName>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..;$(OutDir)obj/global_intermediate;..;..\third_party\wtl\include;$(OutDir)obj\global_intermediate;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;REMOTING_RDP_SESSION;REMOTING_MULTI_PROCESS;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;DYNAMIC_ANNOTATIONS_ENABLED=1;WTF_USE_DYNAMIC_ANNOTATIONS=1;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..;..\third_party\wtl\include;$(OutDir)obj\global_intermediate;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP /we4389 %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4351;4355;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <MinimalRebuild>false</MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_DEBUG;_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;REMOTING_RDP_SESSION;REMOTING_MULTI_PROCESS;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;DYNAMIC_ANNOTATIONS_ENABLED=1;WTF_USE_DYNAMIC_ANNOTATIONS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level4</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>wininet.lib;dnsapi.lib;version.lib;msimg32.lib;ws2_32.lib;usp10.lib;psapi.lib;dbghelp.lib;winmm.lib;shlwapi.lib;kernel32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;user32.lib;uuid.lib;odbc32.lib;odbccp32.lib;delayimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/dynamicbase /ignore:4199 /ignore:4221 /nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <DelayLoadDLLs>dbghelp.dll;dwmapi.dll;shell32.dll;uxtheme.dll;mf.dll;mfplat.dll;mfreadwrite.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>olepro32.lib</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)lib\$(TargetName).lib</ImportLibrary>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+      <ProgramDatabaseFile>$(TargetPath).pdb</ProgramDatabaseFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Midl>
+      <DllDataFileName>%(Filename).dlldata.c</DllDataFileName>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..;$(OutDir)obj/global_intermediate;..;..\third_party\wtl\include;$(OutDir)obj\global_intermediate;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;REMOTING_RDP_SESSION;REMOTING_MULTI_PROCESS;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;DYNAMIC_ANNOTATIONS_ENABLED=1;WTF_USE_DYNAMIC_ANNOTATIONS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..;..\third_party\wtl\include;$(OutDir)obj\global_intermediate;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP /we4389 /Oy- %(AdditionalOptions)</AdditionalOptions>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4351;4355;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild>false</MinimalRebuild>
+      <OmitFramePointers>false</OmitFramePointers>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;REMOTING_RDP_SESSION;REMOTING_MULTI_PROCESS;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;NDEBUG;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level4</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>wininet.lib;dnsapi.lib;version.lib;msimg32.lib;ws2_32.lib;usp10.lib;psapi.lib;dbghelp.lib;winmm.lib;shlwapi.lib;kernel32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;user32.lib;uuid.lib;odbc32.lib;odbccp32.lib;delayimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/safeseh /dynamicbase /ignore:4199 /ignore:4221 /nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <DelayLoadDLLs>dbghelp.dll;dwmapi.dll;shell32.dll;uxtheme.dll;mf.dll;mfplat.dll;mfreadwrite.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>$(OutDir)lib\$(TargetName).lib</ImportLibrary>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+      <OptimizeReferences>true</OptimizeReferences>
+      <Profile>true</Profile>
+      <ProgramDatabaseFile>$(TargetPath).pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Midl>
+      <DllDataFileName>%(Filename).dlldata.c</DllDataFileName>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..;$(OutDir)obj/global_intermediate;..;..\third_party\wtl\include;$(OutDir)obj\global_intermediate;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;REMOTING_RDP_SESSION;REMOTING_MULTI_PROCESS;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;NDEBUG;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..;..\third_party\wtl\include;$(OutDir)obj\global_intermediate;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP /we4389 /Oy- %(AdditionalOptions)</AdditionalOptions>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4351;4355;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild>false</MinimalRebuild>
+      <OmitFramePointers>false</OmitFramePointers>
+      <Optimization>MaxSpeed</Optimization>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;REMOTING_RDP_SESSION;REMOTING_MULTI_PROCESS;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;NDEBUG;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level4</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>wininet.lib;dnsapi.lib;version.lib;msimg32.lib;ws2_32.lib;usp10.lib;psapi.lib;dbghelp.lib;winmm.lib;shlwapi.lib;kernel32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;user32.lib;uuid.lib;odbc32.lib;odbccp32.lib;delayimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/dynamicbase /ignore:4199 /ignore:4221 /nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <DelayLoadDLLs>dbghelp.dll;dwmapi.dll;shell32.dll;uxtheme.dll;mf.dll;mfplat.dll;mfreadwrite.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>olepro32.lib</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)lib\$(TargetName).lib</ImportLibrary>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+      <OptimizeReferences>true</OptimizeReferences>
+      <Profile>true</Profile>
+      <ProgramDatabaseFile>$(TargetPath).pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Midl>
+      <DllDataFileName>%(Filename).dlldata.c</DllDataFileName>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>..;$(OutDir)obj/global_intermediate;..;..\third_party\wtl\include;$(OutDir)obj\global_intermediate;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;REMOTING_RDP_SESSION;REMOTING_MULTI_PROCESS;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;__STDC_CONSTANT_MACROS;__STDC_FORMAT_MACROS;NDEBUG;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="remoting.gyp"/>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\el\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\en\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\vi\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\pt_PT\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\it\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ar\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\es_419\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\bg\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\cs\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\et\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\id\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\es\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ru\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\nl\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\nb\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\tr\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\lv\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\lt\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\th\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ro\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ca\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\fil\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\fr\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\de\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\pt_BR\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\hr\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\zh_TW\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\da\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\hi\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\fi\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\hu\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ja\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\he\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\zh_CN\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\sr\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ko\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\sv\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\sk\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\en_GB\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\pl\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\uk\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)obj\global_intermediate\remoting\webapp\_locales\sl\messages.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="$(OutDir)\remoting_host_plugin.dll">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\chrome\VERSION">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="..\remoting\VERSION">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\disclosure_arrow_down.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\tick.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\icon_host.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\infographic_my_computers.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\chromoting16.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\icon_pencil.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\infographic_remote_assistance.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\icon_warning.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\chromoting128.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\disclosure_arrow_right.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\host_setup_instructions.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\chromoting48.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="resources\icon_cross.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\host_table_entry.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\stats_accumulator.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\plugin_settings.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\remoting.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\event_handlers.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\manifest.json">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\menu_button.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\connection_history.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\host_native_messaging.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\main.html">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\third_party_host_permissions.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\host.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\session_connector.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\wcs.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\storage.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\oauth2_callback.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\scale-to-fit.webp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\spinner.gif">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\client_plugin_async.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\toolbar.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\cs_third_party_auth_trampoline.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\xhr.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\oauth2.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\wcs_sandbox_content.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\host_controller.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\host_setup_dialog.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\host_plugin_wrapper.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\host_session.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\connection_history.css">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\host_list.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\clipboard.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\wcs_loader.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\server_log_entry.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\ui_mode.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\format_iq.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\main.css">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\open_sans.woff">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\cs_oauth2_trampoline.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\toolbar.css">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\client_screen.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\connection_stats.css">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\xhr_proxy.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\wcs_sandbox_container.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\third_party_token_fetcher.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\client_plugin.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\host_settings.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\oauth2_callback.html">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\open_sans.css">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\log_to_server.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\connection_stats.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\survey.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\wcs_sandbox.html">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\l10n.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\error.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\host_screen.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\menu_button.css">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+    <None Include="webapp\client_session.js">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="webapp\build-webapp.py">
+      <FileType>Document</FileType>
+      <Command>call call &quot;$(ProjectDir)..\third_party\cygwin\setup_env.bat&quot; &amp;&amp; set CYGWIN=nontsec&amp;&amp; set OUTDIR=$(OutDir)&amp;&amp; bash -c &quot;\&quot;python\&quot; \&quot;webapp/build-webapp.py\&quot; \&quot;Dev\&quot; \&quot;28.0.1495.0\&quot; \&quot;application/vnd.chromium.remoting-host\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`/remoting/remoting.webapp\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`/remoting-webapp.zip\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`/remoting_host_plugin.dll\&quot; \&quot;resources/chromoting16.webp\&quot; \&quot;resources/chromoting48.webp\&quot; \&quot;resources/chromoting128.webp\&quot; \&quot;resources/disclosure_arrow_down.webp\&quot; \&quot;resources/disclosure_arrow_right.webp\&quot; \&quot;resources/host_setup_instructions.webp\&quot; \&quot;resources/icon_cross.webp\&quot; \&quot;resources/icon_host.webp\&quot; \&quot;resources/icon_pencil.webp\&quot; \&quot;resources/icon_warning.webp\&quot; \&quot;resources/infographic_my_computers.webp\&quot; \&quot;resources/infographic_remote_assistance.webp\&quot; \&quot;resources/tick.webp\&quot; \&quot;webapp/connection_history.css\&quot; \&quot;webapp/connection_stats.css\&quot; \&quot;webapp/main.css\&quot; \&quot;webapp/main.html\&quot; \&quot;webapp/manifest.json\&quot; \&quot;webapp/menu_button.css\&quot; \&quot;webapp/oauth2_callback.html\&quot; \&quot;webapp/open_sans.css\&quot; \&quot;webapp/open_sans.woff\&quot; \&quot;webapp/scale-to-fit.webp\&quot; \&quot;webapp/spinner.gif\&quot; \&quot;webapp/toolbar.css\&quot; \&quot;webapp/wcs_sandbox.html\&quot; \&quot;webapp/client_plugin.js\&quot; \&quot;webapp/client_plugin_async.js\&quot; \&quot;webapp/client_screen.js\&quot; \&quot;webapp/client_session.js\&quot; \&quot;webapp/clipboard.js\&quot; \&quot;webapp/connection_history.js\&quot; \&quot;webapp/connection_stats.js\&quot; \&quot;webapp/cs_oauth2_trampoline.js\&quot; \&quot;webapp/cs_third_party_auth_trampoline.js\&quot; \&quot;webapp/error.js\&quot; \&quot;webapp/event_handlers.js\&quot; \&quot;webapp/format_iq.js\&quot; \&quot;webapp/host.js\&quot; \&quot;webapp/host_controller.js\&quot; \&quot;webapp/host_list.js\&quot; \&quot;webapp/host_native_messaging.js\&quot; \&quot;webapp/host_plugin_wrapper.js\&quot; \&quot;webapp/host_screen.js\&quot; \&quot;webapp/host_session.js\&quot; \&quot;webapp/host_settings.js\&quot; \&quot;webapp/host_setup_dialog.js\&quot; \&quot;webapp/host_table_entry.js\&quot; \&quot;webapp/l10n.js\&quot; \&quot;webapp/log_to_server.js\&quot; \&quot;webapp/menu_button.js\&quot; \&quot;webapp/oauth2.js\&quot; \&quot;webapp/oauth2_callback.js\&quot; \&quot;webapp/plugin_settings.js\&quot; \&quot;webapp/xhr_proxy.js\&quot; \&quot;webapp/remoting.js\&quot; \&quot;webapp/session_connector.js\&quot; \&quot;webapp/server_log_entry.js\&quot; \&quot;webapp/stats_accumulator.js\&quot; \&quot;webapp/storage.js\&quot; \&quot;webapp/survey.js\&quot; \&quot;webapp/third_party_host_permissions.js\&quot; \&quot;webapp/third_party_token_fetcher.js\&quot; \&quot;webapp/toolbar.js\&quot; \&quot;webapp/ui_mode.js\&quot; \&quot;webapp/wcs.js\&quot; \&quot;webapp/wcs_loader.js\&quot; \&quot;webapp/wcs_sandbox_container.js\&quot; \&quot;webapp/wcs_sandbox_content.js\&quot; \&quot;webapp/xhr.js\&quot; \&quot;--locales\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/ar/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/bg/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/ca/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/cs/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/da/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/de/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/el/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/en/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/en_GB/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/es/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/es_419/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/et/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/fi/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/fil/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/fr/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/he/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/hi/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/hr/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/hu/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/id/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/it/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/ja/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/ko/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/lt/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/lv/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/nb/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/nl/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/pl/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/pt_BR/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/pt_PT/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/ro/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/ru/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/sk/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/sl/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/sr/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/sv/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/th/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/tr/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/uk/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/vi/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/zh_CN/messages.json\&quot; \&quot;`cygpath -m \\\&quot;${OUTDIR}\\\&quot;`obj/global_intermediate/remoting/webapp/_locales/zh_TW/messages.json\&quot; \&quot;--patches\&quot;&quot;</Command>
+      <Message>Build Remoting WebApp</Message>
+      <Outputs>$(OutDir)\remoting\remoting.webapp;$(OutDir)\remoting-webapp.zip</Outputs>
+      <AdditionalInputs>webapp\session_connector.js;webapp\connection_stats.js;webapp\format_iq.js;webapp\server_log_entry.js;webapp\client_plugin_async.js;webapp\menu_button.css;resources\chromoting48.webp;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ru\messages.json;webapp\host_native_messaging.js;webapp\open_sans.css;resources\chromoting128.webp;webapp\oauth2.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\de\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\sr\messages.json;webapp\host_table_entry.js;webapp\host_session.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\hu\messages.json;webapp\ui_mode.js;webapp\connection_history.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\fi\messages.json;..\chrome\VERSION;resources\disclosure_arrow_down.webp;webapp\oauth2_callback.js;webapp\manifest.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\sk\messages.json;webapp\remoting.js;webapp\oauth2_callback.html;webapp\third_party_host_permissions.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ar\messages.json;resources\host_setup_instructions.webp;webapp\spinner.gif;resources\tick.webp;webapp\host_list.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\zh_CN\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ca\messages.json;webapp\wcs.js;webapp\host_settings.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\en\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\cs\messages.json;webapp\xhr_proxy.js;webapp\plugin_settings.js;webapp\toolbar.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\vi\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\es\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\et\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ja\messages.json;webapp\cs_oauth2_trampoline.js;resources\icon_warning.webp;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\hr\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\it\messages.json;webapp\host_screen.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\nb\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\bg\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\pt_BR\messages.json;webapp\l10n.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\tr\messages.json;webapp\main.css;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\th\messages.json;webapp\host_controller.js;webapp\client_plugin.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\lt\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\hi\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\fil\messages.json;webapp\event_handlers.js;webapp\open_sans.woff;$(OutDir)\remoting_host_plugin.dll;webapp\scale-to-fit.webp;resources\chromoting16.webp;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\es_419\messages.json;..\remoting\VERSION;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\lv\messages.json;webapp\connection_stats.css;webapp\host_setup_dialog.js;webapp\storage.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\fr\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\id\messages.json;webapp\xhr.js;resources\icon_pencil.webp;webapp\error.js;webapp\wcs_loader.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\zh_TW\messages.json;webapp\survey.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\sl\messages.json;webapp\log_to_server.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\el\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\nl\messages.json;resources\icon_cross.webp;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\uk\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ko\messages.json;webapp\third_party_token_fetcher.js;webapp\host.js;webapp\menu_button.js;webapp\stats_accumulator.js;resources\infographic_my_computers.webp;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\sv\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\pt_PT\messages.json;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\en_GB\messages.json;webapp\wcs_sandbox_content.js;webapp\toolbar.css;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\he\messages.json;webapp\host_plugin_wrapper.js;webapp\client_session.js;resources\infographic_remote_assistance.webp;webapp\main.html;webapp\wcs_sandbox_container.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\pl\messages.json;webapp\connection_history.css;webapp\clipboard.js;webapp\wcs_sandbox.html;webapp\client_screen.js;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\ro\messages.json;resources\disclosure_arrow_right.webp;webapp\cs_third_party_auth_trampoline.js;resources\icon_host.webp;$(OutDir)obj\global_intermediate\remoting\webapp\_locales\da\messages.json</AdditionalInputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="remoting_resources.vcxproj">
+      <Project>{059F76B3-086B-AA17-B5A5-CC30FB306051}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="remoting_host_plugin.vcxproj">
+      <Project>{CFF970CA-945D-2C6E-F9A7-D74EC956D3E3}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="remoting_host_plugin_manifest.vcxproj">
+      <Project>{448831CF-D1D5-DE0C-78F6-0CC87CB2E0F3}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+  <ImportGroup Label="ExtensionTargets"/>
+</Project>

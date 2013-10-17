@@ -1,0 +1,2090 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E472A4A7-FD51-CBB6-89AF-92ADEBBDD91E}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>webcore_remaining</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props"/>
+  <PropertyGroup Label="Configuration">
+    <CharacterSet>Unicode</CharacterSet>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props"/>
+  <ImportGroup Label="ExtensionSettings"/>
+  <ImportGroup Label="PropertySheets">
+    <Import Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"/>
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros"/>
+  <PropertyGroup>
+    <ExecutablePath>$(ExecutablePath);$(MSBuildProjectDirectory)\..\..\..\..\..\third_party\cygwin\bin\;$(MSBuildProjectDirectory)\..\..\..\..\..\third_party\python_26\</ExecutablePath>
+    <OutDir>..\..\..\..\..\build\$(Configuration)\</OutDir>
+    <IntDir>$(OutDir)obj\$(ProjectName)\</IntDir>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <TargetName>$(ProjectName)</TargetName>
+    <TargetPath>$(OutDir)lib\$(ProjectName)$(TargetExt)</TargetPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\icu\public\common;..\..\..\..\icu\public\i18n;..\..\..\..\..\third_party\wtl\include;..\..\..\..\khronos;..\..\..\..\..\gpu;..\..\..\..\..;..\..\..\..;..\dom;..\..;$(OutDir)obj\global_intermediate\webkit;$(OutDir)obj\global_intermediate\webkit\bindings;..\..\..\..\..\third_party\angle\include\GLSLANG;..\..\..\..\..\third_party\ffmpeg;..\..\Platform\chromium;..\..\wtf\os-win32;..\..\..\..\..\skia\config;..\..\..\..\..\third_party\skia\src\core;..\..\..\..\..\third_party\skia\include\config;..\..\..\..\..\third_party\skia\include\core;..\..\..\..\..\third_party\skia\include\effects;..\..\..\..\..\third_party\skia\include\pdf;..\..\..\..\..\third_party\skia\include\gpu;..\..\..\..\..\third_party\skia\include\gpu\gl;..\..\..\..\..\third_party\skia\include\pathops;..\..\..\..\..\third_party\skia\include\pipe;..\..\..\..\..\third_party\skia\include\ports;..\..\..\..\..\third_party\skia\include\utils;..\..\..\..\..\skia\ext;..\..\..\..\..\skia\config\win;..\..\..\..\iccjpeg;..\..\..\..\leveldatabase\src\include;..\..\..\..\leveldatabase\src;..\..\..\..\leveldatabase;..\..\..\..\leveldatabase\src\port\win;..\..\..\..\libwebp;..\..\..\..\libpng;..\..\..\..\libxml\win32\include;..\..\..\..\libxml\src\include;..\..\..\..\libxslt;..\..\..\..\npapi;..\..\..\..\npapi\bindings;..\..\..\..\ots\include;..\..\..\..\qcms\src;..\..\..\..\sqlite;..\..\..\..\zlib;..\..\..\..\..\v8\include;..\..\..\..\libjpeg_turbo;..\..\..\..\ffmpeg\chromium\config\Chromium\win\ia32;..\..\..\..\ffmpeg\chromium\include\win;..\..\..\..\ffmpeg;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4351;4355;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4267;4334;4138;4291;4305;4344;4521;4099;4800;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForcedIncludeFiles>WinPrecompile.h</ForcedIncludeFiles>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <MinimalRebuild>false</MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>WinPrecompile.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_DEBUG;_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;WEBCORE_NAVIGATOR_VENDOR=&quot;Google Inc.&quot;;WEBKIT_IMPLEMENTATION=1;USING_V8_SHARED;WEBCORE_NAVIGATOR_PLATFORM=&quot;Win32&quot;;__PRETTY_FUNCTION__=__FUNCTION__;ENABLE_3D_PLUGIN=1;ENABLE_BATTERY_STATUS=0;ENABLE_CANVAS_USES_MAILBOX=0;ENABLE_CHANNEL_MESSAGING=1;ENABLE_CSS3_TEXT=0;ENABLE_CSS_COMPOSITING=0;ENABLE_CSS_DEVICE_ADAPTATION=0;ENABLE_CSS_EXCLUSIONS=1;ENABLE_CSS_IMAGE_SET=1;ENABLE_CSS_REGIONS=1;ENABLE_CUSTOM_SCHEME_HANDLER=0;ENABLE_ENCRYPTED_MEDIA=1;ENABLE_JAVASCRIPT_I18N_API=1;ENABLE_MEDIA_STREAM=1;ENABLE_RESOLUTION_MEDIA_QUERY=0;ENABLE_SPEECH_SYNTHESIS=0;ENABLE_SVG=1;ENABLE_SVG_FONTS=1;ENABLE_TOUCH_ICON_LOADING=0;ENABLE_WEBGL=1;ENABLE_WEBCL=1;ENABLE_XHR_TIMEOUT=0;WTF_USE_BUILTIN_UTF8_CODEC=1;WTF_USE_WEBKIT_IMAGE_DECODERS=1;ENABLE_CALENDAR_PICKER=1;ENABLE_DATALIST_ELEMENT=1;ENABLE_INPUT_SPEECH=1;ENABLE_INPUT_TYPE_COLOR=1;ENABLE_INPUT_MULTIPLE_FIELDS_UI=1;ENABLE_LEGACY_NOTIFICATIONS=1;ENABLE_MEDIA_CAPTURE=0;ENABLE_NAVIGATOR_CONTENT_UTILS=1;ENABLE_NOTIFICATIONS=1;ENABLE_ORIENTATION_EVENTS=0;ENABLE_PAGE_POPUP=1;ENABLE_WEB_AUDIO=1;ENABLE_BINDING_INTEGRITY=0;WTF_USE_WEBAUDIO_FFMPEG=1;ENABLE_OPENTYPE_VERTICAL=1;ENABLE_PAN_SCROLLING=1;CRASH=__debugbreak;U_USING_ICU_NAMESPACE=0;GURL_DLL;SK_BUILD_NO_IMAGE_ENCODE;SK_DEFERRED_CANVAS_USES_GPIPE=1;GR_GL_CUSTOM_SETUP_HEADER=&quot;GrGLConfig_chrome.h&quot;;GR_AGGRESSIVE_SHADER_OPTS=1;SK_ENABLE_INST_COUNT=0;GR_DLL;SKIA_DLL;CHROME_PNG_WRITE_SUPPORT;PNG_USER_CONFIG;PNG_USE_DLL;LIBXML_STATIC;LIBXSLT_STATIC;V8_SHARED;_CRT_NONSTDC_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;DYNAMIC_ANNOTATIONS_ENABLED=1;WTF_USE_DYNAMIC_ANNOTATIONS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(OutDir)lib\$(ProjectName)$(TargetExt)</OutputFile>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>wininet.lib;dnsapi.lib;version.lib;msimg32.lib;ws2_32.lib;usp10.lib;psapi.lib;dbghelp.lib;winmm.lib;shlwapi.lib;kernel32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;user32.lib;uuid.lib;odbc32.lib;odbccp32.lib;delayimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/safeseh /dynamicbase /ignore:4199 /ignore:4221 /nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <DelayLoadDLLs>dbghelp.dll;dwmapi.dll;shell32.dll;uxtheme.dll;mf.dll;mfplat.dll;mfreadwrite.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>$(OutDir)lib\$(TargetName).lib</ImportLibrary>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+      <ProgramDatabaseFile>$(TargetPath).pdb</ProgramDatabaseFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Midl>
+      <DllDataFileName>%(Filename).dlldata.c</DllDataFileName>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>../../../../..;$(OutDir)obj/global_intermediate;..\..\..\..\icu\public\common;..\..\..\..\icu\public\i18n;..\..\..\..\..\third_party\wtl\include;..\..\..\..\khronos;..\..\..\..\..\gpu;..\..\..\..\..;..\..\..\..;..\dom;..\..;$(OutDir)obj\global_intermediate\webkit;$(OutDir)obj\global_intermediate\webkit\bindings;..\..\..\..\..\third_party\angle\include\GLSLANG;..\..\..\..\..\third_party\ffmpeg;..\..\Platform\chromium;..\..\wtf\os-win32;..\..\..\..\..\skia\config;..\..\..\..\..\third_party\skia\src\core;..\..\..\..\..\third_party\skia\include\config;..\..\..\..\..\third_party\skia\include\core;..\..\..\..\..\third_party\skia\include\effects;..\..\..\..\..\third_party\skia\include\pdf;..\..\..\..\..\third_party\skia\include\gpu;..\..\..\..\..\third_party\skia\include\gpu\gl;..\..\..\..\..\third_party\skia\include\pathops;..\..\..\..\..\third_party\skia\include\pipe;..\..\..\..\..\third_party\skia\include\ports;..\..\..\..\..\third_party\skia\include\utils;..\..\..\..\..\skia\ext;..\..\..\..\..\skia\config\win;..\..\..\..\iccjpeg;..\..\..\..\leveldatabase\src\include;..\..\..\..\leveldatabase\src;..\..\..\..\leveldatabase;..\..\..\..\leveldatabase\src\port\win;..\..\..\..\libwebp;..\..\..\..\libpng;..\..\..\..\libxml\win32\include;..\..\..\..\libxml\src\include;..\..\..\..\libxslt;..\..\..\..\npapi;..\..\..\..\npapi\bindings;..\..\..\..\ots\include;..\..\..\..\qcms\src;..\..\..\..\sqlite;..\..\..\..\zlib;..\..\..\..\..\v8\include;..\..\..\..\libjpeg_turbo;..\..\..\..\ffmpeg\chromium\config\Chromium\win\ia32;..\..\..\..\ffmpeg\chromium\include\win;..\..\..\..\ffmpeg;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;WEBCORE_NAVIGATOR_VENDOR=&quot;Google Inc.&quot;;WEBKIT_IMPLEMENTATION=1;USING_V8_SHARED;WEBCORE_NAVIGATOR_PLATFORM=&quot;Win32&quot;;__PRETTY_FUNCTION__=__FUNCTION__;ENABLE_3D_PLUGIN=1;ENABLE_BATTERY_STATUS=0;ENABLE_CANVAS_USES_MAILBOX=0;ENABLE_CHANNEL_MESSAGING=1;ENABLE_CSS3_TEXT=0;ENABLE_CSS_COMPOSITING=0;ENABLE_CSS_DEVICE_ADAPTATION=0;ENABLE_CSS_EXCLUSIONS=1;ENABLE_CSS_IMAGE_SET=1;ENABLE_CSS_REGIONS=1;ENABLE_CUSTOM_SCHEME_HANDLER=0;ENABLE_ENCRYPTED_MEDIA=1;ENABLE_JAVASCRIPT_I18N_API=1;ENABLE_MEDIA_STREAM=1;ENABLE_RESOLUTION_MEDIA_QUERY=0;ENABLE_SPEECH_SYNTHESIS=0;ENABLE_SVG=1;ENABLE_SVG_FONTS=1;ENABLE_TOUCH_ICON_LOADING=0;ENABLE_WEBGL=1;ENABLE_WEBCL=1;ENABLE_XHR_TIMEOUT=0;WTF_USE_BUILTIN_UTF8_CODEC=1;WTF_USE_WEBKIT_IMAGE_DECODERS=1;ENABLE_CALENDAR_PICKER=1;ENABLE_DATALIST_ELEMENT=1;ENABLE_INPUT_SPEECH=1;ENABLE_INPUT_TYPE_COLOR=1;ENABLE_INPUT_MULTIPLE_FIELDS_UI=1;ENABLE_LEGACY_NOTIFICATIONS=1;ENABLE_MEDIA_CAPTURE=0;ENABLE_NAVIGATOR_CONTENT_UTILS=1;ENABLE_NOTIFICATIONS=1;ENABLE_ORIENTATION_EVENTS=0;ENABLE_PAGE_POPUP=1;ENABLE_WEB_AUDIO=1;ENABLE_BINDING_INTEGRITY=0;WTF_USE_WEBAUDIO_FFMPEG=1;ENABLE_OPENTYPE_VERTICAL=1;ENABLE_PAN_SCROLLING=1;CRASH=__debugbreak;U_USING_ICU_NAMESPACE=0;GURL_DLL;SK_BUILD_NO_IMAGE_ENCODE;SK_DEFERRED_CANVAS_USES_GPIPE=1;GR_GL_CUSTOM_SETUP_HEADER=&quot;GrGLConfig_chrome.h&quot;;GR_AGGRESSIVE_SHADER_OPTS=1;SK_ENABLE_INST_COUNT=0;GR_DLL;SKIA_DLL;CHROME_PNG_WRITE_SUPPORT;PNG_USER_CONFIG;PNG_USE_DLL;LIBXML_STATIC;LIBXSLT_STATIC;V8_SHARED;_CRT_NONSTDC_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;DYNAMIC_ANNOTATIONS_ENABLED=1;WTF_USE_DYNAMIC_ANNOTATIONS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\icu\public\common;..\..\..\..\icu\public\i18n;..\..\..\..\..\third_party\wtl\include;..\..\..\..\khronos;..\..\..\..\..\gpu;..\..\..\..\..;..\..\..\..;..\dom;..\..;$(OutDir)obj\global_intermediate\webkit;$(OutDir)obj\global_intermediate\webkit\bindings;..\..\..\..\..\third_party\angle\include\GLSLANG;..\..\..\..\..\third_party\ffmpeg;..\..\Platform\chromium;..\..\wtf\os-win32;..\..\..\..\..\skia\config;..\..\..\..\..\third_party\skia\src\core;..\..\..\..\..\third_party\skia\include\config;..\..\..\..\..\third_party\skia\include\core;..\..\..\..\..\third_party\skia\include\effects;..\..\..\..\..\third_party\skia\include\pdf;..\..\..\..\..\third_party\skia\include\gpu;..\..\..\..\..\third_party\skia\include\gpu\gl;..\..\..\..\..\third_party\skia\include\pathops;..\..\..\..\..\third_party\skia\include\pipe;..\..\..\..\..\third_party\skia\include\ports;..\..\..\..\..\third_party\skia\include\utils;..\..\..\..\..\skia\ext;..\..\..\..\..\skia\config\win;..\..\..\..\iccjpeg;..\..\..\..\leveldatabase\src\include;..\..\..\..\leveldatabase\src;..\..\..\..\leveldatabase;..\..\..\..\leveldatabase\src\port\win;..\..\..\..\libwebp;..\..\..\..\libpng;..\..\..\..\libxml\win32\include;..\..\..\..\libxml\src\include;..\..\..\..\libxslt;..\..\..\..\npapi;..\..\..\..\npapi\bindings;..\..\..\..\ots\include;..\..\..\..\qcms\src;..\..\..\..\sqlite;..\..\..\..\zlib;..\..\..\..\..\v8\include;..\..\..\..\libjpeg_turbo;..\..\..\..\ffmpeg\chromium\config\Chromium\win\ia32;..\..\..\..\ffmpeg\chromium\include\win;..\..\..\..\ffmpeg;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4351;4355;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4267;4334;4138;4291;4305;4344;4521;4099;4800;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForcedIncludeFiles>WinPrecompile.h</ForcedIncludeFiles>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <MinimalRebuild>false</MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>WinPrecompile.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_DEBUG;_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;WEBCORE_NAVIGATOR_VENDOR=&quot;Google Inc.&quot;;WEBKIT_IMPLEMENTATION=1;USING_V8_SHARED;WEBCORE_NAVIGATOR_PLATFORM=&quot;Win32&quot;;__PRETTY_FUNCTION__=__FUNCTION__;ENABLE_3D_PLUGIN=1;ENABLE_BATTERY_STATUS=0;ENABLE_CANVAS_USES_MAILBOX=0;ENABLE_CHANNEL_MESSAGING=1;ENABLE_CSS3_TEXT=0;ENABLE_CSS_COMPOSITING=0;ENABLE_CSS_DEVICE_ADAPTATION=0;ENABLE_CSS_EXCLUSIONS=1;ENABLE_CSS_IMAGE_SET=1;ENABLE_CSS_REGIONS=1;ENABLE_CUSTOM_SCHEME_HANDLER=0;ENABLE_ENCRYPTED_MEDIA=1;ENABLE_JAVASCRIPT_I18N_API=1;ENABLE_MEDIA_STREAM=1;ENABLE_RESOLUTION_MEDIA_QUERY=0;ENABLE_SPEECH_SYNTHESIS=0;ENABLE_SVG=1;ENABLE_SVG_FONTS=1;ENABLE_TOUCH_ICON_LOADING=0;ENABLE_WEBGL=1;ENABLE_WEBCL=1;ENABLE_XHR_TIMEOUT=0;WTF_USE_BUILTIN_UTF8_CODEC=1;WTF_USE_WEBKIT_IMAGE_DECODERS=1;ENABLE_CALENDAR_PICKER=1;ENABLE_DATALIST_ELEMENT=1;ENABLE_INPUT_SPEECH=1;ENABLE_INPUT_TYPE_COLOR=1;ENABLE_INPUT_MULTIPLE_FIELDS_UI=1;ENABLE_LEGACY_NOTIFICATIONS=1;ENABLE_MEDIA_CAPTURE=0;ENABLE_NAVIGATOR_CONTENT_UTILS=1;ENABLE_NOTIFICATIONS=1;ENABLE_ORIENTATION_EVENTS=0;ENABLE_PAGE_POPUP=1;ENABLE_WEB_AUDIO=1;ENABLE_BINDING_INTEGRITY=0;WTF_USE_WEBAUDIO_FFMPEG=1;ENABLE_OPENTYPE_VERTICAL=1;ENABLE_PAN_SCROLLING=1;CRASH=__debugbreak;U_USING_ICU_NAMESPACE=0;GURL_DLL;SK_BUILD_NO_IMAGE_ENCODE;SK_DEFERRED_CANVAS_USES_GPIPE=1;GR_GL_CUSTOM_SETUP_HEADER=&quot;GrGLConfig_chrome.h&quot;;GR_AGGRESSIVE_SHADER_OPTS=1;SK_ENABLE_INST_COUNT=0;GR_DLL;SKIA_DLL;CHROME_PNG_WRITE_SUPPORT;PNG_USER_CONFIG;PNG_USE_DLL;LIBXML_STATIC;LIBXSLT_STATIC;V8_SHARED;_CRT_NONSTDC_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;DYNAMIC_ANNOTATIONS_ENABLED=1;WTF_USE_DYNAMIC_ANNOTATIONS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(OutDir)lib\$(ProjectName)$(TargetExt)</OutputFile>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>wininet.lib;dnsapi.lib;version.lib;msimg32.lib;ws2_32.lib;usp10.lib;psapi.lib;dbghelp.lib;winmm.lib;shlwapi.lib;kernel32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;user32.lib;uuid.lib;odbc32.lib;odbccp32.lib;delayimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/dynamicbase /ignore:4199 /ignore:4221 /nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <DelayLoadDLLs>dbghelp.dll;dwmapi.dll;shell32.dll;uxtheme.dll;mf.dll;mfplat.dll;mfreadwrite.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>olepro32.lib</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)lib\$(TargetName).lib</ImportLibrary>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+      <ProgramDatabaseFile>$(TargetPath).pdb</ProgramDatabaseFile>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Midl>
+      <DllDataFileName>%(Filename).dlldata.c</DllDataFileName>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>../../../../..;$(OutDir)obj/global_intermediate;..\..\..\..\icu\public\common;..\..\..\..\icu\public\i18n;..\..\..\..\..\third_party\wtl\include;..\..\..\..\khronos;..\..\..\..\..\gpu;..\..\..\..\..;..\..\..\..;..\dom;..\..;$(OutDir)obj\global_intermediate\webkit;$(OutDir)obj\global_intermediate\webkit\bindings;..\..\..\..\..\third_party\angle\include\GLSLANG;..\..\..\..\..\third_party\ffmpeg;..\..\Platform\chromium;..\..\wtf\os-win32;..\..\..\..\..\skia\config;..\..\..\..\..\third_party\skia\src\core;..\..\..\..\..\third_party\skia\include\config;..\..\..\..\..\third_party\skia\include\core;..\..\..\..\..\third_party\skia\include\effects;..\..\..\..\..\third_party\skia\include\pdf;..\..\..\..\..\third_party\skia\include\gpu;..\..\..\..\..\third_party\skia\include\gpu\gl;..\..\..\..\..\third_party\skia\include\pathops;..\..\..\..\..\third_party\skia\include\pipe;..\..\..\..\..\third_party\skia\include\ports;..\..\..\..\..\third_party\skia\include\utils;..\..\..\..\..\skia\ext;..\..\..\..\..\skia\config\win;..\..\..\..\iccjpeg;..\..\..\..\leveldatabase\src\include;..\..\..\..\leveldatabase\src;..\..\..\..\leveldatabase;..\..\..\..\leveldatabase\src\port\win;..\..\..\..\libwebp;..\..\..\..\libpng;..\..\..\..\libxml\win32\include;..\..\..\..\libxml\src\include;..\..\..\..\libxslt;..\..\..\..\npapi;..\..\..\..\npapi\bindings;..\..\..\..\ots\include;..\..\..\..\qcms\src;..\..\..\..\sqlite;..\..\..\..\zlib;..\..\..\..\..\v8\include;..\..\..\..\libjpeg_turbo;..\..\..\..\ffmpeg\chromium\config\Chromium\win\ia32;..\..\..\..\ffmpeg\chromium\include\win;..\..\..\..\ffmpeg;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_DEBUG;_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;WEBCORE_NAVIGATOR_VENDOR=&quot;Google Inc.&quot;;WEBKIT_IMPLEMENTATION=1;USING_V8_SHARED;WEBCORE_NAVIGATOR_PLATFORM=&quot;Win32&quot;;__PRETTY_FUNCTION__=__FUNCTION__;ENABLE_3D_PLUGIN=1;ENABLE_BATTERY_STATUS=0;ENABLE_CANVAS_USES_MAILBOX=0;ENABLE_CHANNEL_MESSAGING=1;ENABLE_CSS3_TEXT=0;ENABLE_CSS_COMPOSITING=0;ENABLE_CSS_DEVICE_ADAPTATION=0;ENABLE_CSS_EXCLUSIONS=1;ENABLE_CSS_IMAGE_SET=1;ENABLE_CSS_REGIONS=1;ENABLE_CUSTOM_SCHEME_HANDLER=0;ENABLE_ENCRYPTED_MEDIA=1;ENABLE_JAVASCRIPT_I18N_API=1;ENABLE_MEDIA_STREAM=1;ENABLE_RESOLUTION_MEDIA_QUERY=0;ENABLE_SPEECH_SYNTHESIS=0;ENABLE_SVG=1;ENABLE_SVG_FONTS=1;ENABLE_TOUCH_ICON_LOADING=0;ENABLE_WEBGL=1;ENABLE_WEBCL=1;ENABLE_XHR_TIMEOUT=0;WTF_USE_BUILTIN_UTF8_CODEC=1;WTF_USE_WEBKIT_IMAGE_DECODERS=1;ENABLE_CALENDAR_PICKER=1;ENABLE_DATALIST_ELEMENT=1;ENABLE_INPUT_SPEECH=1;ENABLE_INPUT_TYPE_COLOR=1;ENABLE_INPUT_MULTIPLE_FIELDS_UI=1;ENABLE_LEGACY_NOTIFICATIONS=1;ENABLE_MEDIA_CAPTURE=0;ENABLE_NAVIGATOR_CONTENT_UTILS=1;ENABLE_NOTIFICATIONS=1;ENABLE_ORIENTATION_EVENTS=0;ENABLE_PAGE_POPUP=1;ENABLE_WEB_AUDIO=1;ENABLE_BINDING_INTEGRITY=0;WTF_USE_WEBAUDIO_FFMPEG=1;ENABLE_OPENTYPE_VERTICAL=1;ENABLE_PAN_SCROLLING=1;CRASH=__debugbreak;U_USING_ICU_NAMESPACE=0;GURL_DLL;SK_BUILD_NO_IMAGE_ENCODE;SK_DEFERRED_CANVAS_USES_GPIPE=1;GR_GL_CUSTOM_SETUP_HEADER=&quot;GrGLConfig_chrome.h&quot;;GR_AGGRESSIVE_SHADER_OPTS=1;SK_ENABLE_INST_COUNT=0;GR_DLL;SKIA_DLL;CHROME_PNG_WRITE_SUPPORT;PNG_USER_CONFIG;PNG_USE_DLL;LIBXML_STATIC;LIBXSLT_STATIC;V8_SHARED;_CRT_NONSTDC_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;DYNAMIC_ANNOTATIONS_ENABLED=1;WTF_USE_DYNAMIC_ANNOTATIONS=1;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\icu\public\common;..\..\..\..\icu\public\i18n;..\..\..\..\..\third_party\wtl\include;..\..\..\..\khronos;..\..\..\..\..\gpu;..\..\..\..\..;..\..\..\..;..\dom;..\..;$(OutDir)obj\global_intermediate\webkit;$(OutDir)obj\global_intermediate\webkit\bindings;..\..\..\..\..\third_party\angle\include\GLSLANG;..\..\..\..\..\third_party\ffmpeg;..\..\Platform\chromium;..\..\wtf\os-win32;..\..\..\..\..\skia\config;..\..\..\..\..\third_party\skia\src\core;..\..\..\..\..\third_party\skia\include\config;..\..\..\..\..\third_party\skia\include\core;..\..\..\..\..\third_party\skia\include\effects;..\..\..\..\..\third_party\skia\include\pdf;..\..\..\..\..\third_party\skia\include\gpu;..\..\..\..\..\third_party\skia\include\gpu\gl;..\..\..\..\..\third_party\skia\include\pathops;..\..\..\..\..\third_party\skia\include\pipe;..\..\..\..\..\third_party\skia\include\ports;..\..\..\..\..\third_party\skia\include\utils;..\..\..\..\..\skia\ext;..\..\..\..\..\skia\config\win;..\..\..\..\iccjpeg;..\..\..\..\leveldatabase\src\include;..\..\..\..\leveldatabase\src;..\..\..\..\leveldatabase;..\..\..\..\leveldatabase\src\port\win;..\..\..\..\libwebp;..\..\..\..\libpng;..\..\..\..\libxml\win32\include;..\..\..\..\libxml\src\include;..\..\..\..\libxslt;..\..\..\..\npapi;..\..\..\..\npapi\bindings;..\..\..\..\ots\include;..\..\..\..\qcms\src;..\..\..\..\sqlite;..\..\..\..\zlib;..\..\..\..\..\v8\include;..\..\..\..\libjpeg_turbo;..\..\..\..\ffmpeg\chromium\config\Chromium\win\ia32;..\..\..\..\ffmpeg\chromium\include\win;..\..\..\..\ffmpeg;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP /Oy- %(AdditionalOptions)</AdditionalOptions>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4351;4355;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4267;4334;4138;4291;4305;4344;4521;4099;4800;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForcedIncludeFiles>WinPrecompile.h</ForcedIncludeFiles>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild>false</MinimalRebuild>
+      <OmitFramePointers>false</OmitFramePointers>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>WinPrecompile.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;WEBCORE_NAVIGATOR_VENDOR=&quot;Google Inc.&quot;;WEBKIT_IMPLEMENTATION=1;USING_V8_SHARED;WEBCORE_NAVIGATOR_PLATFORM=&quot;Win32&quot;;__PRETTY_FUNCTION__=__FUNCTION__;ENABLE_3D_PLUGIN=1;ENABLE_BATTERY_STATUS=0;ENABLE_CANVAS_USES_MAILBOX=0;ENABLE_CHANNEL_MESSAGING=1;ENABLE_CSS3_TEXT=0;ENABLE_CSS_COMPOSITING=0;ENABLE_CSS_DEVICE_ADAPTATION=0;ENABLE_CSS_EXCLUSIONS=1;ENABLE_CSS_IMAGE_SET=1;ENABLE_CSS_REGIONS=1;ENABLE_CUSTOM_SCHEME_HANDLER=0;ENABLE_ENCRYPTED_MEDIA=1;ENABLE_JAVASCRIPT_I18N_API=1;ENABLE_MEDIA_STREAM=1;ENABLE_RESOLUTION_MEDIA_QUERY=0;ENABLE_SPEECH_SYNTHESIS=0;ENABLE_SVG=1;ENABLE_SVG_FONTS=1;ENABLE_TOUCH_ICON_LOADING=0;ENABLE_WEBGL=1;ENABLE_WEBCL=1;ENABLE_XHR_TIMEOUT=0;WTF_USE_BUILTIN_UTF8_CODEC=1;WTF_USE_WEBKIT_IMAGE_DECODERS=1;ENABLE_CALENDAR_PICKER=1;ENABLE_DATALIST_ELEMENT=1;ENABLE_INPUT_SPEECH=1;ENABLE_INPUT_TYPE_COLOR=1;ENABLE_INPUT_MULTIPLE_FIELDS_UI=1;ENABLE_LEGACY_NOTIFICATIONS=1;ENABLE_MEDIA_CAPTURE=0;ENABLE_NAVIGATOR_CONTENT_UTILS=1;ENABLE_NOTIFICATIONS=1;ENABLE_ORIENTATION_EVENTS=0;ENABLE_PAGE_POPUP=1;ENABLE_WEB_AUDIO=1;ENABLE_BINDING_INTEGRITY=0;WTF_USE_WEBAUDIO_FFMPEG=1;ENABLE_OPENTYPE_VERTICAL=1;ENABLE_PAN_SCROLLING=1;CRASH=__debugbreak;U_USING_ICU_NAMESPACE=0;GURL_DLL;SK_BUILD_NO_IMAGE_ENCODE;SK_DEFERRED_CANVAS_USES_GPIPE=1;GR_GL_CUSTOM_SETUP_HEADER=&quot;GrGLConfig_chrome.h&quot;;GR_AGGRESSIVE_SHADER_OPTS=1;SK_ENABLE_INST_COUNT=0;GR_DLL;SKIA_DLL;CHROME_PNG_WRITE_SUPPORT;PNG_USER_CONFIG;PNG_USE_DLL;LIBXML_STATIC;LIBXSLT_STATIC;V8_SHARED;_CRT_NONSTDC_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(OutDir)lib\$(ProjectName)$(TargetExt)</OutputFile>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>wininet.lib;dnsapi.lib;version.lib;msimg32.lib;ws2_32.lib;usp10.lib;psapi.lib;dbghelp.lib;winmm.lib;shlwapi.lib;kernel32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;user32.lib;uuid.lib;odbc32.lib;odbccp32.lib;delayimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/safeseh /dynamicbase /ignore:4199 /ignore:4221 /nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <DelayLoadDLLs>dbghelp.dll;dwmapi.dll;shell32.dll;uxtheme.dll;mf.dll;mfplat.dll;mfreadwrite.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>$(OutDir)lib\$(TargetName).lib</ImportLibrary>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+      <OptimizeReferences>true</OptimizeReferences>
+      <Profile>true</Profile>
+      <ProgramDatabaseFile>$(TargetPath).pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <Midl>
+      <DllDataFileName>%(Filename).dlldata.c</DllDataFileName>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>../../../../..;$(OutDir)obj/global_intermediate;..\..\..\..\icu\public\common;..\..\..\..\icu\public\i18n;..\..\..\..\..\third_party\wtl\include;..\..\..\..\khronos;..\..\..\..\..\gpu;..\..\..\..\..;..\..\..\..;..\dom;..\..;$(OutDir)obj\global_intermediate\webkit;$(OutDir)obj\global_intermediate\webkit\bindings;..\..\..\..\..\third_party\angle\include\GLSLANG;..\..\..\..\..\third_party\ffmpeg;..\..\Platform\chromium;..\..\wtf\os-win32;..\..\..\..\..\skia\config;..\..\..\..\..\third_party\skia\src\core;..\..\..\..\..\third_party\skia\include\config;..\..\..\..\..\third_party\skia\include\core;..\..\..\..\..\third_party\skia\include\effects;..\..\..\..\..\third_party\skia\include\pdf;..\..\..\..\..\third_party\skia\include\gpu;..\..\..\..\..\third_party\skia\include\gpu\gl;..\..\..\..\..\third_party\skia\include\pathops;..\..\..\..\..\third_party\skia\include\pipe;..\..\..\..\..\third_party\skia\include\ports;..\..\..\..\..\third_party\skia\include\utils;..\..\..\..\..\skia\ext;..\..\..\..\..\skia\config\win;..\..\..\..\iccjpeg;..\..\..\..\leveldatabase\src\include;..\..\..\..\leveldatabase\src;..\..\..\..\leveldatabase;..\..\..\..\leveldatabase\src\port\win;..\..\..\..\libwebp;..\..\..\..\libpng;..\..\..\..\libxml\win32\include;..\..\..\..\libxml\src\include;..\..\..\..\libxslt;..\..\..\..\npapi;..\..\..\..\npapi\bindings;..\..\..\..\ots\include;..\..\..\..\qcms\src;..\..\..\..\sqlite;..\..\..\..\zlib;..\..\..\..\..\v8\include;..\..\..\..\libjpeg_turbo;..\..\..\..\ffmpeg\chromium\config\Chromium\win\ia32;..\..\..\..\ffmpeg\chromium\include\win;..\..\..\..\ffmpeg;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;WEBCORE_NAVIGATOR_VENDOR=&quot;Google Inc.&quot;;WEBKIT_IMPLEMENTATION=1;USING_V8_SHARED;WEBCORE_NAVIGATOR_PLATFORM=&quot;Win32&quot;;__PRETTY_FUNCTION__=__FUNCTION__;ENABLE_3D_PLUGIN=1;ENABLE_BATTERY_STATUS=0;ENABLE_CANVAS_USES_MAILBOX=0;ENABLE_CHANNEL_MESSAGING=1;ENABLE_CSS3_TEXT=0;ENABLE_CSS_COMPOSITING=0;ENABLE_CSS_DEVICE_ADAPTATION=0;ENABLE_CSS_EXCLUSIONS=1;ENABLE_CSS_IMAGE_SET=1;ENABLE_CSS_REGIONS=1;ENABLE_CUSTOM_SCHEME_HANDLER=0;ENABLE_ENCRYPTED_MEDIA=1;ENABLE_JAVASCRIPT_I18N_API=1;ENABLE_MEDIA_STREAM=1;ENABLE_RESOLUTION_MEDIA_QUERY=0;ENABLE_SPEECH_SYNTHESIS=0;ENABLE_SVG=1;ENABLE_SVG_FONTS=1;ENABLE_TOUCH_ICON_LOADING=0;ENABLE_WEBGL=1;ENABLE_WEBCL=1;ENABLE_XHR_TIMEOUT=0;WTF_USE_BUILTIN_UTF8_CODEC=1;WTF_USE_WEBKIT_IMAGE_DECODERS=1;ENABLE_CALENDAR_PICKER=1;ENABLE_DATALIST_ELEMENT=1;ENABLE_INPUT_SPEECH=1;ENABLE_INPUT_TYPE_COLOR=1;ENABLE_INPUT_MULTIPLE_FIELDS_UI=1;ENABLE_LEGACY_NOTIFICATIONS=1;ENABLE_MEDIA_CAPTURE=0;ENABLE_NAVIGATOR_CONTENT_UTILS=1;ENABLE_NOTIFICATIONS=1;ENABLE_ORIENTATION_EVENTS=0;ENABLE_PAGE_POPUP=1;ENABLE_WEB_AUDIO=1;ENABLE_BINDING_INTEGRITY=0;WTF_USE_WEBAUDIO_FFMPEG=1;ENABLE_OPENTYPE_VERTICAL=1;ENABLE_PAN_SCROLLING=1;CRASH=__debugbreak;U_USING_ICU_NAMESPACE=0;GURL_DLL;SK_BUILD_NO_IMAGE_ENCODE;SK_DEFERRED_CANVAS_USES_GPIPE=1;GR_GL_CUSTOM_SETUP_HEADER=&quot;GrGLConfig_chrome.h&quot;;GR_AGGRESSIVE_SHADER_OPTS=1;SK_ENABLE_INST_COUNT=0;GR_DLL;SKIA_DLL;CHROME_PNG_WRITE_SUPPORT;PNG_USER_CONFIG;PNG_USE_DLL;LIBXML_STATIC;LIBXSLT_STATIC;V8_SHARED;_CRT_NONSTDC_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\icu\public\common;..\..\..\..\icu\public\i18n;..\..\..\..\..\third_party\wtl\include;..\..\..\..\khronos;..\..\..\..\..\gpu;..\..\..\..\..;..\..\..\..;..\dom;..\..;$(OutDir)obj\global_intermediate\webkit;$(OutDir)obj\global_intermediate\webkit\bindings;..\..\..\..\..\third_party\angle\include\GLSLANG;..\..\..\..\..\third_party\ffmpeg;..\..\Platform\chromium;..\..\wtf\os-win32;..\..\..\..\..\skia\config;..\..\..\..\..\third_party\skia\src\core;..\..\..\..\..\third_party\skia\include\config;..\..\..\..\..\third_party\skia\include\core;..\..\..\..\..\third_party\skia\include\effects;..\..\..\..\..\third_party\skia\include\pdf;..\..\..\..\..\third_party\skia\include\gpu;..\..\..\..\..\third_party\skia\include\gpu\gl;..\..\..\..\..\third_party\skia\include\pathops;..\..\..\..\..\third_party\skia\include\pipe;..\..\..\..\..\third_party\skia\include\ports;..\..\..\..\..\third_party\skia\include\utils;..\..\..\..\..\skia\ext;..\..\..\..\..\skia\config\win;..\..\..\..\iccjpeg;..\..\..\..\leveldatabase\src\include;..\..\..\..\leveldatabase\src;..\..\..\..\leveldatabase;..\..\..\..\leveldatabase\src\port\win;..\..\..\..\libwebp;..\..\..\..\libpng;..\..\..\..\libxml\win32\include;..\..\..\..\libxml\src\include;..\..\..\..\libxslt;..\..\..\..\npapi;..\..\..\..\npapi\bindings;..\..\..\..\ots\include;..\..\..\..\qcms\src;..\..\..\..\sqlite;..\..\..\..\zlib;..\..\..\..\..\v8\include;..\..\..\..\libjpeg_turbo;..\..\..\..\ffmpeg\chromium\config\Chromium\win\ia32;..\..\..\..\ffmpeg\chromium\include\win;..\..\..\..\ffmpeg;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>/MP /Oy- %(AdditionalOptions)</AdditionalOptions>
+      <BufferSecurityCheck>true</BufferSecurityCheck>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4351;4355;4396;4503;4819;4100;4121;4125;4127;4130;4131;4189;4201;4238;4244;4245;4310;4428;4481;4505;4510;4512;4530;4610;4611;4701;4702;4706;4267;4334;4138;4291;4305;4344;4521;4099;4800;4251;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForcedIncludeFiles>WinPrecompile.h</ForcedIncludeFiles>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild>false</MinimalRebuild>
+      <OmitFramePointers>false</OmitFramePointers>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>WinPrecompile.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;WEBCORE_NAVIGATOR_VENDOR=&quot;Google Inc.&quot;;WEBKIT_IMPLEMENTATION=1;USING_V8_SHARED;WEBCORE_NAVIGATOR_PLATFORM=&quot;Win32&quot;;__PRETTY_FUNCTION__=__FUNCTION__;ENABLE_3D_PLUGIN=1;ENABLE_BATTERY_STATUS=0;ENABLE_CANVAS_USES_MAILBOX=0;ENABLE_CHANNEL_MESSAGING=1;ENABLE_CSS3_TEXT=0;ENABLE_CSS_COMPOSITING=0;ENABLE_CSS_DEVICE_ADAPTATION=0;ENABLE_CSS_EXCLUSIONS=1;ENABLE_CSS_IMAGE_SET=1;ENABLE_CSS_REGIONS=1;ENABLE_CUSTOM_SCHEME_HANDLER=0;ENABLE_ENCRYPTED_MEDIA=1;ENABLE_JAVASCRIPT_I18N_API=1;ENABLE_MEDIA_STREAM=1;ENABLE_RESOLUTION_MEDIA_QUERY=0;ENABLE_SPEECH_SYNTHESIS=0;ENABLE_SVG=1;ENABLE_SVG_FONTS=1;ENABLE_TOUCH_ICON_LOADING=0;ENABLE_WEBGL=1;ENABLE_WEBCL=1;ENABLE_XHR_TIMEOUT=0;WTF_USE_BUILTIN_UTF8_CODEC=1;WTF_USE_WEBKIT_IMAGE_DECODERS=1;ENABLE_CALENDAR_PICKER=1;ENABLE_DATALIST_ELEMENT=1;ENABLE_INPUT_SPEECH=1;ENABLE_INPUT_TYPE_COLOR=1;ENABLE_INPUT_MULTIPLE_FIELDS_UI=1;ENABLE_LEGACY_NOTIFICATIONS=1;ENABLE_MEDIA_CAPTURE=0;ENABLE_NAVIGATOR_CONTENT_UTILS=1;ENABLE_NOTIFICATIONS=1;ENABLE_ORIENTATION_EVENTS=0;ENABLE_PAGE_POPUP=1;ENABLE_WEB_AUDIO=1;ENABLE_BINDING_INTEGRITY=0;WTF_USE_WEBAUDIO_FFMPEG=1;ENABLE_OPENTYPE_VERTICAL=1;ENABLE_PAN_SCROLLING=1;CRASH=__debugbreak;U_USING_ICU_NAMESPACE=0;GURL_DLL;SK_BUILD_NO_IMAGE_ENCODE;SK_DEFERRED_CANVAS_USES_GPIPE=1;GR_GL_CUSTOM_SETUP_HEADER=&quot;GrGLConfig_chrome.h&quot;;GR_AGGRESSIVE_SHADER_OPTS=1;SK_ENABLE_INST_COUNT=0;GR_DLL;SKIA_DLL;CHROME_PNG_WRITE_SUPPORT;PNG_USER_CONFIG;PNG_USE_DLL;LIBXML_STATIC;LIBXSLT_STATIC;V8_SHARED;_CRT_NONSTDC_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>false</RuntimeTypeInfo>
+      <StringPooling>true</StringPooling>
+      <TreatWarningAsError>true</TreatWarningAsError>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
+    <Lib>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/ignore:4221 %(AdditionalOptions)</AdditionalOptions>
+      <OutputFile>$(OutDir)lib\$(ProjectName)$(TargetExt)</OutputFile>
+    </Lib>
+    <Link>
+      <AdditionalDependencies>wininet.lib;dnsapi.lib;version.lib;msimg32.lib;ws2_32.lib;usp10.lib;psapi.lib;dbghelp.lib;winmm.lib;shlwapi.lib;kernel32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;user32.lib;uuid.lib;odbc32.lib;odbccp32.lib;delayimp.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:/Program Files (x86)/Windows Kits/8.0/Lib/win8/um/x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/dynamicbase /ignore:4199 /ignore:4221 /nxcompat %(AdditionalOptions)</AdditionalOptions>
+      <DelayLoadDLLs>dbghelp.dll;dwmapi.dll;shell32.dll;uxtheme.dll;mf.dll;mfplat.dll;mfreadwrite.dll;%(DelayLoadDLLs)</DelayLoadDLLs>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <FixedBaseAddress>false</FixedBaseAddress>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>olepro32.lib</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)lib\$(TargetName).lib</ImportLibrary>
+      <MapFileName>$(OutDir)$(TargetName).map</MapFileName>
+      <OptimizeReferences>true</OptimizeReferences>
+      <Profile>true</Profile>
+      <ProgramDatabaseFile>$(TargetPath).pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX64</TargetMachine>
+    </Link>
+    <Midl>
+      <DllDataFileName>%(Filename).dlldata.c</DllDataFileName>
+      <GenerateStublessProxies>true</GenerateStublessProxies>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+    </Midl>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>../../../../..;$(OutDir)obj/global_intermediate;..\..\..\..\icu\public\common;..\..\..\..\icu\public\i18n;..\..\..\..\..\third_party\wtl\include;..\..\..\..\khronos;..\..\..\..\..\gpu;..\..\..\..\..;..\..\..\..;..\dom;..\..;$(OutDir)obj\global_intermediate\webkit;$(OutDir)obj\global_intermediate\webkit\bindings;..\..\..\..\..\third_party\angle\include\GLSLANG;..\..\..\..\..\third_party\ffmpeg;..\..\Platform\chromium;..\..\wtf\os-win32;..\..\..\..\..\skia\config;..\..\..\..\..\third_party\skia\src\core;..\..\..\..\..\third_party\skia\include\config;..\..\..\..\..\third_party\skia\include\core;..\..\..\..\..\third_party\skia\include\effects;..\..\..\..\..\third_party\skia\include\pdf;..\..\..\..\..\third_party\skia\include\gpu;..\..\..\..\..\third_party\skia\include\gpu\gl;..\..\..\..\..\third_party\skia\include\pathops;..\..\..\..\..\third_party\skia\include\pipe;..\..\..\..\..\third_party\skia\include\ports;..\..\..\..\..\third_party\skia\include\utils;..\..\..\..\..\skia\ext;..\..\..\..\..\skia\config\win;..\..\..\..\iccjpeg;..\..\..\..\leveldatabase\src\include;..\..\..\..\leveldatabase\src;..\..\..\..\leveldatabase;..\..\..\..\leveldatabase\src\port\win;..\..\..\..\libwebp;..\..\..\..\libpng;..\..\..\..\libxml\win32\include;..\..\..\..\libxml\src\include;..\..\..\..\libxslt;..\..\..\..\npapi;..\..\..\..\npapi\bindings;..\..\..\..\ots\include;..\..\..\..\qcms\src;..\..\..\..\sqlite;..\..\..\..\zlib;..\..\..\..\..\v8\include;..\..\..\..\libjpeg_turbo;..\..\..\..\ffmpeg\chromium\config\Chromium\win\ia32;..\..\..\..\ffmpeg\chromium\include\win;..\..\..\..\ffmpeg;C:\Program Files (x86)\Windows Kits\8.0\Include\shared;C:\Program Files (x86)\Windows Kits\8.0\Include\um;C:\Program Files (x86)\Windows Kits\8.0\Include\winrt;$(VSInstallDir)\VC\atlmfc\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <Culture>0x0409</Culture>
+      <PreprocessorDefinitions>_WIN32_WINNT=0x0602;WINVER=0x0602;WIN32;_WINDOWS;NOMINMAX;PSAPI_VERSION=1;_CRT_RAND_S;CERT_CHAIN_PARA_HAS_EXTRA_FIELDS;WIN32_LEAN_AND_MEAN;_ATL_NO_OPENGL;_SECURE_ATL;CHROMIUM_BUILD;COMPONENT_BUILD;TOOLKIT_VIEWS=1;USE_LIBJPEG_TURBO=1;ENABLE_ONE_CLICK_SIGNIN;ENABLE_REMOTING=1;ENABLE_WEBRTC=1;ENABLE_CONFIGURATION_POLICY;ENABLE_INPUT_SPEECH;ENABLE_NOTIFICATIONS;NO_TCMALLOC;ENABLE_GPU=1;ENABLE_EGLIMAGE=1;__STD_C;_CRT_SECURE_NO_DEPRECATE;_SCL_SECURE_NO_DEPRECATE;NTDDI_VERSION=0x06020000;ENABLE_TASK_MANAGER=1;ENABLE_EXTENSIONS=1;ENABLE_PLUGIN_INSTALLATION=1;ENABLE_PLUGINS=1;ENABLE_SESSION_SERVICE=1;ENABLE_THEMES=1;ENABLE_AUTOFILL_DIALOG=1;ENABLE_BACKGROUND=1;ENABLE_AUTOMATION=1;ENABLE_GOOGLE_NOW=1;ENABLE_LANGUAGE_DETECTION=1;ENABLE_PRINTING=1;ENABLE_CAPTIVE_PORTAL_DETECTION=1;ENABLE_APP_LIST=1;ENABLE_MESSAGE_CENTER=1;ENABLE_SETTINGS_APP=1;ENABLE_MANAGED_USERS=1;WEBCORE_NAVIGATOR_VENDOR=&quot;Google Inc.&quot;;WEBKIT_IMPLEMENTATION=1;USING_V8_SHARED;WEBCORE_NAVIGATOR_PLATFORM=&quot;Win32&quot;;__PRETTY_FUNCTION__=__FUNCTION__;ENABLE_3D_PLUGIN=1;ENABLE_BATTERY_STATUS=0;ENABLE_CANVAS_USES_MAILBOX=0;ENABLE_CHANNEL_MESSAGING=1;ENABLE_CSS3_TEXT=0;ENABLE_CSS_COMPOSITING=0;ENABLE_CSS_DEVICE_ADAPTATION=0;ENABLE_CSS_EXCLUSIONS=1;ENABLE_CSS_IMAGE_SET=1;ENABLE_CSS_REGIONS=1;ENABLE_CUSTOM_SCHEME_HANDLER=0;ENABLE_ENCRYPTED_MEDIA=1;ENABLE_JAVASCRIPT_I18N_API=1;ENABLE_MEDIA_STREAM=1;ENABLE_RESOLUTION_MEDIA_QUERY=0;ENABLE_SPEECH_SYNTHESIS=0;ENABLE_SVG=1;ENABLE_SVG_FONTS=1;ENABLE_TOUCH_ICON_LOADING=0;ENABLE_WEBGL=1;ENABLE_WEBCL=1;ENABLE_XHR_TIMEOUT=0;WTF_USE_BUILTIN_UTF8_CODEC=1;WTF_USE_WEBKIT_IMAGE_DECODERS=1;ENABLE_CALENDAR_PICKER=1;ENABLE_DATALIST_ELEMENT=1;ENABLE_INPUT_SPEECH=1;ENABLE_INPUT_TYPE_COLOR=1;ENABLE_INPUT_MULTIPLE_FIELDS_UI=1;ENABLE_LEGACY_NOTIFICATIONS=1;ENABLE_MEDIA_CAPTURE=0;ENABLE_NAVIGATOR_CONTENT_UTILS=1;ENABLE_NOTIFICATIONS=1;ENABLE_ORIENTATION_EVENTS=0;ENABLE_PAGE_POPUP=1;ENABLE_WEB_AUDIO=1;ENABLE_BINDING_INTEGRITY=0;WTF_USE_WEBAUDIO_FFMPEG=1;ENABLE_OPENTYPE_VERTICAL=1;ENABLE_PAN_SCROLLING=1;CRASH=__debugbreak;U_USING_ICU_NAMESPACE=0;GURL_DLL;SK_BUILD_NO_IMAGE_ENCODE;SK_DEFERRED_CANVAS_USES_GPIPE=1;GR_GL_CUSTOM_SETUP_HEADER=&quot;GrGLConfig_chrome.h&quot;;GR_AGGRESSIVE_SHADER_OPTS=1;SK_ENABLE_INST_COUNT=0;GR_DLL;SKIA_DLL;CHROME_PNG_WRITE_SUPPORT;PNG_USER_CONFIG;PNG_USE_DLL;LIBXML_STATIC;LIBXSLT_STATIC;V8_SHARED;_CRT_NONSTDC_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;NVALGRIND;DYNAMIC_ANNOTATIONS_ENABLED=0;%(PreprocessorDefinitions);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="core.gyp"/>
+    <None Include="..\rendering\RenderThemeChromiumMac.mm">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\xml\XPathUtil.h"/>
+    <ClInclude Include="..\xml\DOMParser.h"/>
+    <ClInclude Include="..\xml\XMLHttpRequestException.h"/>
+    <ClInclude Include="..\xml\XPathValue.h"/>
+    <ClInclude Include="..\xml\NativeXPathNSResolver.h"/>
+    <ClInclude Include="..\xml\XSLTUnicodeSort.h"/>
+    <ClInclude Include="..\xml\XPathStep.h"/>
+    <ClInclude Include="..\xml\XSLStyleSheet.h"/>
+    <ClInclude Include="..\xml\XPathException.h"/>
+    <ClInclude Include="..\xml\XMLHttpRequestUpload.h"/>
+    <ClInclude Include="..\xml\XMLTreeViewer.h"/>
+    <ClInclude Include="..\xml\XPathVariableReference.h"/>
+    <ClInclude Include="..\xml\XPathPredicate.h"/>
+    <ClInclude Include="..\xml\XPathExpression.h"/>
+    <ClInclude Include="..\xml\XPathFunctions.h"/>
+    <ClInclude Include="..\xml\XSLTExtensions.h"/>
+    <ClInclude Include="..\xml\XPathExpressionNode.h"/>
+    <ClInclude Include="..\xml\XPathPath.h"/>
+    <ClInclude Include="..\xml\XPathParser.h"/>
+    <ClInclude Include="..\xml\XPathEvaluator.h"/>
+    <ClInclude Include="..\xml\XSLTProcessor.h"/>
+    <ClInclude Include="..\xml\XPathResult.h"/>
+    <ClInclude Include="..\xml\XSLImportRule.h"/>
+    <ClInclude Include="..\xml\XMLHttpRequestProgressEventThrottle.h"/>
+    <ClInclude Include="..\xml\XMLSerializer.h"/>
+    <ClInclude Include="..\xml\XMLHttpRequestProgressEvent.h"/>
+    <ClInclude Include="..\xml\XMLHttpRequest.h"/>
+    <ClInclude Include="..\xml\XPathNodeSet.h"/>
+    <ClInclude Include="..\xml\XMLErrors.h"/>
+    <ClInclude Include="..\xml\XPathNSResolver.h"/>
+    <ClInclude Include="..\xml\parser\CharacterReferenceParserInlines.h"/>
+    <ClInclude Include="..\xml\parser\XMLDocumentParser.h"/>
+    <ClInclude Include="..\xml\parser\MarkupTokenizerInlines.h"/>
+    <ClInclude Include="..\xml\parser\XMLDocumentParserScope.h"/>
+    <ClInclude Include="..\fileapi\FileThread.h"/>
+    <ClInclude Include="..\fileapi\ThreadableBlobRegistry.h"/>
+    <ClInclude Include="..\fileapi\BlobBuilder.h"/>
+    <ClInclude Include="..\fileapi\Blob.h"/>
+    <ClInclude Include="..\fileapi\FileException.h"/>
+    <ClInclude Include="..\fileapi\BlobURL.h"/>
+    <ClInclude Include="..\fileapi\FileReaderLoaderClient.h"/>
+    <ClInclude Include="..\fileapi\FileReader.h"/>
+    <ClInclude Include="..\fileapi\FileThreadTask.h"/>
+    <ClInclude Include="..\fileapi\FileList.h"/>
+    <ClInclude Include="..\fileapi\FileReaderLoader.h"/>
+    <ClInclude Include="..\fileapi\File.h"/>
+    <ClInclude Include="..\fileapi\FileError.h"/>
+    <ClInclude Include="..\fileapi\FileReaderSync.h"/>
+    <ClInclude Include="..\workers\SharedWorkerRepository.h"/>
+    <ClInclude Include="..\workers\DedicatedWorkerThread.h"/>
+    <ClInclude Include="..\workers\SharedWorker.h"/>
+    <ClInclude Include="..\workers\WorkerMessagingProxy.h"/>
+    <ClInclude Include="..\workers\AbstractWorker.h"/>
+    <ClInclude Include="..\workers\WorkerScriptLoaderClient.h"/>
+    <ClInclude Include="..\workers\WorkerObjectProxy.h"/>
+    <ClInclude Include="..\workers\DedicatedWorkerContext.h"/>
+    <ClInclude Include="..\workers\SharedWorkerContext.h"/>
+    <ClInclude Include="..\workers\WorkerContext.h"/>
+    <ClInclude Include="..\workers\WorkerReportingProxy.h"/>
+    <ClInclude Include="..\workers\WorkerEventQueue.h"/>
+    <ClInclude Include="..\workers\WorkerScriptLoader.h"/>
+    <ClInclude Include="..\workers\WorkerLoaderProxy.h"/>
+    <ClInclude Include="..\workers\Worker.h"/>
+    <ClInclude Include="..\workers\WorkerContextProxy.h"/>
+    <ClInclude Include="..\workers\SharedWorkerThread.h"/>
+    <ClInclude Include="..\workers\WorkerLocation.h"/>
+    <ClInclude Include="..\storage\StorageNamespace.h"/>
+    <ClInclude Include="..\storage\StorageEvent.h"/>
+    <ClInclude Include="..\storage\Storage.h"/>
+    <ClInclude Include="..\storage\StorageArea.h"/>
+    <ClInclude Include="..\accessibility\AccessibilitySVGRoot.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityListBoxOption.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityRenderObject.h"/>
+    <ClInclude Include="..\accessibility\AccessibilitySpinButton.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityARIAGridRow.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityNodeObject.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityScrollView.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityTableHeaderContainer.h"/>
+    <ClInclude Include="..\accessibility\AccessibilitySlider.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityARIAGrid.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityImageMapLink.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityARIAGridCell.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityMockObject.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityList.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityProgressIndicator.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityTableRow.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityTable.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityMenuList.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityMenuListPopup.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityMediaControls.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityTableColumn.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityListBox.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityMenuListOption.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityScrollbar.h"/>
+    <ClInclude Include="..\accessibility\AccessibilityTableCell.h"/>
+    <ClInclude Include="..\loader\UniqueIdentifier.h"/>
+    <ClInclude Include="..\loader\DocumentThreadableLoaderClient.h"/>
+    <ClInclude Include="..\loader\TextTrackLoader.h"/>
+    <ClInclude Include="..\loader\LinkLoader.h"/>
+    <ClInclude Include="..\loader\ImageLoader.h"/>
+    <ClInclude Include="..\loader\Prerenderer.h"/>
+    <ClInclude Include="..\loader\ResourceLoaderTypes.h"/>
+    <ClInclude Include="..\loader\ThreadableLoaderClient.h"/>
+    <ClInclude Include="..\loader\MixedContentChecker.h"/>
+    <ClInclude Include="..\loader\SubstituteData.h"/>
+    <ClInclude Include="..\loader\LinkLoaderClient.h"/>
+    <ClInclude Include="..\loader\CrossOriginAccessControl.h"/>
+    <ClInclude Include="..\loader\EmptyClients.h"/>
+    <ClInclude Include="..\loader\ResourceLoaderOptions.h"/>
+    <ClInclude Include="..\loader\ThreadableLoaderClientWrapper.h"/>
+    <ClInclude Include="..\loader\CachedMetadata.h"/>
+    <ClInclude Include="..\loader\SinkDocument.h"/>
+    <ClInclude Include="..\loader\DocumentThreadableLoader.h"/>
+    <ClInclude Include="..\loader\PingLoader.h"/>
+    <ClInclude Include="..\loader\PrerendererClient.h"/>
+    <ClInclude Include="..\loader\IconController.h"/>
+    <ClInclude Include="..\loader\WorkerThreadableLoader.h"/>
+    <ClInclude Include="..\loader\cache\CachedSVGDocument.h"/>
+    <ClInclude Include="..\loader\cache\CachedXSLStyleSheet.h"/>
+    <ClInclude Include="..\loader\cache\CachedSVGDocumentReference.h"/>
+    <ClInclude Include="..\loader\cache\CachedFont.h"/>
+    <ClInclude Include="..\loader\cache\CachedShader.h"/>
+    <ClInclude Include="..\loader\cache\CachedTextTrack.h"/>
+    <ClInclude Include="..\loader\cache\CachedResourceClientWalker.h"/>
+    <ClInclude Include="..\loader\cache\CachedScript.h"/>
+    <ClInclude Include="..\loader\cache\CachedCSSStyleSheet.h"/>
+    <ClInclude Include="..\loader\archive\MHTMLParser.h"/>
+    <ClInclude Include="..\loader\archive\MHTMLArchive.h"/>
+    <ClInclude Include="..\loader\archive\ArchiveResourceCollection.h"/>
+    <ClInclude Include="..\loader\appcache\ApplicationCacheHost.h"/>
+    <ClInclude Include="..\loader\appcache\DOMApplicationCache.h"/>
+    <ClInclude Include="..\rendering\RenderMediaControlElements.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderVideo.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderButton.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderListBox.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderScrollbarPart.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTableRow.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderFrame.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\ExclusionShape.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\ExclusionShapeInsideInfo.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderRegion.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\TableLayout.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderGrid.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderFieldset.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderFrameBase.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTableCol.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderMedia.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderLazyBlock.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\FixedTableLayout.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderDetailsMarker.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\HitTestLocation.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderFullScreen.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderThemeChromiumDefault.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTextControlSingleLine.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTextControlMultiLine.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderGeometryMap.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderFrameSet.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderRubyRun.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderListMarker.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderRubyBase.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\ExclusionPolygon.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderScrollbarTheme.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderSearchField.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderMarquee.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderApplet.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderReplica.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderThemeChromiumWin.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\HitTestingTransformState.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderRuby.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTableCaption.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTheme.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderRegionSet.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderInline.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderMultiColumnFlowThread.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\break_lines.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderIFrame.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\VerticalPositionCache.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderProgress.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderCounter.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderLayerCompositor.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderInputSpeech.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderThemeChromiumMac.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTableCell.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\PointerEventsHitRules.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\ExclusionInterval.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderMultiColumnSet.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderMediaControls.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderScrollbar.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTableSection.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderNamedFlowThread.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\BidiRun.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderThemeChromiumSkia.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderRubyText.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderFlexibleBox.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\FilterEffectRenderer.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderWordBreak.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTextFragment.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderThemeChromiumFontProvider.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\ExclusionShapeOutsideInfo.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderHTMLCanvas.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderCombineText.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderLayerFilterInfo.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderMenuList.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderArena.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\TextAutosizer.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderMeter.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\TrailingFloatsRootInlineBox.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderMultiColumnBlock.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderThemeChromiumCommon.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\ExclusionShapeInfo.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\EllipsisBox.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\ExclusionRectangle.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderQuote.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderFileUploadControl.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderDeprecatedFlexibleBox.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\AutoTableLayout.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderMediaControlsChromium.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderFlowThread.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderSlider.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTextControl.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTextTrackCue.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\InlineIterator.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderThemeChromiumAndroid.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\ImageQualityController.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderTable.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderSelectionInfo.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\RenderWidgetProtector.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\FlowThreadController.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\CounterNode.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextChunkBuilder.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextRunRenderingContext.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGResources.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextFragment.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextMetrics.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextLayoutEngine.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextChunk.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextMetricsBuilder.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGResourcesCycleSolver.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGInlineFlowBox.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGRootInlineBox.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGRenderTreeAsText.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextLayoutAttributes.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGPathData.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGRenderingContext.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextLayoutAttributesBuilder.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextLayoutEngineBaseline.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGRenderSupport.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextQuery.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGMarkerData.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGInlineTextBox.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\svg\SVGTextLayoutEngineSpacing.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\style\KeyframeList.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\style\StyleShader.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\style\StylePendingImage.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\style\StylePendingShader.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\style\StyleCustomFilterProgramCache.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\style\QuotesData.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\style\StyleCachedShader.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\rendering\style\StyleCustomFilterProgram.h">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClInclude>
+    <ClInclude Include="..\icu\unicode\uloc.h"/>
+    <ClInclude Include="..\icu\unicode\ushape.h"/>
+    <ClInclude Include="..\icu\unicode\unorm.h"/>
+    <ClInclude Include="..\icu\unicode\uversion.h"/>
+    <ClInclude Include="..\icu\unicode\uidna.h"/>
+    <ClInclude Include="..\icu\unicode\umachine.h"/>
+    <ClInclude Include="..\icu\unicode\ustring.h"/>
+    <ClInclude Include="..\icu\unicode\ucoleitr.h"/>
+    <ClInclude Include="..\icu\unicode\utypes.h"/>
+    <ClInclude Include="..\icu\unicode\ucnv.h"/>
+    <ClInclude Include="..\icu\unicode\utf.h"/>
+    <ClInclude Include="..\icu\unicode\uchar.h"/>
+    <ClInclude Include="..\icu\unicode\usearch.h"/>
+    <ClInclude Include="..\icu\unicode\uiter.h"/>
+    <ClInclude Include="..\icu\unicode\ucsdet.h"/>
+    <ClInclude Include="..\icu\unicode\platform.h"/>
+    <ClInclude Include="..\icu\unicode\ucnv_cb.h"/>
+    <ClInclude Include="..\icu\unicode\ucnv_err.h"/>
+    <ClInclude Include="..\icu\unicode\uscript.h"/>
+    <ClInclude Include="..\icu\unicode\utf_old.h"/>
+    <ClInclude Include="..\icu\unicode\ubrk.h"/>
+    <ClInclude Include="..\icu\unicode\uenum.h"/>
+    <ClInclude Include="..\icu\unicode\uconfig.h"/>
+    <ClInclude Include="..\icu\unicode\urename.h"/>
+    <ClInclude Include="..\icu\unicode\parseerr.h"/>
+    <ClInclude Include="..\icu\unicode\putil.h"/>
+    <ClInclude Include="..\icu\unicode\uset.h"/>
+    <ClInclude Include="..\icu\unicode\utf16.h"/>
+    <ClInclude Include="..\icu\unicode\utf8.h"/>
+    <ClInclude Include="..\icu\unicode\ucol.h"/>
+    <ClInclude Include="..\plugins\DOMPluginArray.h"/>
+    <ClInclude Include="..\plugins\DOMMimeType.h"/>
+    <ClInclude Include="..\plugins\DOMMimeTypeArray.h"/>
+    <ClInclude Include="..\plugins\PluginListBuilder.h"/>
+    <ClInclude Include="..\plugins\PluginView.h"/>
+    <ClInclude Include="..\plugins\DOMPlugin.h"/>
+    <ClInclude Include="..\plugins\IFrameShimSupport.h"/>
+    <ClInclude Include="..\plugins\PluginData.h"/>
+    <ClInclude Include="..\inspector\DOMEditor.h"/>
+    <ClInclude Include="..\inspector\HeapGraphSerializer.h"/>
+    <ClInclude Include="..\inspector\InspectorCanvasInstrumentation.h"/>
+    <ClInclude Include="..\inspector\InspectorDebuggerAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorWorkerAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorDatabaseAgent.h"/>
+    <ClInclude Include="..\inspector\PageRuntimeAgent.h"/>
+    <ClInclude Include="..\inspector\JavaScriptCallFrame.h"/>
+    <ClInclude Include="..\inspector\InjectedScript.h"/>
+    <ClInclude Include="..\inspector\InspectorResourceAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorIndexedDBAgent.h"/>
+    <ClInclude Include="..\inspector\ScriptProfile.h"/>
+    <ClInclude Include="..\inspector\MemoryInstrumentationImpl.h"/>
+    <ClInclude Include="..\inspector\WorkerInspectorController.h"/>
+    <ClInclude Include="..\inspector\WorkerRuntimeAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorLayerTreeAgent.h"/>
+    <ClInclude Include="..\inspector\InjectedScriptBase.h"/>
+    <ClInclude Include="..\inspector\InspectorCanvasAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorState.h"/>
+    <ClInclude Include="..\inspector\InspectorOverridesInl.h"/>
+    <ClInclude Include="..\inspector\InspectorStyleTextEditor.h"/>
+    <ClInclude Include="..\inspector\ConsoleAPITypes.h"/>
+    <ClInclude Include="..\inspector\InspectorInstrumentationInl.h"/>
+    <ClInclude Include="..\inspector\PageDebuggerAgent.h"/>
+    <ClInclude Include="..\inspector\WorkerDebuggerAgent.h"/>
+    <ClInclude Include="..\inspector\ConsoleMessage.h"/>
+    <ClInclude Include="..\inspector\InstrumentingAgents.h"/>
+    <ClInclude Include="..\inspector\InspectorFrontendHost.h"/>
+    <ClInclude Include="..\inspector\InspectorProfilerAgent.h"/>
+    <ClInclude Include="..\inspector\PageConsoleAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorHistory.h"/>
+    <ClInclude Include="..\inspector\BindingVisitors.h"/>
+    <ClInclude Include="..\inspector\InspectorOverlay.h"/>
+    <ClInclude Include="..\inspector\InspectorConsoleAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorHeapProfilerAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorTimelineAgent.h"/>
+    <ClInclude Include="..\inspector\ScriptGCEventListener.h"/>
+    <ClInclude Include="..\inspector\InspectorConsoleInstrumentation.h"/>
+    <ClInclude Include="..\inspector\InspectorDatabaseInstrumentation.h"/>
+    <ClInclude Include="..\inspector\ScriptCallFrame.h"/>
+    <ClInclude Include="..\inspector\DOMPatchSupport.h"/>
+    <ClInclude Include="..\inspector\ContentSearchUtils.h"/>
+    <ClInclude Include="..\inspector\WorkerConsoleAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorWorkerResource.h"/>
+    <ClInclude Include="..\inspector\InjectedScriptHost.h"/>
+    <ClInclude Include="..\inspector\InjectedScriptModule.h"/>
+    <ClInclude Include="..\inspector\InspectorDatabaseResource.h"/>
+    <ClInclude Include="..\inspector\InspectorPageAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorInputAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorStateClient.h"/>
+    <ClInclude Include="..\inspector\InspectorInstrumentationCustomInl.h"/>
+    <ClInclude Include="..\inspector\InspectorRuntimeAgent.h"/>
+    <ClInclude Include="..\inspector\InjectedScriptCanvasModule.h"/>
+    <ClInclude Include="..\inspector\ScriptProfileNode.h"/>
+    <ClInclude Include="..\inspector\InspectorCounters.h"/>
+    <ClInclude Include="..\inspector\NetworkResourcesData.h"/>
+    <ClInclude Include="..\inspector\TimelineRecordFactory.h"/>
+    <ClInclude Include="..\inspector\InspectorDOMDebuggerAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorApplicationCacheAgent.h"/>
+    <ClInclude Include="..\inspector\TimelineTraceEventProcessor.h"/>
+    <ClInclude Include="..\inspector\InjectedScriptManager.h"/>
+    <ClInclude Include="..\inspector\ScriptArguments.h"/>
+    <ClInclude Include="..\inspector\InspectorInstrumentation.h"/>
+    <ClInclude Include="..\inspector\InspectorFileSystemAgent.h"/>
+    <ClInclude Include="..\inspector\ScriptCallStack.h"/>
+    <ClInclude Include="..\inspector\InspectorFrontendChannel.h"/>
+    <ClInclude Include="..\inspector\InspectorStyleSheet.h"/>
+    <ClInclude Include="..\inspector\InspectorCSSAgent.h"/>
+    <ClInclude Include="..\inspector\IdentifiersFactory.h"/>
+    <ClInclude Include="..\inspector\InspectorMemoryAgent.h"/>
+    <ClInclude Include="..\inspector\InspectorDOMStorageAgent.h"/>
+    <ClInclude Include="..\editing\InsertLineBreakCommand.h"/>
+    <ClInclude Include="..\editing\InsertNodeBeforeCommand.h"/>
+    <ClInclude Include="..\editing\RemoveNodePreservingChildrenCommand.h"/>
+    <ClInclude Include="..\editing\IndentOutdentCommand.h"/>
+    <ClInclude Include="..\editing\RemoveCSSPropertyCommand.h"/>
+    <ClInclude Include="..\editing\DeleteFromTextNodeCommand.h"/>
+    <ClInclude Include="..\editing\SplitElementCommand.h"/>
+    <ClInclude Include="..\editing\ReplaceNodeWithSpanCommand.h"/>
+    <ClInclude Include="..\editing\SetSelectionCommand.h"/>
+    <ClInclude Include="..\editing\SplitTextNodeContainingElementCommand.h"/>
+    <ClInclude Include="..\editing\WrapContentsInDummySpanCommand.h"/>
+    <ClInclude Include="..\editing\InsertIntoTextNodeCommand.h"/>
+    <ClInclude Include="..\editing\RenderedPosition.h"/>
+    <ClInclude Include="..\editing\CreateLinkCommand.h"/>
+    <ClInclude Include="..\editing\RemoveFormatCommand.h"/>
+    <ClInclude Include="..\editing\ModifySelectionListLevel.h"/>
+    <ClInclude Include="..\editing\TextInsertionBaseCommand.h"/>
+    <ClInclude Include="..\editing\SpellChecker.h"/>
+    <ClInclude Include="..\editing\UndoStep.h"/>
+    <ClInclude Include="..\editing\InsertTextCommand.h"/>
+    <ClInclude Include="..\editing\UnlinkCommand.h"/>
+    <ClInclude Include="..\editing\SplitTextNodeCommand.h"/>
+    <ClInclude Include="..\editing\SpellingCorrectionCommand.h"/>
+    <ClInclude Include="..\editing\FormatBlockCommand.h"/>
+    <ClInclude Include="..\editing\InsertListCommand.h"/>
+    <ClInclude Include="..\editing\MergeIdenticalElementsCommand.h"/>
+    <ClInclude Include="..\editing\RemoveNodeCommand.h"/>
+    <ClInclude Include="..\editing\TextCheckingHelper.h"/>
+    <ClInclude Include="..\editing\BreakBlockquoteCommand.h"/>
+    <ClInclude Include="..\editing\MarkupAccumulator.h"/>
+    <ClInclude Include="..\editing\SurroundingText.h"/>
+    <ClInclude Include="..\editing\SetNodeAttributeCommand.h"/>
+    <ClInclude Include="..\editing\AppendNodeCommand.h"/>
+    <ClInclude Include="..\editing\AlternativeTextController.h"/>
+    <ClInclude Include="..\editing\ApplyStyleCommand.h"/>
+    <ClInclude Include="..\editing\InsertParagraphSeparatorCommand.h"/>
+    <ClInclude Include="..\page\Navigator.h"/>
+    <ClInclude Include="..\page\EventSource.h"/>
+    <ClInclude Include="..\page\DeviceClient.h"/>
+    <ClInclude Include="..\page\SpeechInputResultList.h"/>
+    <ClInclude Include="..\page\DOMWindowPagePopup.h"/>
+    <ClInclude Include="..\page\DOMSelection.h"/>
+    <ClInclude Include="..\page\DiagnosticLoggingKeys.h"/>
+    <ClInclude Include="..\page\SpeechInput.h"/>
+    <ClInclude Include="..\page\DOMWindowProperty.h"/>
+    <ClInclude Include="..\page\WorkerNavigator.h"/>
+    <ClInclude Include="..\page\PerformanceMeasure.h"/>
+    <ClInclude Include="..\page\Crypto.h"/>
+    <ClInclude Include="..\page\PerformanceEntry.h"/>
+    <ClInclude Include="..\page\RuntimeCSSEnabled.h"/>
+    <ClInclude Include="..\page\PopupOpeningObserver.h"/>
+    <ClInclude Include="..\page\NavigatorBase.h"/>
+    <ClInclude Include="..\page\SpeechInputClient.h"/>
+    <ClInclude Include="..\page\FrameActionScheduler.h"/>
+    <ClInclude Include="..\page\Screen.h"/>
+    <ClInclude Include="..\page\PagePopupController.h"/>
+    <ClInclude Include="..\page\ContextMenuProvider.h"/>
+    <ClInclude Include="..\page\OriginAccessEntry.h"/>
+    <ClInclude Include="..\page\DOMPoint.h"/>
+    <ClInclude Include="..\page\TouchAdjustment.h"/>
+    <ClInclude Include="..\page\LayoutMilestones.h"/>
+    <ClInclude Include="..\page\SpeechInputEvent.h"/>
+    <ClInclude Include="..\page\History.h"/>
+    <ClInclude Include="..\page\PointerLockController.h"/>
+    <ClInclude Include="..\page\PerformanceResourceTiming.h"/>
+    <ClInclude Include="..\page\PerformanceUserTiming.h"/>
+    <ClInclude Include="..\page\FrameDestructionObserver.h"/>
+    <ClInclude Include="..\page\PagePopupClient.h"/>
+    <ClInclude Include="..\page\Location.h"/>
+    <ClInclude Include="..\page\PageGroupLoadDeferrer.h"/>
+    <ClInclude Include="..\page\SuspendableTimer.h"/>
+    <ClInclude Include="..\page\BarInfo.h"/>
+    <ClInclude Include="..\page\PerformanceTiming.h"/>
+    <ClInclude Include="..\page\AutoscrollController.h"/>
+    <ClInclude Include="..\page\Performance.h"/>
+    <ClInclude Include="..\page\DeviceController.h"/>
+    <ClInclude Include="..\page\DOMTimer.h"/>
+    <ClInclude Include="..\page\SpeechInputListener.h"/>
+    <ClInclude Include="..\page\PerformanceMark.h"/>
+    <ClInclude Include="..\page\PerformanceNavigation.h"/>
+    <ClInclude Include="..\page\TouchDisambiguation.h"/>
+    <ClInclude Include="..\page\MouseEventWithHitTestResults.h"/>
+    <ClInclude Include="..\page\SpeechInputResult.h"/>
+    <ClInclude Include="..\page\animation\AnimationControllerPrivate.h"/>
+    <ClInclude Include="..\page\animation\CompositeAnimation.h"/>
+    <ClInclude Include="..\page\animation\KeyframeAnimation.h"/>
+    <ClInclude Include="..\page\animation\ImplicitAnimation.h"/>
+    <ClInclude Include="..\page\animation\AnimationBase.h"/>
+    <ClInclude Include="..\page\animation\CSSPropertyAnimation.h"/>
+    <ClInclude Include="..\page\scrolling\ScrollingConstraints.h"/>
+    <ClInclude Include="..\page\scrolling\ScrollingCoordinator.h"/>
+    <ClInclude Include="..\css\StyleInvalidationAnalysis.h"/>
+    <ClInclude Include="..\css\MediaQueryMatcher.h"/>
+    <ClInclude Include="..\css\CSSInitialValue.h"/>
+    <ClInclude Include="..\css\CSSRule.h"/>
+    <ClInclude Include="..\css\CSSGroupingRule.h"/>
+    <ClInclude Include="..\css\CSSVariableValue.h"/>
+    <ClInclude Include="..\css\CSSCanvasValue.h"/>
+    <ClInclude Include="..\css\MediaQueryListListener.h"/>
+    <ClInclude Include="..\css\StyleRuleImport.h"/>
+    <ClInclude Include="..\css\WebKitCSSMatrix.h"/>
+    <ClInclude Include="..\css\CSSParser.h"/>
+    <ClInclude Include="..\css\StyleResolver.h"/>
+    <ClInclude Include="..\css\ScopedStyleResolver.h"/>
+    <ClInclude Include="..\css\CSSParserMode.h"/>
+    <ClInclude Include="..\css\SelectorFilter.h"/>
+    <ClInclude Include="..\css\CSSToStyleMap.h"/>
+    <ClInclude Include="..\css\WebKitCSSKeyframesRule.h"/>
+    <ClInclude Include="..\css\StylePropertyShorthand.h"/>
+    <ClInclude Include="..\css\CSSFunctionValue.h"/>
+    <ClInclude Include="..\css\InspectorCSSOMWrappers.h"/>
+    <ClInclude Include="..\css\WebKitCSSKeyframeRule.h"/>
+    <ClInclude Include="..\css\CSSImportRule.h"/>
+    <ClInclude Include="..\css\CSSFontFaceSource.h"/>
+    <ClInclude Include="..\css\CSSStyleRule.h"/>
+    <ClInclude Include="..\css\MediaFeatureNames.h"/>
+    <ClInclude Include="..\css\CSSSupportsRule.h"/>
+    <ClInclude Include="..\css\CSSSelectorList.h"/>
+    <ClInclude Include="..\css\PageRuleCollector.h"/>
+    <ClInclude Include="..\css\MediaList.h"/>
+    <ClInclude Include="..\css\WebKitCSSSVGDocumentValue.h"/>
+    <ClInclude Include="..\css\CSSPageRule.h"/>
+    <ClInclude Include="..\css\SelectorChecker.h"/>
+    <ClInclude Include="..\css\DOMWindowCSS.h"/>
+    <ClInclude Include="..\css\StylePropertySerializer.h"/>
+    <ClInclude Include="..\css\StylePropertySet.h"/>
+    <ClInclude Include="..\css\CSSMediaRule.h"/>
+    <ClInclude Include="..\css\CSSSegmentedFontFace.h"/>
+    <ClInclude Include="..\css\Counter.h"/>
+    <ClInclude Include="..\css\MediaQueryExp.h"/>
+    <ClInclude Include="..\css\ViewportStyleResolver.h"/>
+    <ClInclude Include="..\css\CSSBorderImageSliceValue.h"/>
+    <ClInclude Include="..\css\CSSHostRule.h"/>
+    <ClInclude Include="..\css\CSSBorderImage.h"/>
+    <ClInclude Include="..\css\StyleMedia.h"/>
+    <ClInclude Include="..\css\FontFeatureValue.h"/>
+    <ClInclude Include="..\css\CSSStyleSheet.h"/>
+    <ClInclude Include="..\css\MediaQueryList.h"/>
+    <ClInclude Include="..\css\CSSPrimitiveValueMappings.h"/>
+    <ClInclude Include="..\css\FontLoader.h"/>
+    <ClInclude Include="..\css\WebKitCSSViewportRule.h"/>
+    <ClInclude Include="..\css\WebKitCSSShaderValue.h"/>
+    <ClInclude Include="..\css\CSSFontFaceRule.h"/>
+    <ClInclude Include="..\css\RGBColor.h"/>
+    <ClInclude Include="..\css\MediaQueryEvaluator.h"/>
+    <ClInclude Include="..\css\DocumentRuleSets.h"/>
+    <ClInclude Include="..\css\CSSUnicodeRangeValue.h"/>
+    <ClInclude Include="..\css\FontValue.h"/>
+    <ClInclude Include="..\css\CSSUnknownRule.h"/>
+    <ClInclude Include="..\css\RuleFeature.h"/>
+    <ClInclude Include="..\css\ShadowValue.h"/>
+    <ClInclude Include="..\css\CSSFontFace.h"/>
+    <ClInclude Include="..\css\RuleSet.h"/>
+    <ClInclude Include="..\css\CSSCrossfadeValue.h"/>
+    <ClInclude Include="..\css\CSSTimingFunctionValue.h"/>
+    <ClInclude Include="..\css\ElementRuleCollector.h"/>
+    <ClInclude Include="..\css\CSSFontFaceSrcValue.h"/>
+    <ClInclude Include="..\css\CSSOMUtils.h"/>
+    <ClInclude Include="..\css\CSSGradientValue.h"/>
+    <ClInclude Include="..\css\CSSRuleList.h"/>
+    <ClInclude Include="..\css\PropertySetCSSStyleDeclaration.h"/>
+    <ClInclude Include="..\css\SelectorCheckerFastPath.h"/>
+    <ClInclude Include="..\css\CSSDefaultStyleSheets.h"/>
+    <ClInclude Include="..\css\StyleSheetList.h"/>
+    <ClInclude Include="..\css\Rect.h"/>
+    <ClInclude Include="..\css\CSSFontFaceLoadEvent.h"/>
+    <ClInclude Include="..\css\StyleRule.h"/>
+    <ClInclude Include="..\css\CSSInheritedValue.h"/>
+    <ClInclude Include="..\css\StyleSheetContents.h"/>
+    <ClInclude Include="..\css\WebKitCSSRegionRule.h"/>
+    <ClInclude Include="..\css\StyleBuilder.h"/>
+    <ClInclude Include="..\css\WebKitCSSArrayFunctionValue.h"/>
+    <ClInclude Include="..\css\MediaQuery.h"/>
+    <ClInclude Include="..\css\CSSValuePool.h"/>
+    <ClInclude Include="..\css\CSSCharsetRule.h"/>
+    <ClInclude Include="..\css\WebKitCSSMixFunctionValue.h"/>
+    <ClInclude Include="..\css\StyleSheet.h"/>
+    <ClInclude Include="..\css\SiblingTraversalStrategies.h"/>
+    <ClInclude Include="..\css\CSSFontSelector.h"/>
+    <ClInclude Include="..\css\CSSAspectRatioValue.h"/>
+    <ClInclude Include="..\css\CSSCalculationValue.h"/>
+    <ClInclude Include="..\history\BackForwardClient.h"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\xml\XSLTProcessor.cpp"/>
+    <ClCompile Include="..\xml\XPathUtil.cpp"/>
+    <ClCompile Include="..\xml\XMLHttpRequestProgressEventThrottle.cpp"/>
+    <ClCompile Include="..\xml\XMLHttpRequestUpload.cpp"/>
+    <ClCompile Include="..\xml\XSLStyleSheetLibxslt.cpp"/>
+    <ClCompile Include="..\xml\XPathExpression.cpp"/>
+    <ClCompile Include="..\xml\XPathPredicate.cpp"/>
+    <ClCompile Include="..\xml\XPathParser.cpp"/>
+    <ClCompile Include="..\xml\DOMParser.cpp"/>
+    <ClCompile Include="..\xml\XSLTExtensions.cpp"/>
+    <ClCompile Include="..\xml\XMLSerializer.cpp"/>
+    <ClCompile Include="..\xml\XPathException.cpp"/>
+    <ClCompile Include="..\xml\XPathNSResolver.cpp"/>
+    <ClCompile Include="..\xml\XSLTUnicodeSort.cpp"/>
+    <ClCompile Include="..\xml\XPathNodeSet.cpp"/>
+    <ClCompile Include="..\xml\XMLHttpRequest.cpp"/>
+    <ClCompile Include="..\xml\XPathResult.cpp"/>
+    <ClCompile Include="..\xml\XSLTProcessorLibxslt.cpp"/>
+    <ClCompile Include="..\xml\XPathStep.cpp"/>
+    <ClCompile Include="..\xml\XPathPath.cpp"/>
+    <ClCompile Include="..\xml\XMLHttpRequestException.cpp"/>
+    <ClCompile Include="..\xml\NativeXPathNSResolver.cpp"/>
+    <ClCompile Include="..\xml\XMLErrors.cpp"/>
+    <ClCompile Include="..\xml\XPathFunctions.cpp"/>
+    <ClCompile Include="..\xml\XSLImportRule.cpp"/>
+    <ClCompile Include="..\xml\XPathEvaluator.cpp"/>
+    <ClCompile Include="..\xml\XPathVariableReference.cpp"/>
+    <ClCompile Include="..\xml\XMLTreeViewer.cpp"/>
+    <ClCompile Include="..\xml\XPathValue.cpp"/>
+    <ClCompile Include="..\xml\XPathExpressionNode.cpp"/>
+    <ClCompile Include="..\xml\parser\XMLDocumentParserScope.cpp"/>
+    <ClCompile Include="..\xml\parser\XMLDocumentParser.cpp"/>
+    <ClCompile Include="..\..\..\..\..\third_party\WebKit\Source\WebKit\chromium\WinPrecompile.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\fileapi\Blob.cpp"/>
+    <ClCompile Include="..\fileapi\FileException.cpp"/>
+    <ClCompile Include="..\fileapi\FileThread.cpp"/>
+    <ClCompile Include="..\fileapi\ThreadableBlobRegistry.cpp"/>
+    <ClCompile Include="..\fileapi\File.cpp"/>
+    <ClCompile Include="..\fileapi\BlobURL.cpp"/>
+    <ClCompile Include="..\fileapi\FileReaderSync.cpp"/>
+    <ClCompile Include="..\fileapi\FileList.cpp"/>
+    <ClCompile Include="..\fileapi\BlobBuilder.cpp"/>
+    <ClCompile Include="..\fileapi\FileReaderLoader.cpp"/>
+    <ClCompile Include="..\fileapi\FileReader.cpp"/>
+    <ClCompile Include="..\workers\WorkerContext.cpp"/>
+    <ClCompile Include="..\workers\WorkerLocation.cpp"/>
+    <ClCompile Include="..\workers\SharedWorkerContext.cpp"/>
+    <ClCompile Include="..\workers\AbstractWorker.cpp"/>
+    <ClCompile Include="..\workers\SharedWorkerThread.cpp"/>
+    <ClCompile Include="..\workers\WorkerMessagingProxy.cpp"/>
+    <ClCompile Include="..\workers\WorkerThread.cpp"/>
+    <ClCompile Include="..\workers\WorkerEventQueue.cpp"/>
+    <ClCompile Include="..\workers\WorkerScriptLoader.cpp"/>
+    <ClCompile Include="..\workers\Worker.cpp"/>
+    <ClCompile Include="..\workers\DedicatedWorkerThread.cpp"/>
+    <ClCompile Include="..\workers\WorkerRunLoop.cpp"/>
+    <ClCompile Include="..\workers\WorkerContextProxy.cpp"/>
+    <ClCompile Include="..\workers\DedicatedWorkerContext.cpp"/>
+    <ClCompile Include="..\workers\SharedWorker.cpp"/>
+    <ClCompile Include="..\storage\Storage.cpp"/>
+    <ClCompile Include="..\storage\StorageEvent.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityTable.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilitySlider.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityMenuListPopup.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityImageMapLink.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityARIAGridRow.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityListBoxOption.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityProgressIndicator.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityRenderObject.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilitySpinButton.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityScrollbar.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityObject.cpp"/>
+    <ClCompile Include="..\accessibility\AXObjectCache.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityMockObject.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityTableHeaderContainer.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityMenuList.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilitySVGRoot.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityList.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityTableCell.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityNodeObject.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityMenuListOption.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityMediaControls.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityTableColumn.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityListBox.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityTableRow.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityARIAGridCell.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityARIAGrid.cpp"/>
+    <ClCompile Include="..\accessibility\AccessibilityScrollView.cpp"/>
+    <ClCompile Include="..\loader\NavigationScheduler.cpp"/>
+    <ClCompile Include="..\loader\ResourceLoader.cpp"/>
+    <ClCompile Include="..\loader\NavigationAction.cpp"/>
+    <ClCompile Include="..\loader\DocumentThreadableLoader.cpp"/>
+    <ClCompile Include="..\loader\FrameLoadRequest.cpp"/>
+    <ClCompile Include="..\loader\LinkLoader.cpp"/>
+    <ClCompile Include="..\loader\SubframeLoader.cpp"/>
+    <ClCompile Include="..\loader\TextResourceDecoder.cpp"/>
+    <ClCompile Include="..\loader\HistoryController.cpp"/>
+    <ClCompile Include="..\loader\DocumentLoadTiming.cpp"/>
+    <ClCompile Include="..\loader\FormState.cpp"/>
+    <ClCompile Include="..\loader\CrossOriginPreflightResultCache.cpp"/>
+    <ClCompile Include="..\loader\MixedContentChecker.cpp"/>
+    <ClCompile Include="..\loader\EmptyClients.cpp"/>
+    <ClCompile Include="..\loader\SubstituteData.cpp"/>
+    <ClCompile Include="..\loader\ImageLoader.cpp"/>
+    <ClCompile Include="..\loader\FrameLoaderStateMachine.cpp"/>
+    <ClCompile Include="..\loader\TextTrackLoader.cpp"/>
+    <ClCompile Include="..\loader\FrameLoader.cpp"/>
+    <ClCompile Include="..\loader\PrerendererClient.cpp"/>
+    <ClCompile Include="..\loader\CrossOriginAccessControl.cpp"/>
+    <ClCompile Include="..\loader\CookieJar.cpp"/>
+    <ClCompile Include="..\loader\WorkerThreadableLoader.cpp"/>
+    <ClCompile Include="..\loader\ThreadableLoader.cpp"/>
+    <ClCompile Include="..\loader\ResourceLoadNotifier.cpp"/>
+    <ClCompile Include="..\loader\CachedMetadata.cpp"/>
+    <ClCompile Include="..\loader\Prerenderer.cpp"/>
+    <ClCompile Include="..\loader\ProgressTracker.cpp"/>
+    <ClCompile Include="..\loader\UniqueIdentifier.cpp"/>
+    <ClCompile Include="..\loader\IconController.cpp"/>
+    <ClCompile Include="..\loader\FormSubmission.cpp"/>
+    <ClCompile Include="..\loader\DocumentWriter.cpp"/>
+    <ClCompile Include="..\loader\SinkDocument.cpp"/>
+    <ClCompile Include="..\loader\DocumentLoader.cpp"/>
+    <ClCompile Include="..\loader\PingLoader.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedScript.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedFont.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedCSSStyleSheet.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedResource.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedTextTrack.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedResourceRequestInitiators.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedResourceLoader.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedShader.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedImage.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedSVGDocument.cpp"/>
+    <ClCompile Include="..\loader\cache\MemoryCache.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedResourceRequest.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedXSLStyleSheet.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedRawResource.cpp"/>
+    <ClCompile Include="..\loader\cache\CachedResourceHandle.cpp"/>
+    <ClCompile Include="..\loader\archive\MHTMLParser.cpp"/>
+    <ClCompile Include="..\loader\archive\ArchiveResource.cpp"/>
+    <ClCompile Include="..\loader\archive\MHTMLArchive.cpp"/>
+    <ClCompile Include="..\loader\archive\ArchiveResourceCollection.cpp"/>
+    <ClCompile Include="..\loader\appcache\DOMApplicationCache.cpp"/>
+    <ClCompile Include="..\rendering\ExclusionShapeInsideInfo.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\ExclusionInterval.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderHTMLCanvas.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\TextAutosizer.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\ExclusionShape.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderRubyBase.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTreeAsText.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderMultiColumnBlock.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderLayerBacking.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderFullScreen.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderQuote.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderFieldset.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderRegionSet.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderObject.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\ExclusionShapeInfo.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderLayer.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTextControlMultiLine.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderDetailsMarker.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderLazyBlock.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderThemeChromiumAndroid.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderButton.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\InlineBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderRubyText.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderMeter.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\HitTestLocation.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderFileUploadControl.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\FilterEffectRenderer.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderGeometryMap.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderEmbeddedObject.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderFrameBase.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderFrameSet.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderScrollbar.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderScrollbarPart.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\PointerEventsHitRules.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderCounter.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderVideo.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\LayoutRepainter.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderMedia.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderText.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderLayerFilterInfo.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTable.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\EllipsisBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderBlockLineLayout.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTableCaption.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderDeprecatedFlexibleBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderMultiColumnFlowThread.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\ExclusionShapeOutsideInfo.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderWidget.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderLayerCompositor.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTextControl.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderThemeChromiumDefault.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTextFragment.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderLineBoxList.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderProgress.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTableCol.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTableRow.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\AutoTableLayout.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderMultiColumnSet.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderNamedFlowThread.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\HitTestResult.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderMediaControls.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderMarquee.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderSlider.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderThemeChromiumFontProviderLinux.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderInline.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\InlineFlowBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderSearchField.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\FixedTableLayout.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\break_lines.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderRegion.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTableSection.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderImageResourceStyleImage.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderLayerModelObject.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderScrollbarTheme.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderBoxModelObject.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\ExclusionPolygon.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RootInlineBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderThemeChromiumSkia.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderApplet.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\HitTestingTransformState.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderFlexibleBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderIFrame.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\ScrollBehavior.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderRubyRun.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderImageResource.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderListItem.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderImage.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderMenuList.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderBR.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderThemeChromiumCommon.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\InlineTextBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\CounterNode.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderThemeChromiumWin.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderThemeChromiumFontProviderWin.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderBlock.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderListBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\BidiRun.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderObjectChildList.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderReplica.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTextTrackCue.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderPart.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\ImageQualityController.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTableCell.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderView.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderFlowThread.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\LayoutState.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderFrame.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderMediaControlElements.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderInputSpeech.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderReplaced.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\FlowThreadController.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderGrid.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderWordBreak.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderRuby.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\ExclusionRectangle.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderMediaControlsChromium.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTextControlSingleLine.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderCombineText.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderThemeChromiumFontProvider.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderTheme.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderArena.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\RenderListMarker.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGInlineFlowBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextMetrics.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGInlineTextBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextLayoutEngineBaseline.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextLayoutEngine.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextLayoutAttributesBuilder.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGRenderingContext.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGResourcesCache.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextLayoutEngineSpacing.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGRenderTreeAsText.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextLayoutAttributes.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextChunkBuilder.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextQuery.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextChunk.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextMetricsBuilder.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGRenderSupport.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGRootInlineBox.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGTextRunRenderingContext.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGResources.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGResourcesCycleSolver.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\svg\SVGPathData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleCachedImage.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleRareInheritedData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleGeneratedImage.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleFlexibleBoxData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\RenderStyle.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\ShadowData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleRareNonInheritedData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\FillLayer.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleBackgroundData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleMultiColData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleBoxData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleCustomFilterProgramCache.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleCachedShader.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleTransformData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleCustomFilterProgram.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleMarqueeData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\QuotesData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleGridData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleSurroundData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\NinePieceImage.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\KeyframeList.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleDeprecatedFlexibleBoxData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\ContentData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleGridItemData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleVisualData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleFilterData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\CounterDirectives.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\BasicShapes.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleCachedImageSet.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\rendering\style\StyleInheritedData.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\plugins\DOMMimeTypeArray.cpp"/>
+    <ClCompile Include="..\plugins\DOMPluginArray.cpp"/>
+    <ClCompile Include="..\plugins\DOMPlugin.cpp"/>
+    <ClCompile Include="..\plugins\DOMMimeType.cpp"/>
+    <ClCompile Include="..\plugins\IFrameShimSupport.cpp"/>
+    <ClCompile Include="..\plugins\PluginListBuilder.cpp"/>
+    <ClCompile Include="..\plugins\PluginData.cpp"/>
+    <ClCompile Include="..\inspector\DOMEditor.cpp"/>
+    <ClCompile Include="..\inspector\InjectedScriptManager.cpp"/>
+    <ClCompile Include="..\inspector\ScriptCallStack.cpp"/>
+    <ClCompile Include="..\inspector\ScriptCallFrame.cpp"/>
+    <ClCompile Include="..\inspector\ScriptProfileNode.cpp"/>
+    <ClCompile Include="..\inspector\InspectorAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorValues.cpp"/>
+    <ClCompile Include="..\inspector\ConsoleMessage.cpp"/>
+    <ClCompile Include="..\inspector\WorkerInspectorController.cpp"/>
+    <ClCompile Include="..\inspector\InspectorController.cpp"/>
+    <ClCompile Include="..\inspector\ContentSearchUtils.cpp"/>
+    <ClCompile Include="..\inspector\InspectorDOMAgent.cpp"/>
+    <ClCompile Include="..\inspector\IdentifiersFactory.cpp"/>
+    <ClCompile Include="..\inspector\InspectorCSSAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorClient.cpp"/>
+    <ClCompile Include="..\inspector\MemoryInstrumentationImpl.cpp"/>
+    <ClCompile Include="..\inspector\InspectorWorkerAgent.cpp"/>
+    <ClCompile Include="..\inspector\JavaScriptCallFrame.cpp"/>
+    <ClCompile Include="..\inspector\InspectorMemoryAgent.cpp"/>
+    <ClCompile Include="..\inspector\PageRuntimeAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorDebuggerAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorHistory.cpp"/>
+    <ClCompile Include="..\inspector\InspectorRuntimeAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorDatabaseAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorState.cpp"/>
+    <ClCompile Include="..\inspector\InspectorApplicationCacheAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorPageAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorProfilerAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorFrontendHost.cpp"/>
+    <ClCompile Include="..\inspector\InspectorLayerTreeAgent.cpp"/>
+    <ClCompile Include="..\inspector\DOMPatchSupport.cpp"/>
+    <ClCompile Include="..\inspector\InspectorCounters.cpp"/>
+    <ClCompile Include="..\inspector\InspectorBaseAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorHeapProfilerAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorOverlay.cpp"/>
+    <ClCompile Include="..\inspector\InspectorDOMDebuggerAgent.cpp"/>
+    <ClCompile Include="..\inspector\HeapGraphSerializer.cpp"/>
+    <ClCompile Include="..\inspector\InjectedScriptModule.cpp"/>
+    <ClCompile Include="..\inspector\InspectorFileSystemAgent.cpp"/>
+    <ClCompile Include="..\inspector\InjectedScript.cpp"/>
+    <ClCompile Include="..\inspector\WorkerDebuggerAgent.cpp"/>
+    <ClCompile Include="..\inspector\WorkerConsoleAgent.cpp"/>
+    <ClCompile Include="..\inspector\NetworkResourcesData.cpp"/>
+    <ClCompile Include="..\inspector\ScriptArguments.cpp"/>
+    <ClCompile Include="..\inspector\InspectorTimelineAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorCanvasAgent.cpp"/>
+    <ClCompile Include="..\inspector\PageConsoleAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorInputAgent.cpp"/>
+    <ClCompile Include="..\inspector\PageDebuggerAgent.cpp"/>
+    <ClCompile Include="..\inspector\TimelineRecordFactory.cpp"/>
+    <ClCompile Include="..\inspector\InspectorDOMStorageAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorStyleTextEditor.cpp"/>
+    <ClCompile Include="..\inspector\InspectorConsoleAgent.cpp"/>
+    <ClCompile Include="..\inspector\InstrumentingAgents.cpp"/>
+    <ClCompile Include="..\inspector\InspectorDatabaseResource.cpp"/>
+    <ClCompile Include="..\inspector\InspectorIndexedDBAgent.cpp"/>
+    <ClCompile Include="..\inspector\ScriptProfile.cpp"/>
+    <ClCompile Include="..\inspector\InjectedScriptCanvasModule.cpp"/>
+    <ClCompile Include="..\inspector\TimelineTraceEventProcessor.cpp"/>
+    <ClCompile Include="..\inspector\WorkerRuntimeAgent.cpp"/>
+    <ClCompile Include="..\inspector\InjectedScriptHost.cpp"/>
+    <ClCompile Include="..\inspector\InspectorStyleSheet.cpp"/>
+    <ClCompile Include="..\inspector\InspectorResourceAgent.cpp"/>
+    <ClCompile Include="..\inspector\InspectorInstrumentation.cpp"/>
+    <ClCompile Include="..\inspector\InjectedScriptBase.cpp"/>
+    <ClCompile Include="..\editing\InsertLineBreakCommand.cpp"/>
+    <ClCompile Include="..\editing\ReplaceNodeWithSpanCommand.cpp"/>
+    <ClCompile Include="..\editing\EditCommand.cpp"/>
+    <ClCompile Include="..\editing\SpellingCorrectionCommand.cpp"/>
+    <ClCompile Include="..\editing\RemoveFormatCommand.cpp"/>
+    <ClCompile Include="..\editing\RemoveNodePreservingChildrenCommand.cpp"/>
+    <ClCompile Include="..\editing\SplitTextNodeCommand.cpp"/>
+    <ClCompile Include="..\editing\InsertParagraphSeparatorCommand.cpp"/>
+    <ClCompile Include="..\editing\AppendNodeCommand.cpp"/>
+    <ClCompile Include="..\editing\ReplaceSelectionCommand.cpp"/>
+    <ClCompile Include="..\editing\AlternativeTextController.cpp"/>
+    <ClCompile Include="..\editing\SetSelectionCommand.cpp"/>
+    <ClCompile Include="..\editing\ApplyStyleCommand.cpp"/>
+    <ClCompile Include="..\editing\MergeIdenticalElementsCommand.cpp"/>
+    <ClCompile Include="..\editing\SetNodeAttributeCommand.cpp"/>
+    <ClCompile Include="..\editing\VisiblePosition.cpp"/>
+    <ClCompile Include="..\editing\SplitElementCommand.cpp"/>
+    <ClCompile Include="..\editing\SmartReplaceICU.cpp"/>
+    <ClCompile Include="..\editing\DeleteSelectionCommand.cpp"/>
+    <ClCompile Include="..\editing\SpellChecker.cpp"/>
+    <ClCompile Include="..\editing\InsertListCommand.cpp"/>
+    <ClCompile Include="..\editing\EditorCommand.cpp"/>
+    <ClCompile Include="..\editing\DictationAlternative.cpp"/>
+    <ClCompile Include="..\editing\MarkupAccumulator.cpp"/>
+    <ClCompile Include="..\editing\Editor.cpp"/>
+    <ClCompile Include="..\editing\HTMLInterchange.cpp"/>
+    <ClCompile Include="..\editing\EditingStyle.cpp"/>
+    <ClCompile Include="..\editing\IndentOutdentCommand.cpp"/>
+    <ClCompile Include="..\editing\SurroundingText.cpp"/>
+    <ClCompile Include="..\editing\RemoveNodeCommand.cpp"/>
+    <ClCompile Include="..\editing\InsertIntoTextNodeCommand.cpp"/>
+    <ClCompile Include="..\editing\CompositeEditCommand.cpp"/>
+    <ClCompile Include="..\editing\RemoveCSSPropertyCommand.cpp"/>
+    <ClCompile Include="..\editing\WrapContentsInDummySpanCommand.cpp"/>
+    <ClCompile Include="..\editing\TextCheckingHelper.cpp"/>
+    <ClCompile Include="..\editing\InsertNodeBeforeCommand.cpp"/>
+    <ClCompile Include="..\editing\SplitTextNodeContainingElementCommand.cpp"/>
+    <ClCompile Include="..\editing\CreateLinkCommand.cpp"/>
+    <ClCompile Include="..\editing\RenderedPosition.cpp"/>
+    <ClCompile Include="..\editing\BreakBlockquoteCommand.cpp"/>
+    <ClCompile Include="..\editing\DictationCommand.cpp"/>
+    <ClCompile Include="..\editing\ApplyBlockElementCommand.cpp"/>
+    <ClCompile Include="..\editing\UnlinkCommand.cpp"/>
+    <ClCompile Include="..\editing\SimplifyMarkupCommand.cpp"/>
+    <ClCompile Include="..\editing\TypingCommand.cpp"/>
+    <ClCompile Include="..\editing\FrameSelection.cpp"/>
+    <ClCompile Include="..\editing\MoveSelectionCommand.cpp"/>
+    <ClCompile Include="..\editing\VisibleSelection.cpp"/>
+    <ClCompile Include="..\editing\VisibleUnits.cpp"/>
+    <ClCompile Include="..\editing\markup.cpp"/>
+    <ClCompile Include="..\editing\InsertTextCommand.cpp"/>
+    <ClCompile Include="..\editing\htmlediting.cpp"/>
+    <ClCompile Include="..\editing\FormatBlockCommand.cpp"/>
+    <ClCompile Include="..\editing\TextInsertionBaseCommand.cpp"/>
+    <ClCompile Include="..\editing\ModifySelectionListLevel.cpp"/>
+    <ClCompile Include="..\editing\TextIterator.cpp"/>
+    <ClCompile Include="..\editing\DeleteFromTextNodeCommand.cpp"/>
+    <ClCompile Include="..\editing\SmartReplaceCF.cpp">
+      <ExcludedFromBuild>true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\editing\chromium\EditorChromium.cpp"/>
+    <ClCompile Include="..\editing\chromium\FrameSelectionChromium.cpp"/>
+    <ClCompile Include="..\page\Performance.cpp"/>
+    <ClCompile Include="..\page\PagePopupController.cpp"/>
+    <ClCompile Include="..\page\PageSerializer.cpp"/>
+    <ClCompile Include="..\page\UserContentURLPattern.cpp"/>
+    <ClCompile Include="..\page\TouchAdjustment.cpp"/>
+    <ClCompile Include="..\page\Page.cpp"/>
+    <ClCompile Include="..\page\SecurityPolicy.cpp"/>
+    <ClCompile Include="..\page\EventHandler.cpp"/>
+    <ClCompile Include="..\page\PagePopupClient.cpp"/>
+    <ClCompile Include="..\page\PageVisibilityState.cpp"/>
+    <ClCompile Include="..\page\SpeechInput.cpp"/>
+    <ClCompile Include="..\page\SpatialNavigation.cpp"/>
+    <ClCompile Include="..\page\History.cpp"/>
+    <ClCompile Include="..\page\DOMTimer.cpp"/>
+    <ClCompile Include="..\page\FocusController.cpp"/>
+    <ClCompile Include="..\page\ContentSecurityPolicy.cpp"/>
+    <ClCompile Include="..\page\Chrome.cpp"/>
+    <ClCompile Include="..\page\SecurityOrigin.cpp"/>
+    <ClCompile Include="..\page\DOMWindowPagePopup.cpp"/>
+    <ClCompile Include="..\page\DOMWindow.cpp"/>
+    <ClCompile Include="..\page\MemoryInfo.cpp"/>
+    <ClCompile Include="..\page\Frame.cpp"/>
+    <ClCompile Include="..\page\BarInfo.cpp"/>
+    <ClCompile Include="..\page\DragController.cpp"/>
+    <ClCompile Include="..\page\FrameTree.cpp"/>
+    <ClCompile Include="..\page\PageGroup.cpp"/>
+    <ClCompile Include="..\page\EventSource.cpp"/>
+    <ClCompile Include="..\page\TouchDisambiguation.cpp"/>
+    <ClCompile Include="..\page\PerformanceNavigation.cpp"/>
+    <ClCompile Include="..\page\FrameActionScheduler.cpp"/>
+    <ClCompile Include="..\page\WindowFocusAllowedIndicator.cpp"/>
+    <ClCompile Include="..\page\OriginAccessEntry.cpp"/>
+    <ClCompile Include="..\page\RuntimeEnabledFeaturesCustom.cpp"/>
+    <ClCompile Include="..\page\DOMSecurityPolicy.cpp"/>
+    <ClCompile Include="..\page\SpeechInputResult.cpp"/>
+    <ClCompile Include="..\page\GroupSettings.cpp"/>
+    <ClCompile Include="..\page\SpeechInputEvent.cpp"/>
+    <ClCompile Include="..\page\FrameDestructionObserver.cpp"/>
+    <ClCompile Include="..\page\PerformanceUserTiming.cpp"/>
+    <ClCompile Include="..\page\Location.cpp"/>
+    <ClCompile Include="..\page\MouseEventWithHitTestResults.cpp"/>
+    <ClCompile Include="..\page\PerformanceTiming.cpp"/>
+    <ClCompile Include="..\page\SpeechInputResultList.cpp"/>
+    <ClCompile Include="..\page\Screen.cpp"/>
+    <ClCompile Include="..\page\PerformanceEntry.cpp"/>
+    <ClCompile Include="..\page\Console.cpp"/>
+    <ClCompile Include="..\page\AutoscrollController.cpp"/>
+    <ClCompile Include="..\page\PageGroupLoadDeferrer.cpp"/>
+    <ClCompile Include="..\page\Navigator.cpp"/>
+    <ClCompile Include="..\page\PrintContext.cpp"/>
+    <ClCompile Include="..\page\CaptionUserPreferences.cpp"/>
+    <ClCompile Include="..\page\PerformanceResourceTiming.cpp"/>
+    <ClCompile Include="..\page\PageConsole.cpp"/>
+    <ClCompile Include="..\page\FrameView.cpp"/>
+    <ClCompile Include="..\page\DOMSelection.cpp"/>
+    <ClCompile Include="..\page\UseCounter.cpp"/>
+    <ClCompile Include="..\page\ContextMenuController.cpp"/>
+    <ClCompile Include="..\page\DOMWindowProperty.cpp"/>
+    <ClCompile Include="..\page\WindowFeatures.cpp"/>
+    <ClCompile Include="..\page\DiagnosticLoggingKeys.cpp"/>
+    <ClCompile Include="..\page\PointerLockController.cpp"/>
+    <ClCompile Include="..\page\Crypto.cpp"/>
+    <ClCompile Include="..\page\SuspendableTimer.cpp"/>
+    <ClCompile Include="..\page\NavigatorBase.cpp"/>
+    <ClCompile Include="..\page\RuntimeCSSEnabled.cpp"/>
+    <ClCompile Include="..\page\DeviceController.cpp"/>
+    <ClCompile Include="..\page\Settings.cpp"/>
+    <ClCompile Include="..\page\WorkerNavigator.cpp"/>
+    <ClCompile Include="..\page\animation\AnimationBase.cpp"/>
+    <ClCompile Include="..\page\animation\CSSPropertyAnimation.cpp"/>
+    <ClCompile Include="..\page\animation\CompositeAnimation.cpp"/>
+    <ClCompile Include="..\page\animation\ImplicitAnimation.cpp"/>
+    <ClCompile Include="..\page\animation\AnimationController.cpp"/>
+    <ClCompile Include="..\page\animation\KeyframeAnimation.cpp"/>
+    <ClCompile Include="..\page\scrolling\ScrollingCoordinator.cpp"/>
+    <ClCompile Include="..\page\scrolling\ScrollingConstraints.cpp"/>
+    <ClCompile Include="..\css\CSSCanvasValue.cpp"/>
+    <ClCompile Include="..\css\SelectorCheckerFastPath.cpp"/>
+    <ClCompile Include="..\css\CSSCharsetRule.cpp"/>
+    <ClCompile Include="..\css\CSSSupportsRule.cpp"/>
+    <ClCompile Include="..\css\CSSBorderImage.cpp"/>
+    <ClCompile Include="..\css\StyleSheet.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSFilterValue.cpp"/>
+    <ClCompile Include="..\css\CSSInitialValue.cpp"/>
+    <ClCompile Include="..\css\CSSOMUtils.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSRegionRule.cpp"/>
+    <ClCompile Include="..\css\CSSCalculationValue.cpp"/>
+    <ClCompile Include="..\css\FontLoader.cpp"/>
+    <ClCompile Include="..\css\CSSValuePool.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSShaderValue.cpp"/>
+    <ClCompile Include="..\css\PropertySetCSSStyleDeclaration.cpp"/>
+    <ClCompile Include="..\css\InspectorCSSOMWrappers.cpp"/>
+    <ClCompile Include="..\css\CSSBasicShapes.cpp"/>
+    <ClCompile Include="..\css\StyleBuilder.cpp"/>
+    <ClCompile Include="..\css\CSSSegmentedFontFace.cpp"/>
+    <ClCompile Include="..\css\CSSFontFaceLoadEvent.cpp"/>
+    <ClCompile Include="..\css\CSSFontFaceSrcValue.cpp"/>
+    <ClCompile Include="..\css\CSSFontFaceSource.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSKeyframeRule.cpp"/>
+    <ClCompile Include="..\css\FontValue.cpp"/>
+    <ClCompile Include="..\css\CSSFontFace.cpp"/>
+    <ClCompile Include="..\css\MediaQueryExp.cpp"/>
+    <ClCompile Include="..\css\ElementRuleCollector.cpp"/>
+    <ClCompile Include="..\css\CSSParserValues.cpp"/>
+    <ClCompile Include="..\css\StyleRuleImport.cpp"/>
+    <ClCompile Include="..\css\CSSParser.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSArrayFunctionValue.cpp"/>
+    <ClCompile Include="..\css\CSSReflectValue.cpp"/>
+    <ClCompile Include="..\css\CSSStyleSheet.cpp"/>
+    <ClCompile Include="..\css\CSSGradientValue.cpp"/>
+    <ClCompile Include="..\css\CSSHostRule.cpp"/>
+    <ClCompile Include="..\css\CSSTimingFunctionValue.cpp"/>
+    <ClCompile Include="..\css\CSSFunctionValue.cpp"/>
+    <ClCompile Include="..\css\ViewportStyleResolver.cpp"/>
+    <ClCompile Include="..\css\StylePropertySet.cpp"/>
+    <ClCompile Include="..\css\CSSUnicodeRangeValue.cpp"/>
+    <ClCompile Include="..\css\CSSPrimitiveValue.cpp"/>
+    <ClCompile Include="..\css\MediaQueryEvaluator.cpp"/>
+    <ClCompile Include="..\css\LengthFunctions.cpp"/>
+    <ClCompile Include="..\css\SVGCSSComputedStyleDeclaration.cpp"/>
+    <ClCompile Include="..\css\CSSPropertySourceData.cpp"/>
+    <ClCompile Include="..\css\PageRuleCollector.cpp"/>
+    <ClCompile Include="..\css\CSSLineBoxContainValue.cpp"/>
+    <ClCompile Include="..\css\StyleResolver.cpp"/>
+    <ClCompile Include="..\css\CSSImageValue.cpp"/>
+    <ClCompile Include="..\css\CSSAspectRatioValue.cpp"/>
+    <ClCompile Include="..\css\StyleSheetList.cpp"/>
+    <ClCompile Include="..\css\CSSToStyleMap.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSKeyframesRule.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSViewportRule.cpp"/>
+    <ClCompile Include="..\css\CSSProperty.cpp"/>
+    <ClCompile Include="..\css\StyleMedia.cpp"/>
+    <ClCompile Include="..\css\StyleSheetContents.cpp"/>
+    <ClCompile Include="..\css\StylePropertyShorthand.cpp"/>
+    <ClCompile Include="..\css\CSSBorderImageSliceValue.cpp"/>
+    <ClCompile Include="..\css\CSSImportRule.cpp"/>
+    <ClCompile Include="..\css\CSSFontFaceRule.cpp"/>
+    <ClCompile Include="..\css\CSSFontSelector.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSTransformValue.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSMixFunctionValue.cpp"/>
+    <ClCompile Include="..\css\BasicShapeFunctions.cpp"/>
+    <ClCompile Include="..\css\StyleInvalidationAnalysis.cpp"/>
+    <ClCompile Include="..\css\CSSCrossfadeValue.cpp"/>
+    <ClCompile Include="..\css\CSSValueList.cpp"/>
+    <ClCompile Include="..\css\FontFeatureValue.cpp"/>
+    <ClCompile Include="..\css\CSSRuleList.cpp"/>
+    <ClCompile Include="..\css\SelectorFilter.cpp"/>
+    <ClCompile Include="..\css\RuleFeature.cpp"/>
+    <ClCompile Include="..\css\MediaQueryListListener.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSFilterRule.cpp"/>
+    <ClCompile Include="..\css\MediaQueryList.cpp"/>
+    <ClCompile Include="..\css\DOMWindowCSS.cpp"/>
+    <ClCompile Include="..\css\CSSGroupingRule.cpp"/>
+    <ClCompile Include="..\css\CSSImageSetValue.cpp"/>
+    <ClCompile Include="..\css\CSSSelector.cpp"/>
+    <ClCompile Include="..\css\StyleRule.cpp"/>
+    <ClCompile Include="..\css\CSSImageGeneratorValue.cpp"/>
+    <ClCompile Include="..\css\StylePropertySerializer.cpp"/>
+    <ClCompile Include="..\css\MediaList.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSMatrix.cpp"/>
+    <ClCompile Include="..\css\CSSStyleRule.cpp"/>
+    <ClCompile Include="..\css\CSSDefaultStyleSheets.cpp"/>
+    <ClCompile Include="..\css\CSSSelectorList.cpp"/>
+    <ClCompile Include="..\css\SelectorChecker.cpp"/>
+    <ClCompile Include="..\css\ScopedStyleResolver.cpp"/>
+    <ClCompile Include="..\css\CSSPageRule.cpp"/>
+    <ClCompile Include="..\css\CSSValue.cpp"/>
+    <ClCompile Include="..\css\RGBColor.cpp"/>
+    <ClCompile Include="..\css\CSSCursorImageValue.cpp"/>
+    <ClCompile Include="..\css\SVGCSSParser.cpp"/>
+    <ClCompile Include="..\css\RuleSet.cpp"/>
+    <ClCompile Include="..\css\CSSComputedStyleDeclaration.cpp"/>
+    <ClCompile Include="..\css\ShadowValue.cpp"/>
+    <ClCompile Include="..\css\CSSInheritedValue.cpp"/>
+    <ClCompile Include="..\css\CSSRule.cpp"/>
+    <ClCompile Include="..\css\MediaFeatureNames.cpp"/>
+    <ClCompile Include="..\css\DocumentRuleSets.cpp"/>
+    <ClCompile Include="..\css\CSSMediaRule.cpp"/>
+    <ClCompile Include="..\css\MediaQuery.cpp"/>
+    <ClCompile Include="..\css\SVGCSSStyleSelector.cpp"/>
+    <ClCompile Include="..\css\WebKitCSSSVGDocumentValue.cpp"/>
+    <ClCompile Include="..\css\MediaQueryMatcher.cpp"/>
+    <ClCompile Include="..\history\HistoryItem.cpp"/>
+    <ClCompile Include="..\history\BackForwardController.cpp"/>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="webcore_prerequisites.vcxproj">
+      <Project>{427EDEC2-5DB7-540B-0E1A-194673AEF36A}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets"/>
+  <ImportGroup Label="ExtensionTargets"/>
+</Project>
