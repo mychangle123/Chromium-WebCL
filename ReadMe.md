@@ -119,3 +119,6 @@ In Chromium/src/build folder.
 Set the "Chrome.proj" as Startup Project. And then build. 
 This can take from 10 minutes to 2 hours. More likely 1 hours.
 
+* **Run the Test**<br/>
+Run "test\_case\webcl\example2.html", note that we only support this example in opencl\_with\_sandbox branch.
+
