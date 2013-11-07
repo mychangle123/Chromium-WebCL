@@ -20,22 +20,17 @@
  * PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY
  * OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
- * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE. 
+ * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
 #include "config.h"
 
 #include "core/platform/graphics/ANGLEWebKitBridge.h"
-#include <wtf/OwnArrayPtr.h>
+#include "wtf/OwnArrayPtr.h"
 
 namespace WebCore {
 
-// Temporary typedef to support an incompatible change in the ANGLE API.
-#if !defined(ANGLE_SH_VERSION) || ANGLE_SH_VERSION < 108
-typedef int ANGLEGetInfoType;
-#else
 typedef size_t ANGLEGetInfoType;
-#endif
 
 inline static ANGLEGetInfoType getValidationResultValue(const ShHandle compiler, ShShaderInfo shaderInfo)
 {
@@ -73,18 +68,29 @@ static bool getSymbolInfo(ShHandle compiler, ShShaderInfo symbolType, Vector<ANG
     // The maximum allowed symbol name length is 256 characters.
     Vector<char, 256> nameBuffer(maxNameLength);
     Vector<char, 256> mappedNameBuffer(maxMappedNameLength);
-    
+
     for (ANGLEGetInfoType i = 0; i < numSymbols; ++i) {
         ANGLEShaderSymbol symbol;
         ANGLEGetInfoType nameLength = 0;
+		ShPrecisionType precision = SH_PRECISION_UNDEFINED;
+		int staticUse = 0;
+
         switch (symbolType) {
         case SH_ACTIVE_ATTRIBUTES:
             symbol.symbolType = SHADER_SYMBOL_TYPE_ATTRIBUTE;
-            ShGetActiveAttrib(compiler, i, &nameLength, &symbol.size, &symbol.dataType, nameBuffer.data(), mappedNameBuffer.data());
+#if ANGLE_SH_VERSION >= 112
+            ShGetVariableInfo(compiler, symbolType, i, &nameLength, &symbol.size, &symbol.dataType, &precision, &staticUse, nameBuffer.data(), mappedNameBuffer.data());
+#else
+            ShGetVariableInfo(compiler, symbolType, i, &nameLength, &symbol.size, &symbol.dataType, &symbol.precision, nameBuffer.data(), mappedNameBuffer.data());
+#endif
             break;
         case SH_ACTIVE_UNIFORMS:
             symbol.symbolType = SHADER_SYMBOL_TYPE_UNIFORM;
-            ShGetActiveUniform(compiler, i, &nameLength, &symbol.size, &symbol.dataType, nameBuffer.data(), mappedNameBuffer.data());
+#if ANGLE_SH_VERSION >= 112
+            ShGetVariableInfo(compiler, symbolType, i, &nameLength, &symbol.size, &symbol.dataType, &precision, &staticUse, nameBuffer.data(), mappedNameBuffer.data());
+#else
+            ShGetVariableInfo(compiler, symbolType, i, &nameLength, &symbol.size, &symbol.dataType, &symbol.precision, nameBuffer.data(), mappedNameBuffer.data());
+#endif
             break;
         default:
             ASSERT_NOT_REACHED();
@@ -92,7 +98,7 @@ static bool getSymbolInfo(ShHandle compiler, ShShaderInfo symbolType, Vector<ANG
         }
         if (!nameLength)
             return false;
-        
+
         // The ShGetActive* calls above are guaranteed to produce null-terminated strings for
         // nameBuffer and mappedNameBuffer. Also, the character set for symbol names
         // is a subset of Latin-1 as specified by the OpenGL ES Shading Language, Section 3.1 and
@@ -100,7 +106,7 @@ static bool getSymbolInfo(ShHandle compiler, ShShaderInfo symbolType, Vector<ANG
 
         String name = String(nameBuffer.data());
         String mappedName = String(mappedNameBuffer.data());
-        
+
         // ANGLE returns array names in the format "array[0]".
         // The only way to know if a symbol is an array is to check if it ends with "[0]".
         // We can't check the size because regular symbols and arrays of length 1 both have a size of 1.
@@ -114,7 +120,7 @@ static bool getSymbolInfo(ShHandle compiler, ShShaderInfo symbolType, Vector<ANG
         symbol.name = name;
         symbol.mappedName = mappedName;
         symbols.append(symbol);
-    
+
         if (symbol.isArray) {
             // Add symbols for each array element.
             symbol.isArray = false;
@@ -156,12 +162,12 @@ void ANGLEWebKitBridge::cleanupCompilers()
 
     builtCompilers = false;
 }
-    
+
 void ANGLEWebKitBridge::setResources(ShBuiltInResources resources)
 {
     // Resources are (possibly) changing - cleanup compilers if we had them already
     cleanupCompilers();
-    
+
     m_resources = resources;
 }
 
@@ -177,7 +183,7 @@ bool ANGLEWebKitBridge::compileShaderSource(const char* shaderSource, ANGLEShade
 
         builtCompilers = true;
     }
-    
+
     ShHandle compiler;
 
     if (shaderType == SHADER_TYPE_VERTEX)
@@ -187,7 +193,11 @@ bool ANGLEWebKitBridge::compileShaderSource(const char* shaderSource, ANGLEShade
 
     const char* const shaderSourceStrings[] = { shaderSource };
 
+#if ANGLE_SH_VERSION >= 111
+    bool validateSuccess = ShCompile(compiler, shaderSourceStrings, 1, SH_OBJECT_CODE | SH_VARIABLES | extraCompileOptions);
+#else
     bool validateSuccess = ShCompile(compiler, shaderSourceStrings, 1, SH_OBJECT_CODE | SH_ATTRIBUTES_UNIFORMS | extraCompileOptions);
+#endif
     if (!validateSuccess) {
         int logSize = getValidationResultValue(compiler, SH_INFO_LOG_LENGTH);
         if (logSize > 1) {
@@ -208,7 +218,7 @@ bool ANGLEWebKitBridge::compileShaderSource(const char* shaderSource, ANGLEShade
         ShGetObjectCode(compiler, translationBuffer.get());
         translatedShaderSource = translationBuffer.get();
     }
-    
+
     if (!getSymbolInfo(compiler, SH_ACTIVE_ATTRIBUTES, symbols))
         return false;
     if (!getSymbolInfo(compiler, SH_ACTIVE_UNIFORMS, symbols))

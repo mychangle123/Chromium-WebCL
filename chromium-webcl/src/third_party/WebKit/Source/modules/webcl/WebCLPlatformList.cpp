@@ -49,6 +49,14 @@ void setWebCLChannelHost(content::GpuChannelHost* channel_webcl)
     webcl_##func = input;                                                    \
   }
 
+//ScalableVision begin
+WEBCL_LOAD_FUNCTION(clCreateFromGLBuffer)
+WEBCL_LOAD_FUNCTION(clCreateFromGLTexture)
+WEBCL_LOAD_FUNCTION(clEnqueueAcquireGLObjects)
+WEBCL_LOAD_FUNCTION(clEnqueueReleaseGLObjects)
+//ScalableVision end
+
+
 WEBCL_LOAD_FUNCTION(clGetPlatformIDs                 )
 WEBCL_LOAD_FUNCTION(clGetPlatformInfo                )
 WEBCL_LOAD_FUNCTION(clGetDeviceIDs                   )

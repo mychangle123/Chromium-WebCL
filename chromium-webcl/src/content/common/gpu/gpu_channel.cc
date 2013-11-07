@@ -7,6 +7,7 @@
 #endif
 
 #include "content/common/gpu/gpu_channel.h"
+#include "sv_cl_gl.h"
 
 #include <queue>
 #include <vector>
@@ -29,6 +30,7 @@
 #include "gpu/command_buffer/service/gpu_scheduler.h"
 #include "gpu/command_buffer/service/image_manager.h"
 #include "gpu/command_buffer/service/mailbox_manager.h"
+#include "gpu/command_buffer/service/buffer_manager.h"
 #include "ipc/ipc_channel.h"
 #include "ipc/ipc_channel_proxy.h"
 #include "ui/gl/gl_context.h"
@@ -948,6 +950,13 @@ bool GpuChannel::OnControlMessageReceived(const IPC::Message& msg) {
 	IPC_MESSAGE_HANDLER(OpenCLChannelMsg_EnqueueReadBuffer,
                                     OnCallclEnqueueReadBuffer)
 	IPC_MESSAGE_HANDLER(OpenCLChannelMsg_EnqueueNDRangeKernel, OnCallclEnqueueNDRangeKernel);
+
+	IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CreateFromGLBuffer, OnCallclCreateFromGLBuffer);
+	IPC_MESSAGE_HANDLER(OpenCLChannelMsg_CreateFromGLTexture, OnCallclCreateFromGLTexture);
+	IPC_MESSAGE_HANDLER(OpenCLChannelMsg_EnqueueAcquireGLObjects, OnCallclEnqueueAcquireGLObjects);
+	IPC_MESSAGE_HANDLER(OpenCLChannelMsg_EnqueueReleaseGLObjects, OnCallclEnqueueReleaseGLObjects);
+
+
     // Adding OK.
 #if defined(OS_ANDROID)
     IPC_MESSAGE_HANDLER(GpuChannelMsg_RegisterStreamTextureProxy,
@@ -972,6 +981,8 @@ void GpuChannel::HandleMessage() {
   bool should_fast_track_ack = false;
   IPC::Message* m = deferred_messages_.front();
   GpuCommandBufferStub* stub = stubs_.Lookup(m->routing_id());
+  if (stub)
+	current_stub_ = stub;
 
   do {
     if (stub) {
@@ -1440,6 +1451,7 @@ void GpuChannel::OnCallclCreateContext(
   }
 
   // Call the OpenCL API.
+  /*
   context_ret = clCreateContext(
                     properties,
                     num_devices,
@@ -1447,6 +1459,27 @@ void GpuChannel::OnCallclCreateContext(
                     pfn_notify,
                     user_data,
                     errcode_ret_inter);
+  */
+
+  	cl_uint numPlatforms;	//the NO. of platforms
+	cl_platform_id platform = NULL;	//the chosen platform
+	cl_int	status = clGetPlatformIDs(0, NULL, &numPlatforms);
+	if (status != CL_SUCCESS)
+	{
+		//cout << "Error: Getting platforms!" << endl;
+		return;
+	}
+
+	/*For clarity, choose the first available platform. */
+	if(numPlatforms > 0)
+	{
+		cl_platform_id* platforms = (cl_platform_id* )malloc(numPlatforms* sizeof(cl_platform_id));
+		status = clGetPlatformIDs(numPlatforms, platforms, NULL);
+		platform = platforms[0];
+		free(platforms);
+	}
+
+  *errcode_ret = sv_createSharedCLContext(platform, &context_ret);
 
   if (!property_list.empty())
     delete[] properties;
@@ -4314,9 +4347,6 @@ void GpuChannel::OnCallclEnqueueNDRangeKernel (const std::vector<cl_point>& cmdq
 
   if (num_events_in_wait_list > 0)
     delete[] event_wait_list;
-
-  //if ((size_t) -1 != *clevent_ret)
-  //  *clevent_ret = (cl_point) event_ret;
 }
 
 void GpuChannel::OnCallclEnqueueTask (cl_point point_command_queue, cl_point point_kernel, 
@@ -4453,4 +4483,68 @@ void GpuChannel::OnCallclEnqueueBarrierWithWaitList(
   if ((size_t) -1 != *point_out_val)
     *point_out_val = (cl_point) event_ret;
 }
+
+//ScalableVision
+
+  void GpuChannel::OnCallclCreateFromGLBuffer(
+                            cl_point context,
+                            cl_uint flags,
+                            cl_uint bufobj,
+                            cl_int*  errcode_ret,
+				cl_point* ret) {
+					
+		gpu::gles2::Buffer *buffer =
+		this->current_stub_->context_group()->buffer_manager()->GetBuffer(bufobj);
+		if (! buffer) {
+			*errcode_ret = 9999;
+			*ret = NULL;
+		}
+		unsigned int server_id = buffer->service_id();
+
+		*ret = (cl_point)sv_clCreateFromGLBuffer((cl_context)context, (cl_mem_flags)flags, (cl_GLuint)server_id, errcode_ret);
+  }
+
+
+  void GpuChannel::OnCallclCreateFromGLTexture(
+							cl_point       context ,
+							cl_uint     flags ,
+							cl_uint        target ,
+							cl_int         miplevel ,
+							cl_uint        texture ,
+							cl_int*         errcode_ret ,
+							cl_point*  func_ret 
+							) 
+  {
+	  *func_ret = (cl_point)sv_clCreateFromGLTexture((cl_context)context, (cl_mem_flags)flags, (cl_GLenum)target, miplevel, (cl_GLuint)texture, errcode_ret);
+  }
+
+  void GpuChannel::OnCallclEnqueueAcquireGLObjects(
+							cl_point cmdqueue,
+							std::vector<cl_point> mem_objects,
+							std::vector<cl_point> event_wait_list,
+							cl_point* event_ret,
+							cl_int* func_ret
+							)
+  {
+	  *func_ret = sv_clEnqueueAcquireGLObjects((cl_command_queue)cmdqueue,
+		  mem_objects.size(), mem_objects.size() ? (cl_mem*)&mem_objects[0] : NULL,
+		  event_wait_list.size(), event_wait_list.size() ? (cl_event*)&event_wait_list[0] : NULL,
+		  (cl_event*)event_ret);
+  }
+
+  void GpuChannel::OnCallclEnqueueReleaseGLObjects(
+							cl_point cmdqueue,
+							std::vector<cl_point> mem_objects,
+							std::vector<cl_point> event_wait_list,
+							cl_point* event_ret,
+							cl_int* func_ret
+							)
+  {
+	  *func_ret = sv_clEnqueueReleaseGLObjects((cl_command_queue)cmdqueue,
+		  mem_objects.size(), mem_objects.size() ? (cl_mem*)&mem_objects[0] : NULL,
+		  event_wait_list.size(), event_wait_list.size() ? (cl_event*)&event_wait_list[0] : NULL,
+		  (cl_event*)event_ret);
+  }
+
+
 }  // namespace content

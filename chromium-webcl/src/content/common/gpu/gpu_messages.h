@@ -1684,3 +1684,35 @@ IPC_SYNC_MESSAGE_CONTROL4_3(OpenCLChannelMsg_GetEventProfilingInfo_cl_ulong,
                             cl_ulong,
                             size_t,
                             cl_int)
+
+//ScalableVision	
+
+IPC_SYNC_MESSAGE_CONTROL3_2(OpenCLChannelMsg_CreateFromGLBuffer,
+                            cl_point, // context
+                            cl_uint, // flags
+                            cl_uint, // bufobj
+                            cl_int,  // errcode_ret
+							cl_point) // ret
+
+IPC_SYNC_MESSAGE_CONTROL5_2(OpenCLChannelMsg_CreateFromGLTexture,
+							cl_point      /* context */,
+							cl_uint    /* flags */,
+							cl_uint       /* target */,
+							cl_GLint        /* miplevel */,
+							cl_GLuint       /* texture */,
+							cl_int        /* errcode_ret */,
+							cl_point) // func ret
+
+IPC_SYNC_MESSAGE_CONTROL3_2(OpenCLChannelMsg_EnqueueAcquireGLObjects,
+	cl_point, // cmdqueue
+	std::vector<cl_point>, // mem_objects
+	std::vector<cl_point>, // event_wait_list
+	cl_point, // event ret
+	cl_int) // func ret
+
+IPC_SYNC_MESSAGE_CONTROL3_2(OpenCLChannelMsg_EnqueueReleaseGLObjects,
+	cl_point, // cmdqueue
+	std::vector<cl_point>, // mem_objects
+	std::vector<cl_point>, // event_wait_list
+	cl_point, // event ret
+	cl_int) // func ret

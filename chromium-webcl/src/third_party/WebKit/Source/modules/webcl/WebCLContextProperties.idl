@@ -34,6 +34,7 @@
 		attribute WebCLDeviceList devices; // Default: let the implementation decide
 		attribute unsigned long deviceType; // Default: WebCL.DEVICE_TYPE_DEFAULT
 		attribute WebGLRenderingContext sharedWebGLContext; // WebGL context to be shared with WebCL
+		attribute unsigned long shareGroup; // Default: let the implementation decide
 	};
 
 

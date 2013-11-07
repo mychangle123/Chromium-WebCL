@@ -1154,28 +1154,30 @@ PassRefPtr<WebCLMem> WebCLContext::createFromGLBuffer(int flags, WebGLBuffer* bu
 				return NULL;
 		}
 
-		
+		cl_mem_flags clflags;
+
 		switch (flags) {
 				case WebCL::MEM_READ_ONLY:
-						cl_mem_id = clCreateFromGLBuffer(m_cl_context, CL_MEM_READ_ONLY, buf_id, &err);
+						clflags = CL_MEM_READ_ONLY;
 						break;
 				case WebCL::MEM_WRITE_ONLY:
-						cl_mem_id = clCreateFromGLBuffer(m_cl_context, CL_MEM_WRITE_ONLY, buf_id, &err);
+						clflags = CL_MEM_WRITE_ONLY;
 						break;
 				case WebCL::MEM_READ_WRITE:
-						cl_mem_id = clCreateFromGLBuffer(m_cl_context, CL_MEM_READ_WRITE, buf_id, &err);
+						clflags = CL_MEM_READ_WRITE;
 						break;
 				case WebCL::MEM_USE_HOST_PTR:
-						cl_mem_id = clCreateFromGLBuffer(m_cl_context, CL_MEM_USE_HOST_PTR, buf_id, &err);
+						clflags = CL_MEM_USE_HOST_PTR;
 						break;
 				case WebCL::MEM_ALLOC_HOST_PTR:
-						cl_mem_id = clCreateFromGLBuffer(m_cl_context, CL_MEM_ALLOC_HOST_PTR, buf_id, &err);
+						clflags = CL_MEM_ALLOC_HOST_PTR;
 						break;
 				case WebCL::MEM_COPY_HOST_PTR:
-						cl_mem_id = clCreateFromGLBuffer(m_cl_context, CL_MEM_COPY_HOST_PTR, buf_id, &err);
+						clflags = CL_MEM_COPY_HOST_PTR;
 						break;
 
 		}
+		cl_mem_id = webcl_clCreateFromGLBuffer(webcl_channel_, m_cl_context, clflags, bufobj->object(), &err);
 		if (err != CL_SUCCESS) {
 				switch (err) {
 						case CL_INVALID_CONTEXT:

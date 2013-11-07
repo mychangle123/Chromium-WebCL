@@ -259,6 +259,8 @@ class GpuChannel : public IPC::Listener,
 
   DISALLOW_COPY_AND_ASSIGN(GpuChannel);
 
+  GpuCommandBufferStub* current_stub_;
+
  public:
   // Handle the OpenCL API calling.
   void OnCallclGetPlatformIDs(
@@ -1019,6 +1021,40 @@ class GpuChannel : public IPC::Listener,
   void OnCallclEnqueueNativeKernel               (std::vector<cl_point>, size_t, std::vector<cl_uint>, cl_point, std::vector<cl_point>, cl_point*, cl_int*);
   void OnCallclEnqueueMarkerWithWaitList         (cl_point, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
   void OnCallclEnqueueBarrierWithWaitList        (cl_point, cl_uint, std::vector<cl_point>, cl_point*, cl_int*);
+
+  void OnCallclCreateFromGLBuffer(
+                            cl_point, // context
+                            cl_uint, // flags
+                            cl_uint, // bufobj
+                            cl_int*,  // errcode_ret
+							cl_point*);
+
+  void OnCallclCreateFromGLTexture(
+							cl_point      /* context */,
+							cl_uint    /* flags */,
+							cl_uint       /* target */,
+							cl_int        /* miplevel */,
+							cl_uint       /* texture */,
+							cl_int*        /* errcode_ret */,
+							cl_point* /* func_ret */
+							);
+
+  void OnCallclEnqueueAcquireGLObjects(
+							cl_point, // cmdqueue
+							std::vector<cl_point>, // mem_objects
+							std::vector<cl_point>, // event_wait_list
+							cl_point*, // event ret
+							cl_int* // func_ret
+							);
+
+  void OnCallclEnqueueReleaseGLObjects(
+							cl_point, // cmdqueue
+							std::vector<cl_point>, // mem_objects
+							std::vector<cl_point>, // event_wait_list
+							cl_point*, // event ret
+							cl_int* // func_ret
+							);
+
 };
 
 }  // namespace content

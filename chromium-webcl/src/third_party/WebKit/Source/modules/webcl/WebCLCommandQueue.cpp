@@ -1000,7 +1000,7 @@ void WebCLCommandQueue::enqueueAcquireGLObjects(WebCLMem* mem_objects, WebCLEven
         if (event != NULL) {
                 cl_event_id = event->getCLEvent();
         }
-		err = clEnqueueAcquireGLObjects(m_cl_command_queue, 1, &cl_mem_ids, eventsLength, cl_event_wait_lists, &cl_event_id);
+		err = webcl_clEnqueueAcquireGLObjects(webcl_channel_, m_cl_command_queue, 1, &cl_mem_ids, eventsLength, cl_event_wait_lists, &cl_event_id);
 		if (err != CL_SUCCESS) {
 				printf("Error: clEnqueueAcquireGLObjects\n");
 				switch (err) {
@@ -1073,7 +1073,7 @@ void WebCLCommandQueue::enqueueReleaseGLObjects(WebCLMem* mem_objects, WebCLEven
                 cl_event_id = event->getCLEvent();
         }
 
-		err = clEnqueueReleaseGLObjects(m_cl_command_queue, 1, &cl_mem_ids, 
+		err = webcl_clEnqueueReleaseGLObjects(webcl_channel_, m_cl_command_queue, 1, &cl_mem_ids, 
 					eventsLength, cl_event_wait_lists, &cl_event_id);
 		if (err != CL_SUCCESS) {
 				switch (err) {

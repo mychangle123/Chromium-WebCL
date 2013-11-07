@@ -83,6 +83,37 @@ typedef CL_API_ENTRY cl_int           (__cdecl *h_clEnqueueMarkerWithWaitList   
 typedef CL_API_ENTRY cl_int           (__cdecl *h_clEnqueueBarrierWithWaitList     ) (content::GpuChannelHost*, cl_command_queue, cl_uint, const cl_event*, cl_event*);
 typedef CL_API_ENTRY cl_int           (__cdecl *h_clSetPrintfCallback              ) (content::GpuChannelHost*, cl_context, void (CL_CALLBACK*)(cl_context, cl_uint, char*, void*), void*);
 
+typedef CL_API_ENTRY cl_mem 
+(__cdecl *h_clCreateFromGLBuffer)(content::GpuChannelHost*, cl_context     /* context */,
+                     cl_mem_flags   /* flags */,
+                     cl_GLuint      /* bufobj */,
+                     int *          /* errcode_ret */) ;
+
+typedef CL_API_ENTRY cl_mem 
+(__cdecl *h_clCreateFromGLTexture)(content::GpuChannelHost*, cl_context      /* context */,
+                      cl_mem_flags    /* flags */,
+                      cl_GLenum       /* target */,
+                      cl_GLint        /* miplevel */,
+                      cl_GLuint       /* texture */,
+                      cl_int *        /* errcode_ret */) ;
+typedef CL_API_ENTRY cl_int 
+(__cdecl *h_clEnqueueAcquireGLObjects)(content::GpuChannelHost*, cl_command_queue      /* command_queue */,
+                          cl_uint               /* num_objects */,
+                          const cl_mem *        /* mem_objects */,
+                          cl_uint               /* num_events_in_wait_list */,
+                          const cl_event *      /* event_wait_list */,
+                          cl_event *            /* event */) ;
+
+typedef CL_API_ENTRY cl_int 
+(__cdecl *h_clEnqueueReleaseGLObjects)(content::GpuChannelHost*, cl_command_queue      /* command_queue */,
+                          cl_uint               /* num_objects */,
+                          const cl_mem *        /* mem_objects */,
+                          cl_uint               /* num_events_in_wait_list */,
+                          const cl_event *      /* event_wait_list */,
+                          cl_event *            /* event */) ;
+
+
+
 #ifdef __WEBCL_CL_INIT_MAIN__
 #define CL_LOADING_PREFIX
 #define CL_LOADING_SUFFIX = NULL
@@ -173,6 +204,11 @@ CL_LOADING_PREFIX h_clEnqueueNativeKernel             webcl_clEnqueueNativeKerne
 CL_LOADING_PREFIX h_clEnqueueMarkerWithWaitList       webcl_clEnqueueMarkerWithWaitList       CL_LOADING_SUFFIX;
 CL_LOADING_PREFIX h_clEnqueueBarrierWithWaitList      webcl_clEnqueueBarrierWithWaitList      CL_LOADING_SUFFIX;
 CL_LOADING_PREFIX h_clSetPrintfCallback               webcl_clSetPrintfCallback               CL_LOADING_SUFFIX;
+
+CL_LOADING_PREFIX h_clCreateFromGLBuffer               webcl_clCreateFromGLBuffer             CL_LOADING_SUFFIX;
+CL_LOADING_PREFIX h_clCreateFromGLTexture              webcl_clCreateFromGLTexture            CL_LOADING_SUFFIX;
+CL_LOADING_PREFIX h_clEnqueueAcquireGLObjects          webcl_clEnqueueAcquireGLObjects        CL_LOADING_SUFFIX;
+CL_LOADING_PREFIX h_clEnqueueReleaseGLObjects          webcl_clEnqueueReleaseGLObjects        CL_LOADING_SUFFIX;
 
 #undef CL_LOADING_PREFIX
 #undef CL_LOADING_SUFFIX
@@ -267,3 +303,8 @@ WEBCL_LOAD_FUN_DEF(clEnqueueNativeKernel            )
 WEBCL_LOAD_FUN_DEF(clEnqueueMarkerWithWaitList      )
 WEBCL_LOAD_FUN_DEF(clEnqueueBarrierWithWaitList     )
 WEBCL_LOAD_FUN_DEF(clSetPrintfCallback              )
+
+WEBCL_LOAD_FUN_DEF(clCreateFromGLBuffer)
+WEBCL_LOAD_FUN_DEF(clCreateFromGLTexture)
+WEBCL_LOAD_FUN_DEF(clEnqueueAcquireGLObjects)
+WEBCL_LOAD_FUN_DEF(clEnqueueReleaseGLObjects)

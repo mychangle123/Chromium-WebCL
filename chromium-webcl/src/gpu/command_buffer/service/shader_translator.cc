@@ -56,18 +56,12 @@ void GetVariableInfo(ShHandle compiler, ShShaderInfo var_type,
     ANGLEGetInfoType len = 0;
     int size = 0;
     ShDataType type = SH_NONE;
+    ShPrecisionType precision = SH_PRECISION_UNDEFINED;
+    int static_use = 0;
 
-    switch (var_type) {
-      case SH_ACTIVE_ATTRIBUTES:
-        ShGetActiveAttrib(
-            compiler, i, &len, &size, &type, name.get(), mapped_name.get());
-        break;
-      case SH_ACTIVE_UNIFORMS:
-        ShGetActiveUniform(
-            compiler, i, &len, &size, &type, name.get(), mapped_name.get());
-        break;
-      default: NOTREACHED();
-    }
+    ShGetVariableInfo(compiler, var_type, i,
+                      &len, &size, &type, &precision, &static_use,
+                      name.get(), mapped_name.get());
 
     // In theory we should CHECK(len <= name_len - 1) here, but ANGLE needs
     // to handle long struct field name mapping before we can do this.
@@ -153,7 +147,7 @@ bool ShaderTranslator::Translate(const char* shader) {
 
   bool success = false;
   int compile_options =
-      SH_OBJECT_CODE | SH_ATTRIBUTES_UNIFORMS |
+      SH_OBJECT_CODE | SH_VARIABLES /*SH_ATTRIBUTES_UNIFORMS*/ |
       SH_MAP_LONG_VARIABLE_NAMES | SH_ENFORCE_PACKING_RESTRICTIONS;
 
   compile_options |= SH_CLAMP_INDIRECT_ARRAY_BOUNDS;

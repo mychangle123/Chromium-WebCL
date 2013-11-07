@@ -122,6 +122,10 @@ GpuChannelHost::GpuChannelHost(
   //WEBCL_SET_FUNC(clEnqueueMarkerWithWaitList      )
   //WEBCL_SET_FUNC(clEnqueueBarrierWithWaitList     )
   //WEBCL_SET_FUNC(clSetPrintfCallback              )
+  WEBCL_SET_FUNC(clCreateFromGLBuffer)
+  WEBCL_SET_FUNC(clCreateFromGLTexture)
+  WEBCL_SET_FUNC(clEnqueueAcquireGLObjects)
+  WEBCL_SET_FUNC(clEnqueueReleaseGLObjects)
 
 }
 
@@ -4078,6 +4082,9 @@ cl_int GpuChannelHost::CallclEnqueueBarrierWithWaitList(cl_command_queue command
   return errcode_ret;
 }
 
+
+//!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Globals
+
 cl_int CallclGetPlatformIDs(
   GpuChannelHost* channel_host_,
   cl_uint num_entries,
@@ -5264,5 +5271,130 @@ cl_int CallclEnqueueBarrierWithWaitList(
       event_wait_list,
       clevent);
 }
+
+// ScalableVision
+
+cl_mem GpuChannelHost::CallclCreateFromGLBuffer(cl_context      context ,
+	cl_mem_flags    flags ,
+	cl_GLuint       bufobj ,
+	int *           errcode_ret )  {
+		cl_mem ret;
+		if (!Send(new OpenCLChannelMsg_CreateFromGLBuffer((cl_point)context, (cl_uint)flags, (cl_uint)bufobj, errcode_ret, (cl_point*)&ret)))
+			return NULL;
+
+		return ret;
+}
+
+cl_mem 
+GpuChannelHost::CallclCreateFromGLTexture(cl_context       context ,
+                      cl_mem_flags     flags ,
+                      cl_GLenum        target ,
+                      cl_GLint         miplevel ,
+                      cl_GLuint        texture ,
+                      cl_int *         errcode_ret ) {
+	cl_mem ret;
+	if (!Send(new OpenCLChannelMsg_CreateFromGLTexture((cl_point)context, (cl_uint)flags, (cl_uint)target, miplevel, (cl_uint)texture, errcode_ret, (cl_point*)&ret)))
+		return NULL;
+
+	return ret;
+}
+
+cl_int
+GpuChannelHost::CallclEnqueueAcquireGLObjects(cl_command_queue       command_queue ,
+                          cl_uint                num_objects ,
+                          const cl_mem *         mem_objects ,
+                          cl_uint                num_events_in_wait_list ,
+                          const cl_event *       event_wait_list ,
+                          cl_event *             event ) {
+	std::vector<cl_point> memobjs;
+	std::vector<cl_point> ewl;
+	cl_uint i;
+	cl_int ret;
+	for (i=0; i<num_objects; i++) memobjs.push_back((cl_point)mem_objects[i]);
+	for (i=0; i<num_events_in_wait_list; i++) ewl.push_back((cl_point)event_wait_list[i]);
+	if (!Send(new OpenCLChannelMsg_EnqueueAcquireGLObjects((cl_point)command_queue, memobjs, ewl, (cl_point*)event, &ret)))
+		return CL_SEND_IPC_MESSAGE_FAILURE;
+
+	return ret;
+}
+
+cl_int
+GpuChannelHost::CallclEnqueueReleaseGLObjects(cl_command_queue       command_queue ,
+                          cl_uint                num_objects ,
+                          const cl_mem *         mem_objects ,
+                          cl_uint                num_events_in_wait_list ,
+                          const cl_event *       event_wait_list ,
+                          cl_event *             event ) {
+	std::vector<cl_point> memobjs;
+	std::vector<cl_point> ewl;
+	cl_uint i;
+	cl_int ret;
+	for (i=0; i<num_objects; i++) memobjs.push_back((cl_point)mem_objects[i]);
+	for (i=0; i<num_events_in_wait_list; i++) ewl.push_back((cl_point)event_wait_list[i]);
+	if (!Send(new OpenCLChannelMsg_EnqueueReleaseGLObjects((cl_point)command_queue, memobjs, ewl, (cl_point*)event, &ret)))
+		return CL_SEND_IPC_MESSAGE_FAILURE;
+
+	return ret;
+}
+
+
+// Globals
+cl_mem CallclCreateFromGLBuffer (	GpuChannelHost* channel_host_, cl_context context,
+	cl_mem_flags flags,
+	cl_GLuint bufobj,
+	cl_int * errcode_ret) {
+		return channel_host_->CallclCreateFromGLBuffer(context,
+			flags,
+			bufobj,
+			errcode_ret);
+}
+
+cl_mem CallclCreateFromGLTexture (	GpuChannelHost* channel_host_, cl_context context,
+	cl_mem_flags flags,
+	cl_GLenum texture_target,
+	cl_GLint miplevel,
+	cl_GLuint texture,
+	cl_int * errcode_ret) {
+		return channel_host_->CallclCreateFromGLTexture (context,
+			flags,
+			texture_target,
+			miplevel,
+			texture,
+			errcode_ret);
+}
+
+
+cl_int CallclEnqueueAcquireGLObjects (	GpuChannelHost* channel_host_, cl_command_queue command_queue,
+	cl_uint num_objects,
+	const cl_mem *mem_objects,
+	cl_uint num_events_in_wait_list,
+	const cl_event *event_wait_list,
+	cl_event *event) {
+		return channel_host_->CallclEnqueueAcquireGLObjects (command_queue,
+			num_objects,
+			mem_objects,
+			num_events_in_wait_list,
+			event_wait_list,
+			event);
+}
+
+
+cl_int CallclEnqueueReleaseGLObjects (	GpuChannelHost* channel_host_, cl_command_queue  command_queue ,
+	cl_uint  num_objects ,
+	const cl_mem  *mem_objects ,
+	cl_uint  num_events_in_wait_list ,
+	const cl_event  *event_wait_list ,
+	cl_event  *event ) {
+		return channel_host_->CallclEnqueueReleaseGLObjects (command_queue,
+			num_objects,
+			mem_objects,
+			num_events_in_wait_list,
+			event_wait_list,
+			event);
+}
+
+
+
+
 
 }  // namespace content

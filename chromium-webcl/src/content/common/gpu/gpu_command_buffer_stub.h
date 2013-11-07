@@ -82,6 +82,10 @@ class GpuCommandBufferStub
 
   virtual ~GpuCommandBufferStub();
 
+  scoped_refptr<gpu::gles2::ContextGroup>& context_group() {
+	  return context_group_;
+  }
+
   // IPC::Listener implementation:
   virtual bool OnMessageReceived(const IPC::Message& message) OVERRIDE;
 
@@ -136,6 +140,8 @@ class GpuCommandBufferStub
   void SetPreemptByFlag(scoped_refptr<gpu::PreemptionFlag> flag);
 
   void SetLatencyInfoCallback(const LatencyInfoCallback& callback);
+
+
 
  private:
   GpuMemoryManager* GetMemoryManager();

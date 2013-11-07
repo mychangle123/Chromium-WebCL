@@ -805,8 +805,77 @@ class GpuChannelHost : public IPC::Sender,
       cl_uint,
       const cl_event*,
       cl_event*);
-};
 
+  
+  //ScalableVision
+
+
+  cl_mem 
+	  CallclCreateFromGLBuffer(cl_context     /* context */,
+	  cl_mem_flags   /* flags */,
+	  cl_GLuint      /* bufobj */,
+	  int *          /* errcode_ret */) ;
+
+  cl_mem 
+	  CallclCreateFromGLTexture(cl_context      /* context */,
+	  cl_mem_flags    /* flags */,
+	  cl_GLenum       /* target */,
+	  cl_GLint        /* miplevel */,
+	  cl_GLuint       /* texture */,
+	  cl_int *        /* errcode_ret */) ;
+
+  cl_int
+	  CallclEnqueueAcquireGLObjects(cl_command_queue      /* command_queue */,
+	  cl_uint               /* num_objects */,
+	  const cl_mem *        /* mem_objects */,
+	  cl_uint               /* num_events_in_wait_list */,
+	  const cl_event *      /* event_wait_list */,
+	  cl_event *            /* event */);
+
+  cl_int
+	  CallclEnqueueReleaseGLObjects(cl_command_queue      /* command_queue */,
+	  cl_uint               /* num_objects */,
+	  const cl_mem *        /* mem_objects */,
+	  cl_uint               /* num_events_in_wait_list */,
+	  const cl_event *      /* event_wait_list */,
+	  cl_event *            /* event */);
+}; // GpuChannelHost end
+
+
+// Globals
+
+  //ScalableVision
+  cl_mem 
+	  CallclCreateFromGLBuffer(GpuChannelHost*,cl_context     /* context */,
+	  cl_mem_flags   /* flags */,
+	  cl_GLuint      /* bufobj */,
+	  int *          /* errcode_ret */) ;
+
+  cl_mem 
+	  CallclCreateFromGLTexture(GpuChannelHost*,cl_context      /* context */,
+	  cl_mem_flags    /* flags */,
+	  cl_GLenum       /* target */,
+	  cl_GLint        /* miplevel */,
+	  cl_GLuint       /* texture */,
+	  cl_int *        /* errcode_ret */) ;
+
+  cl_int
+	  CallclEnqueueAcquireGLObjects(GpuChannelHost*,cl_command_queue      /* command_queue */,
+	  cl_uint               /* num_objects */,
+	  const cl_mem *        /* mem_objects */,
+	  cl_uint               /* num_events_in_wait_list */,
+	  const cl_event *      /* event_wait_list */,
+	  cl_event *            /* event */);
+
+  cl_int
+	  CallclEnqueueReleaseGLObjects(GpuChannelHost*,cl_command_queue      /* command_queue */,
+	  cl_uint               /* num_objects */,
+	  const cl_mem *        /* mem_objects */,
+	  cl_uint               /* num_events_in_wait_list */,
+	  const cl_event *      /* event_wait_list */,
+	  cl_event *            /* event */);
+
+  // ScalableVision end
 
 cl_int CallclGetPlatformIDs(
     GpuChannelHost*,

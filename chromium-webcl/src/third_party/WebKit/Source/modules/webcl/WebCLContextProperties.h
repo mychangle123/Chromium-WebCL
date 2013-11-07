@@ -62,6 +62,9 @@ public:
 	// The webgl context to be shared with webcl.
 	PassRefPtr<WebGLRenderingContext> sharedWebGLContext() const;
 	void setSharedWebGLContext(PassRefPtr<WebGLRenderingContext> webglContext);
+
+	unsigned int shareGroup() const { return m_shareGroup; }
+	void setShareGroup(unsigned int i) { m_shareGroup = i; }
 private:
 	WebCLContextProperties();
 
@@ -69,6 +72,7 @@ private:
 	RefPtr<WebCLDeviceList> m_webclDeviceList;
 	unsigned int m_deviceType;
 	RefPtr<WebGLRenderingContext> m_webglContext;
+	unsigned int m_shareGroup;
 };
 
 } // namespace WebCore
