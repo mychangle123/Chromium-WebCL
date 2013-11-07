@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -141,7 +141,7 @@
     <ClCompile Include="BuiltInFunctionEmulator.cpp" />
     <ClCompile Include="Compiler.cpp" />
     <ClCompile Include="debug.cpp" />
-    <ClCompile Include="DetectRecursion.cpp" />
+    <ClCompile Include="DetectCallDepth.cpp" />
     <ClCompile Include="Diagnostics.cpp" />
     <ClCompile Include="DirectiveHandler.cpp" />
     <ClCompile Include="ForLoopUnroll.cpp" />
@@ -231,7 +231,7 @@
     <ClInclude Include="Common.h" />
     <ClInclude Include="ConstantUnion.h" />
     <ClInclude Include="debug.h" />
-    <ClInclude Include="DetectRecursion.h" />
+    <ClInclude Include="DetectCallDepth.h" />
     <ClInclude Include="Diagnostics.h" />
     <ClInclude Include="DirectiveHandler.h" />
     <ClInclude Include="ForLoopUnroll.h" />
@@ -251,7 +251,6 @@
     <ClInclude Include="QualifierAlive.h" />
     <ClInclude Include="RemoveTree.h" />
     <ClInclude Include="RenameFunction.h" />
-    <ClInclude Include="..\..\include\GLSLANG\ResourceLimits.h" />
     <ClInclude Include="..\..\include\GLSLANG\ShaderLang.h" />
     <ClInclude Include="ShHandle.h" />
     <ClInclude Include="SymbolTable.h" />
@@ -267,16 +266,6 @@
     <ClInclude Include="depgraph\DependencyGraphBuilder.h" />
     <ClInclude Include="depgraph\DependencyGraphOutput.h" />
     <ClInclude Include="..\third_party\compiler\ArrayBoundsClamper.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="preprocessor\preprocessor.vcxproj">
-      <Project>{fbe32df3-0fb0-4f2f-a424-2c21bd7bc325}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <Private>true</Private>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

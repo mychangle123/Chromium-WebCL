@@ -148,6 +148,7 @@
     <ClCompile Include="SearchSymbol.cpp" />
     <ClCompile Include="TranslatorHLSL.cpp" />
     <ClCompile Include="UnfoldShortCircuit.cpp" />
+    <ClCompile Include="Uniform.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DetectDiscontinuity.h" />
@@ -155,16 +156,7 @@
     <ClInclude Include="SearchSymbol.h" />
     <ClInclude Include="TranslatorHLSL.h" />
     <ClInclude Include="UnfoldShortCircuit.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="translator_common.vcxproj">
-      <Project>{5b3a6db8-1e7e-40d7-92b9-da8aae619fad}</Project>
-      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
-      <Private>true</Private>
-      <CopyLocalSatelliteAssemblies>false</CopyLocalSatelliteAssemblies>
-      <LinkLibraryDependencies>true</LinkLibraryDependencies>
-      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
-    </ProjectReference>
+    <ClInclude Include="Uniform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -13,6 +13,9 @@
 #define GL_APICALL
 #include <GLES2/gl2.h>
 
+#include "Buffer.h"
+#include "renderer/BufferStorage.h"
+
 #ifdef _MSC_VER
 #include <hash_map>
 #else
@@ -20,7 +23,16 @@
 #endif
 
 #include "common/angleutils.h"
+#include "libGLESv2/angletypes.h"
 #include "libGLESv2/HandleAllocator.h"
+
+#include "Texture.h"
+#include "renderer/TextureStorage.h"
+
+namespace rx
+{
+class Renderer;
+}
 
 namespace gl
 {
@@ -30,25 +42,10 @@ class Program;
 class Texture;
 class Renderbuffer;
 
-enum TextureType
-{
-    TEXTURE_2D,
-    TEXTURE_CUBE,
-
-    TEXTURE_TYPE_COUNT,
-    TEXTURE_UNKNOWN
-};
-
-enum SamplerType
-{
-    SAMPLER_PIXEL,
-    SAMPLER_VERTEX
-};
-
 class ResourceManager
 {
   public:
-    ResourceManager();
+    explicit ResourceManager(rx::Renderer *renderer);
     ~ResourceManager();
 
     void addRef();
@@ -82,6 +79,7 @@ class ResourceManager
     DISALLOW_COPY_AND_ASSIGN(ResourceManager);
 
     std::size_t mRefCount;
+    rx::Renderer *mRenderer;
 
 #ifndef HASH_MAP
 # ifdef _MSC_VER
@@ -109,6 +107,32 @@ class ResourceManager
     typedef HASH_MAP<GLuint, Renderbuffer*> RenderbufferMap;
     RenderbufferMap mRenderbufferMap;
     HandleAllocator mRenderbufferHandleAllocator;
+
+
+	public:
+
+	void* getTextureUltimatePointer(GLuint tex) {
+	    TextureMap::iterator textureObject = mTextureMap.find(tex);
+
+        if (textureObject != mTextureMap.end()) {
+			if (! textureObject->second)
+				return NULL;
+			void * ptr = textureObject->second->getNativeTexture()->getUltimatePointer();
+			return ptr;
+		} else
+			return NULL;
+	}
+	void* getBufferUltimatePointer(GLuint tex) {
+	    BufferMap::iterator bufferObject = mBufferMap.find(tex);
+
+        if (bufferObject != mBufferMap.end()) {
+			if (! bufferObject->second)
+				return NULL;
+			void * ptr = bufferObject->second->getStorage()->getUltimatePointer();
+			return ptr;
+		} else
+			return NULL;
+	}
 };
 
 }

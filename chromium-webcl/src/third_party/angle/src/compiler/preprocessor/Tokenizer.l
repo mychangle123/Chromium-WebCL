@@ -1,6 +1,6 @@
 /*
 //
-// Copyright (c) 2002-2011 The ANGLE Project Authors. All rights reserved.
+// Copyright (c) 2002-2013 The ANGLE Project Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 //
@@ -14,7 +14,7 @@ IF YOU MODIFY THIS FILE YOU ALSO NEED TO RUN generate_parser.sh.
 
 %top{
 //
-// Copyright (c) 2011 The ANGLE Project Authors. All rights reserved.
+// Copyright (c) 2011-2013 The ANGLE Project Authors. All rights reserved.
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 //
@@ -229,6 +229,8 @@ FRACTIONAL_CONSTANT  ({DIGIT}*"."{DIGIT}+)|({DIGIT}+".")
     return '\n';
 }
 
+\\{NEWLINE} { ++yylineno; }
+
 . {
     yylval->assign(1, yytext[0]);
     return pp::Token::PP_OTHER;
@@ -265,11 +267,9 @@ FRACTIONAL_CONSTANT  ({DIGIT}*"."{DIGIT}+)|({DIGIT}+".")
 
 namespace pp {
 
-// TODO(alokp): Maximum token length should ideally be specified by
-// the preprocessor client, i.e., the compiler.
-const size_t Tokenizer::kMaxTokenLength = 256;
-
-Tokenizer::Tokenizer(Diagnostics* diagnostics) : mHandle(0)
+Tokenizer::Tokenizer(Diagnostics* diagnostics)
+    : mHandle(0),
+      mMaxTokenLength(256)
 {
     mContext.diagnostics = diagnostics;
 }
@@ -302,11 +302,11 @@ void Tokenizer::setLineNumber(int line)
 void Tokenizer::lex(Token* token)
 {
     token->type = yylex(&token->text, &token->location, mHandle);
-    if (token->text.size() > kMaxTokenLength)
+    if (token->text.size() > mMaxTokenLength)
     {
         mContext.diagnostics->report(Diagnostics::TOKEN_TOO_LONG,
                                      token->location, token->text);
-        token->text.erase(kMaxTokenLength);
+        token->text.erase(mMaxTokenLength);
     }
 
     token->flags = 0;
