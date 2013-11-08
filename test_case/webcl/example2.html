@@ -214,8 +214,21 @@ function InitCL()
 	          var properties = new WebCLContextProperties();
 	          properties.platform = platform;
 	          properties.devices = devices;
+		  properties.shareGroup = 1;
 
+		  
 	          context = cl.createContext(properties);
+
+
+		  /*
+		  this.context = cl.createContext(
+				  {platform: platform,
+					devices: devices,
+					deviceType: cl.DEVICE_TYPE_GPU, 
+					shareGroup: 1,
+					hint: null}
+				  ); */
+	
 
 	          // Create a command queue
 	          //
@@ -319,7 +332,7 @@ function Cversion() {
     var d3 = new Date();
 
     var time0 = d3.getTime();
-    for (var jjj = 0; jjj < 30000; jjj++) {
+    for (var jjj = 0; jjj < 30; jjj++) {
         for (var i = 0; i < DATA_SIZE; i++) {
             for (var j = 0; j < DATA_SIZE; j++) {
                 for (var k = 0; k < DATA_SIZE; k++) {

@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html>
+<!--
+  Created using jsbin.com
+  Source can be edited via http://jsbin.com/ulazel/1/edit
+-->
+<head>
+	<meta charset="utf-8" />
+	<title>Chromium WebCL-WebGL interop</title>
+
+<style id="jsbin-css">
+
+</style>
+</head>
+<body>
+<script type="text/javascript">
+
+var shareBuf = true;
+
+var gl;
+var vertexObj;
+var glprog;
+var meshWidth=128, meshHeight=128;
+
+var size = meshWidth*meshHeight*4;
+var testPoints = new Float32Array(size);
+var testPoints1 = new Float32Array(size);
+
+var cl;
+var posBuf;
+var program, kernel;
+var animate = 0.0;
+var groupSize = meshWidth/4;
+var globalWorkSize = new Int32Array(2);
+var localWorkSize = new Int32Array(2);
+var results = new Float32Array(meshWidth * meshHeight * 4); 	// results returned from device
+
+function shaderProgram(gl, vs, fs) {
+	glprog = gl.createProgram();
+	var addshader = function(type, source) {
+		var s = gl.createShader((type == 'vertex') ?
+			gl.VERTEX_SHADER : gl.FRAGMENT_SHADER);
+		gl.shaderSource(s, source);
+		gl.compileShader(s);
+		if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+			throw "Could not compile "+type+
+				" shader:\n\n"+gl.getShaderInfoLog(s);
+		}
+		gl.attachShader(glprog, s);
+	};
+	addshader('vertex', vs);
+	addshader('fragment', fs);
+	gl.linkProgram(glprog);
+	if (!gl.getProgramParameter(glprog, gl.LINK_STATUS)) {
+		throw "Could not link the shader glprogram!";
+	}
+	return glprog;
+}
+
+function attributeSetFloats(gl, prog, attr_name, rsize, float32arr) {
+	vertexObj = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, vertexObj);
+	gl.bufferData(gl.ARRAY_BUFFER, float32arr, gl.STREAM_DRAW);
+	var attr = gl.getAttribLocation(prog, attr_name);
+	gl.enableVertexAttribArray(attr);
+	gl.vertexAttribPointer(attr, rsize, gl.FLOAT, false, 0, 0);
+}
+
+function initGLCL() {
+	try {
+		gl = document.getElementById("webgl")
+			.getContext("experimental-webgl");
+		if (!gl) { throw "x"; }
+	} catch (err) {
+		throw "Your web browser does not support WebGL!";
+	}
+
+	var prog = shaderProgram(gl,
+			// vertex shader
+			"attribute vec4 a_position;   \n"+
+			"//attribute vec2 a_texCoord; \n"+
+			"//varying vec2 v_texCoord;     \n"+
+			"void main()                  \n"+
+			"{                            \n"+
+			"   gl_Position = a_position; \n"+
+			"   gl_PointSize = 2.0; \n"+
+			"   //v_texCoord = vec2(a_position.xy) * vec2(2.0, -2.0) + vec2(-1.0, 1.0);;  \n"+
+			"}                            \n",
+
+			// pixel shader
+			"precision mediump float;\n"+
+			"//varying vec2 v_texCoord;\n"+
+			"//uniform sampler2D s_texture;\n"+
+			"void main()\n"+
+			"{\n"+
+			"  gl_FragColor = vec4(1,1,0.3,1); //texture2D( s_texture, v_texCoord );\n"+
+			"}\n"
+
+	);
+
+	for (var i=0; i<size; i+=4) {
+		testPoints[i+0] = Math.random();
+		testPoints[i+1] = Math.random();
+		testPoints[i+2] = Math.random();
+		testPoints[i+3] = 1.0;
+
+		testPoints1[i+0] = Math.random()*2-1;
+		testPoints1[i+1] = Math.random()*2-1;
+		testPoints1[i+2] = Math.random()*2-1;
+		testPoints1[i+3] = 1.0;
+	}
+
+	attributeSetFloats(gl, glprog, "a_position", 4, testPoints
+		/*[-1, 0, 0,
+		0, 1, 0,
+		0, -1, 0,
+		1, 0, 0] */);
+
+	          if (typeof (WebCL) === "undefined") {
+	              console.error("WebCL is yet to be undefined");
+	              return null;
+	          }
+
+	          cl = new WebCL();
+
+	          if (cl === null) {
+	              console.error("Failed to create WebCL context");
+	              return;
+	          }
+
+	          platforms = cl.getPlatforms();
+	          if (platforms.length === 0) {
+	              console.error("No platforms available");
+	              return;
+	          }
+	          platform = platforms[0];
+
+
+		  	          {
+	              var platform_profile = platform.getInfo(cl.PLATFORM_PROFILE);
+	              console.info(platform_profile);
+	              var platform_version = platform.getInfo(cl.PLATFORM_VERSION);
+	              console.info(platform_version);
+	              var platform_name = platform.getInfo(cl.PLATFORM_NAME);
+	              console.info(platform_name);
+	              var platform_verdor = platform.getInfo(cl.PLATFORM_VENDOR);
+	              console.info(platform_verdor);
+	              var platform_extension = platform.getInfo(cl.PLATFORM_EXTENSIONS);
+	              console.info(platform_extension);
+	          }
+
+	          // Connect to a compute device
+	          //
+	          var gpu = true;
+	          devices = platform.getDevices(gpu ? cl.DEVICE_TYPE_GPU : cl.DEVICE_TYPE_CPU);
+	          if (devices.length === 0) {
+	              console.error("No devices available");
+	              return;
+	          }
+	          device = devices[0];
+	          {
+	              var device_name = device.getInfo(cl.DEVICE_NAME);
+	              console.info(device_name);
+	              var device_vendor = device.getInfo(cl.DEVICE_VENDOR);
+	              console.info(device_vendor);
+	              var device_version = device.getInfo(cl.DEVICE_VERSION);
+	              console.info(device_version);
+	              var driver_version = device.getInfo(cl.DRIVER_VERSION);
+	              console.info(driver_version);
+	              var device_extensions = device.getInfo(cl.DEVICE_EXTENSIONS);
+	              console.info(device_extensions);
+	          }
+
+	          // Create a compute context - takes default device
+	          var properties = new WebCLContextProperties();
+	          properties.platform = platform;
+	          properties.devices = devices;
+		  properties.shareGroup = 1;
+
+		  
+	          context = cl.createContext(properties);
+
+	          // Create a command queue
+	          //
+	          queue = context.createCommandQueue(devices, null);
+
+	          // Create the compute program from the source buffer
+	          //
+	          var kernelSource = 
+			  "__kernel void sineWave(\n"+
+					  "__global float4 * pos,\n"+
+					  "unsigned int width,\n"+
+					  "unsigned int height,\n"+
+					  "float time) {\n"+
+				  "unsigned int x = get_global_id(0);\n"+
+				  "unsigned int y = get_global_id(1);\n"+
+				  "// calculate uv coordinates\n"+
+				  "float u = x / (float) width;\n"+
+				  "float v = y / (float) height;\n"+
+				  "u = u*2.0f - 1.0f;\n"+
+				  "v = v*2.0f - 1.0f;\n"+
+				  "// calculate simple sine wave pattern\n"+
+				  "float freq = 4.0f;\n"+
+				  "float w = sin(u*freq + time) * cos(v*freq + time) * 0.5f;\n"+
+				  "// write output vertex\n"+
+				  "pos[y*width+x] = (float4)(u, w, v, 1.0f);\n"+
+			  "}";
+
+	          program = context.createProgram(kernelSource);
+
+	          // Build the program executable
+	          //
+	          program.buildProgram(null, null, null);
+		  kernel = program.createKernel("sineWave");
+
+		  if (shareBuf)
+		  	posBuf = context.createFromGLBuffer(cl.MEM_WRITE_ONLY, vertexObj);
+		  else
+		  	posBuf = context.createBuffer(cl.MEM_WRITE_ONLY,
+			  Float32Array.BYTES_PER_ELEMENT * meshWidth * meshHeight * 4, null);
+
+		  kernel.setKernelArgGlobal(0, posBuf);
+		  kernel.setKernelArg(1, meshWidth, cl.KERNEL_ARG_INT);
+		  kernel.setKernelArg(2, meshHeight, cl.KERNEL_ARG_INT);
+		  kernel.setKernelArg(3, animate, cl.KERNEL_ARG_FLOAT);
+
+		  globalWorkSize[0] = meshWidth;
+		  globalWorkSize[1] = meshHeight;
+    		  localWorkSize[0] = groupSize;
+    		  localWorkSize[1] = 1;
+
+
+		  if ( !window.requestAnimationFrame ) {
+
+			  window.requestAnimationFrame = ( function() {
+
+					  return window.webkitRequestAnimationFrame ||
+					  window.mozRequestAnimationFrame ||
+					  window.oRequestAnimationFrame ||
+					  window.msRequestAnimationFrame ||
+					  function ( callback, element ) {
+
+					  window.setTimeout( callback, 1000 / 60 );
+
+					  };
+
+					  } )();
+
+		  }
+}
+
+function draw() {
+	gl.disable(gl.DEPTH_TEST);
+	gl.viewport(0,0,512,512);
+
+	gl.clearColor(0.3, 0.1, 0.6, 1);
+	gl.clear(gl.COLOR_BUFFER_BIT);
+
+
+	kernel.setKernelArg(3, animate, cl.KERNEL_ARG_FLOAT);
+	if (shareBuf) {
+		queue.enqueueAcquireGLObjects(posBuf);
+	}
+	queue.enqueueNDRangeKernel( kernel, null, globalWorkSize, localWorkSize);
+	//queue.enqueueWriteBuffer(posBuf, true, 0, Float32Array.BYTES_PER_ELEMENT * meshWidth * meshHeight * 4, testPoints1);
+	//queue.enqueueReadBuffer(posBuf, true, 0, Float32Array.BYTES_PER_ELEMENT * meshWidth * meshHeight * 4, results);
+
+	queue.flush();
+	queue.finish();
+
+	if (shareBuf) {
+		queue.enqueueReleaseGLObjects(posBuf);
+		queue.finish();
+	}
+
+
+	gl.useProgram(glprog);
+
+	gl.bindBuffer(gl.ARRAY_BUFFER, vertexObj);
+	if (! shareBuf)
+		gl.bufferData(gl.ARRAY_BUFFER, results, gl.STREAM_DRAW);
+	gl.drawArrays(gl.POINTS, 0, meshHeight*meshWidth);
+
+	animate += 0.1;
+}
+
+function loop() {
+	requestAnimationFrame( loop );
+	draw();
+}
+
+
+function init() {
+	try {
+		initGLCL();
+		loop();
+		
+		/*
+		program.releaseCL();
+		kernel.releaseCL();
+		queue.releaseCL();
+		context.releaseCL()
+		*/
+	} catch (e) {
+		alert("Error: "+e);
+	}
+}
+setTimeout(init, 1000);
+
+</script>
+<center>
+<canvas id="webgl" width="512" height="512"></canvas>
+<br>
+A WebGL vertex buffer is shared with a WebCL kernel, the latter setting vertex positions based on a simple wave function. The vertex buffer is then rendered as points.
+</center>
+
+
+<script>
+
+</script>
+<script>
+var _gaq = _gaq || [];
+_gaq.push(['_setAccount', 'UA-1656750-34']);
+_gaq.push(['_trackPageview']);
+
+</script>
+</body>
+</html>
